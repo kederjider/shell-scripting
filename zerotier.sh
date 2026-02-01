@@ -72,12 +72,12 @@ done
 
 pause(){
   read -n 1 -s -r -p "  Press any key to continue"
-  source zerotier.sh
+  source zerotier
 }  
 #-------------- status --------------
-zerotier=$(systemctl status zerotier-one | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+zerotier_status=$(systemctl status zerotier-one | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 # STATUS SERVICE  zerotier 
-if [[ $zerotier == "running" ]]; then 
+if [[ $zerotier_status == "running" ]]; then 
    status_zerotier="${green}Online${NC}"
 else
    status_zerotier="${RED}Offline${NC} "
@@ -233,32 +233,62 @@ join_networkid() {
                 echo "File $FILE tidak ditemukan!"
                 exit 1
             fi
+            clear  
+            echo -e "${pth}  Silakan pilih mau join network via mana ?$NC"
+            echo -e ""
+            echo -e "     \e[1;32m1)\e[0m join networkid dari daftar file $FILE"
+            echo -e "     \e[1;32m2)\e[0m join networkid manual"
+            echo -e " "
+            read -p "   Please select numbers 1-2 : " plh
+            echo ""
+            if [[ $plh == "1" ]]; then
+                # ambil baris yang dipilih
+                LINE_CONTENT=$(sed -n "${LINE}p" "$FILE")
 
-            # ambil baris yang dipilih
-            LINE_CONTENT=$(sed -n "${LINE}p" "$FILE")
+                # ekstrak network id (ambil deretan 16 hex karakter)
+                RESULT=$(echo "$LINE_CONTENT" | grep -oE '[0-9a-fA-F]{16}' | tr 'A-F' 'a-f' | head -n1)
 
-            # ekstrak network id (ambil deretan 16 hex karakter)
-            RESULT=$(echo "$LINE_CONTENT" | grep -oE '[0-9a-fA-F]{16}' | tr 'A-F' 'a-f' | head -n1)
+                if [ -z "$RESULT" ]; then
+                    echo "Tidak ada NetworkID valid di baris $LINE. Isi baris: $LINE_CONTENT"
+                    exit 1
+                fi
 
-            if [ -z "$RESULT" ]; then
-                echo "Tidak ada NetworkID valid di baris $LINE. Isi baris: $LINE_CONTENT"
-                exit 1
-            fi
+                # tampilkan untuk debug (tanda kutip membantu lihat spasi)
+                printf 'Meng-join NetworkID: "%s"\n' "$RESULT"
 
-            # tampilkan untuk debug (tanda kutip membantu lihat spasi)
-            printf 'Meng-join NetworkID: "%s"\n' "$RESULT"
+                # jalankan join dan tangkap output serta exit code
+                JOIN_OUT=$(zerotier-cli join "$RESULT" 2>&1)
+                JOIN_EXIT=$?
 
-            # jalankan join dan tangkap output serta exit code
-            JOIN_OUT=$(zerotier-cli join "$RESULT" 2>&1)
-            JOIN_EXIT=$?
+                # tampilkan apa yang dikembalikan zerotier-cli
+                echo "zerotier-cli output: $JOIN_OUT"
 
-            # tampilkan apa yang dikembalikan zerotier-cli
-            echo "zerotier-cli output: $JOIN_OUT"
-
-            if [ $JOIN_EXIT -eq 0 ] || echo "$JOIN_OUT" | grep -q '^200'; then
-                echo -e "✅ Berhasil join network $RESULT"
+                if [ $JOIN_EXIT -eq 0 ] || echo "$JOIN_OUT" | grep -q '^200'; then
+                    echo -e "✅ Berhasil join network $RESULT"
+                else
+                    echo -e "❌ Gagal join network $RESULT — pesan: $JOIN_OUT"
+                fi
+            elif [[ $plh == "2" ]]; then
+                clear
+                echo_info "ZeroTier aktif. Melanjutkan proses JOIN..."
+                read -p "  MASUKAN NETWORKID : " networkid
+                zerotier_join=$(zerotier-cli join $networkid)
+                # STATUS SERVICE  zerotier 
+                if [[ $zerotier_join == "200 join OK" ]]; then 
+                  echo -e "${green} Berhasil Join NetworkID $networkid${EMO_SUCCESS} ${NC}"
+                  echo_ok "Directory '$DIR' berhasil dibuat."
+                  if grep -Fxq "$networkid" "$DIR/netid.txt" 2>/dev/null ; then
+                      echo_warn "Baris '$networkid' sudah ada, skip..."
+                  else
+                      echo_info "$networkid" >> "$DIR/netid.txt"
+                      echo_ok "Baris '$networkid' berhasil ditambahkan."
+                  fi
+                else
+                    clear
+                    echo -e "${RED} Gagal Join NetworkID $networkid ${EMO_FAIL} ${NC} "
+                fi
             else
-                echo -e "❌ Gagal join network $RESULT — pesan: $JOIN_OUT"
+                echo -e "${RED}Error: harap pilih nomer [1]-[2] ${NC}"
             fi
         else
           echo_info "ZeroTier aktif. Melanjutkan proses JOIN..."
@@ -272,7 +302,7 @@ join_networkid() {
             touch "$DIR/netid.txt"
             echo_ok "Directory '$DIR' berhasil dibuat."
             if grep -Fxq "$networkid" "$DIR/netid.txt" 2>/dev/null ; then
-                echo_war "Baris '$networkid' sudah ada, skip..."
+                echo_warn "Baris '$networkid' sudah ada, skip..."
             else
                 echo_info "$networkid" >> "$DIR/netid.txt"
                 echo_ok "Baris '$networkid' berhasil ditambahkan."
@@ -558,5 +588,5 @@ case $plh in
 #9 | 09) clear ; bar_noobz "Restart NoobzVpn Usr Account." ; systemctl restart noobzvpns.service ; loadingrestart ; sleep 3 ; menu ;;
 0)  clear ; loading ; menu ;;
 x | X) clear ; exit 0 ;;
-*) echo_war "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 6." ; loading ; source zerotier.sh ;;
+*) echo_warn "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 6." ; loading ; source zerotier ;;
 esac
