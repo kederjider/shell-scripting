@@ -100,7 +100,7 @@ echo -e "${cyan} jika terjadi error \n anda bisa sampaikan kepada kami \n jika a
     echo -e "  \033[1;93m────────────────────────────────────────────\033[0m"
 
 read -p "   Masukan Pesan: " pesannya
-BOT_TOKEN="6862591374:AAHnO59rW7YPdIMgaf9H0lFueZpA2Hk76OA"
+BOT_TOKEN=""
 CHAT_ID="5867172791"
 MYIP=$(wget -qO- ipinfo.io/ip)
 ISP=$(wget -qO- ipinfo.io/org)
