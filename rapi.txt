@@ -1,0 +1,1 @@
+percantik skrip dengan menambahkan ikon, tabel warna yang lebih menarik, dan format output yang lebih ringkas dan modern.
