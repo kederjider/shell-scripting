@@ -107,8 +107,9 @@ show_menu() {
 }
 
 main() {
-    show_header
     ensure_tools
+    clear
+    show_header
     while true; do
         show_menu
         #read -rp "$(echo -e "${CYAN}▶ Pilih alat monitoring:${RESET}" )" choice

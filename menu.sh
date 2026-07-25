@@ -127,10 +127,10 @@ display_menu() {
         6)  clear; m-zerotier ;;
         7)  clear; m-monitor ;;
         8)  clear; m-screen ;;
-        9)  clear; a-root ;;
+        9)  clear; root ;;
         10) clear; a-reboot ;;
         11) clear; mode-hack ;;
-        12) clear; settings; sleep 1; display_menu ;;  # balik ke menu tanpa reload data
+        12) clear; m-setting ;; 
         x|X) exit 0 ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; display_menu ;;
     esac
