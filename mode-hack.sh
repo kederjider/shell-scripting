@@ -67,7 +67,7 @@ echo -e " ${CYAN}│${drakgry}[${liggry}•4${drakgry}]${pth}USER FINDER        
 echo -e " ${CYAN}│${drakgry}[${liggry}•5${drakgry}]${pth}TRACKER                                 ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${liggry}•6${drakgry}]${pth}SPAMING                                 ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${liggry}•7${drakgry}]${pth}DDOS                                    ${NC}${CYAN}│$NC"
-echo -e " ${CYAN}│${drakgry}[${liggry}•8${drakgry}]${pth}SUB DOMAIN FINDER                              ${NC}${CYAN}│$NC"
+echo -e " ${CYAN}│${drakgry}[${liggry}•8${drakgry}]${pth}SUB DOMAIN FINDER                       ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${liggry}•9${drakgry}]${pth}KIRIM EMAIL                             ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│$NC                                            ${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${RED}•0${drakgry}]${RED}Kembali Ke Menu Utama                   $NC${CYAN}│$NC"
