@@ -64,7 +64,7 @@ sec=3
 echo ""
 spinner=(⣻ ⢿ ⡿ ⣟ ⣯ ⣷)
 while [ $sec -gt 0 ]; do
-  echo -ne "\e[33m ${spinner[sec]} Menuju Ke Menu ZeroTier dalam $sec seconds...\r"
+  echo -ne "\e[33m ${spinner[sec]} Menuju Ke Menu Utama dalam $sec seconds...\r"
   sleep 1
   sec=$(($sec - 1))
 done
