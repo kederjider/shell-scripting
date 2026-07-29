@@ -158,6 +158,8 @@ main() {
   wget -O /usr/local/bin/service_manager https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/service_manager.sh && chmod +x /usr/local/bin/service_manager
   wget -O /usr/local/bin/sub-domain-finder https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/sub-domain-finder.sh && chmod +x /usr/local/bin/sub-domain-finder
   wget -O /usr/local/bin/ua.txt https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/ua.txt && chmod 777 /usr/local/bin/ua.txt
+  wget -O /usr/local/bin/spam_post https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/spam_post.py && chmod +x /usr/local/bin/spam_post
+
   cat >> /root/.bashrc << 'EOF'
   # Auto run menu saat login
 if [ -f /usr/local/bin/menu ]; then

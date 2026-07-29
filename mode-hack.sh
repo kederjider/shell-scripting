@@ -69,6 +69,7 @@ echo -e " ${CYAN}│${drakgry}[${liggry}•6${drakgry}]${pth}SPAMING            
 echo -e " ${CYAN}│${drakgry}[${liggry}•7${drakgry}]${pth}DDOS                                    ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${liggry}•8${drakgry}]${pth}SUB DOMAIN FINDER                       ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${liggry}•9${drakgry}]${pth}KIRIM EMAIL                             ${NC}${CYAN}│$NC"
+echo -e " ${CYAN}│${drakgry}[${liggry}•10${drakgry}]${pth}SPAM POST                              ${NC}${CYAN}│$NC"
 echo -e " ${CYAN}│$NC                                            ${CYAN}│$NC"
 echo -e " ${CYAN}│${drakgry}[${RED}•0${drakgry}]${RED}Kembali Ke Menu Utama                   $NC${CYAN}│$NC"
 echo -e " ${CYAN}╰════════════════════════════════════════════╯$NC"
@@ -86,6 +87,7 @@ case $plh in
 7 | 07) ddos ;;
 8 | 08) sub-domain-finder ;;
 9 | 09) kirim_email ;;
+10) spam_post;;
 0 | 00)  clear ; loading ; menu ;;
 x | X) clear ; exit 0 ;;
 *) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 9.\n" ; loading ; mode-hack ;;
