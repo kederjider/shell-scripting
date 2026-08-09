@@ -4,6 +4,12 @@
 # Update File dari GitHub (Ubuntu 24)
 # Menghapus file lama → download file baru
 # ============================================
+# Cek hak akses root
+if [ "$EUID" -ne 0 ]; then
+    echo -e "\e[31mError: Script ini harus dijalankan sebagai root (sudo).\e[0m"
+    exit 1
+fi
+
 clear
 # No Color# Colors (Cyberpunk Style)
 NC='\e[0m'
@@ -51,23 +57,25 @@ echo "URL        : $URL"
 echo ""
 
 
+local tmp
 tmp=$(mktemp)
 
 if wget -q -O "$tmp" "$URL"; then
     if ! cmp -s "$SCRIPT" "$tmp"; then
         echo "Ada update, mengganti script..."
-        if [[ "$tmp" == *.py ]]; then
+        if [[ "$URL" == *.py ]] || [[ "$SCRIPT" == *.py ]]; then
             echo "File Python"
-            echo "aktikkan executable..."
+            echo "mengaktifkan executable..."
             cp "$tmp" "$SCRIPT"
-            chmod 777 "$SCRIPT"
-        elif [[ "$tmp" == *.sh ]]; then
+            chmod 755 "$SCRIPT"
+        elif [[ "$URL" == *.sh ]] || [[ "$SCRIPT" == *.sh ]]; then
             echo "File Bash/Shell"
-            echo "aktikkan executable..."
+            echo "mengaktifkan executable..."
             cp "$tmp" "$SCRIPT"
             chmod +x "$SCRIPT"
         else
             echo "Bukan file .py atau .sh"
+            cp "$tmp" "$SCRIPT"
         fi       
     else
         echo "Script sudah terbaru."
@@ -155,5 +163,5 @@ case $plh in
 33) upgrade "$DIRECTORY/upgrader" "$REPO/upgrader.sh" ; exit 0 ;;
 0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED} TERIMA KASIH TELAH MENGGUNAKAN PROGRAM INI...${NC}" ; exit 0 ;;
-*) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; upgrader ;;
+*) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; exec "$0" ;;
 esac

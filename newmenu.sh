@@ -131,7 +131,7 @@ display_menu() {
         11) clear; mode-hack ;;
         12) clear; m-setting ;; 
         0|x|X) exit 0 ;;
-        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1 ; clear ; display_menu ;;
     esac
 }
 
