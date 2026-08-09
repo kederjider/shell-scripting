@@ -32,59 +32,83 @@ REPO="https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/ma
 
 
 function upgrade() {
-# Cek jumlah argumen
-if [ $# -ne 2 ]; then
-    echo -e "${RED}Usage:${NC} $0 <path_file_lokal> <url_raw_github>"
-    echo ""
-    echo "Contoh:"
-    echo "  $0 /usr/local/bin/myscript.sh"
-    echo "  $0 https://raw.githubusercontent.com/user/repo/main/myscript.sh"
-    exit 1
-fi
-
- local SCRIPT="$1"
- local URL="$2"
-    # Cek apakah wget terinstall
-if ! command -v wget &> /dev/null; then
-    echo -e "${RED}Error:${NC} wget belum terinstall."
-    echo "Install dengan: sudo apt update && sudo apt install wget -y"
-    exit 1
-fi
-
-echo -e "${YELLOW}=== Upgrader File dari GitHub ===${NC}"
-echo "File lokal : $SCRIPT"
-echo "URL        : $URL"
-echo ""
-
-
-local tmp
-tmp=$(mktemp)
-
-if wget -q -O "$tmp" "$URL"; then
-    if ! cmp -s "$SCRIPT" "$tmp"; then
-        echo "Ada update, mengganti script..."
-        if [[ "$URL" == *.py ]] || [[ "$SCRIPT" == *.py ]]; then
-            echo "File Python"
-            echo "mengaktifkan executable..."
-            cp "$tmp" "$SCRIPT"
-            chmod 755 "$SCRIPT"
-        elif [[ "$URL" == *.sh ]] || [[ "$SCRIPT" == *.sh ]]; then
-            echo "File Bash/Shell"
-            echo "mengaktifkan executable..."
-            cp "$tmp" "$SCRIPT"
-            chmod +x "$SCRIPT"
-        else
-            echo "Bukan file .py atau .sh"
-            cp "$tmp" "$SCRIPT"
-        fi       
-    else
-        echo "Script sudah terbaru."
+    if [ $# -ne 2 ]; then
+        printf "${RED}✖ Penggunaan:${NC} %s <file_lokal> <url_github>\n" "$0"
+        return 1
     fi
-else
-    echo "Gagal mengambil script dari GitHub."
-fi
 
-rm -f "$tmp"
+    local SCRIPT="$1"
+    local URL="$2"
+    local tmp backup file_type
+
+    if ! command -v wget >/dev/null 2>&1; then
+        printf "${RED}✖ Dependensi tidak ditemukan:${NC} wget\n"
+        printf "  ${GRAY}Install: sudo apt update && sudo apt install wget -y${NC}\n"
+        return 1
+    fi
+
+    printf "\n${BLUE}╭─ ${BOLD}UPGRADE FILE${NC} ${BLUE}──────────────────────────────────────╮${NC}\n"
+    printf "${BLUE}│${NC} ${GRAY}File${NC} : ${CYAN}%s${NC}\n" "$SCRIPT"
+    printf "${BLUE}│${NC} ${GRAY}Sumber${NC}: ${CYAN}%s${NC}\n" "$URL"
+    printf "${BLUE}╰──────────────────────────────────────────────────────╯${NC}\n"
+    printf "${YELLOW}⟳ Mengambil versi terbaru...${NC}\n"
+
+    tmp=$(mktemp) || {
+        printf "${RED}✖ Gagal membuat file sementara.${NC}\n"
+        return 1
+    }
+
+    if ! wget -q --show-progress -O "$tmp" "$URL"; then
+        printf "${RED}✖ Download gagal.${NC} Periksa URL atau koneksi internet.\n"
+        rm -f "$tmp"
+        return 1
+    fi
+
+    if [ ! -s "$tmp" ]; then
+        printf "${RED}✖ File yang diunduh kosong. Update dibatalkan.${NC}\n"
+        rm -f "$tmp"
+        return 1
+    fi
+
+    if cmp -s "$SCRIPT" "$tmp" 2>/dev/null; then
+        printf "${GREEN}✓ Sudah versi terbaru.${NC} Tidak ada perubahan.\n"
+        rm -f "$tmp"
+        return 0
+    fi
+
+    printf "${YELLOW}↻ Versi baru ditemukan. Memasang update...${NC}\n"
+    backup="${SCRIPT}.bak"
+    if [ -f "$SCRIPT" ]; then
+        cp -p "$SCRIPT" "$backup" || {
+            printf "${RED}✖ Backup gagal. Update dibatalkan demi keamanan.${NC}\n"
+            rm -f "$tmp"
+            return 1
+        }
+    fi
+
+    if ! cp "$tmp" "$SCRIPT"; then
+        printf "${RED}✖ Gagal mengganti file.${NC}\n"
+        rm -f "$tmp"
+        return 1
+    fi
+
+    if [[ "$URL" == *.py ]] || [[ "$SCRIPT" == *.py ]]; then
+        file_type="Python"
+        chmod 755 "$SCRIPT"
+    elif [[ "$URL" == *.sh ]] || [[ "$SCRIPT" == *.sh ]]; then
+        file_type="Bash/Shell"
+        chmod +x "$SCRIPT"
+    else
+        file_type="File umum"
+    fi
+
+    rm -f "$tmp"
+    printf "${GREEN}${BOLD}✓ BERHASIL DIUPDATE! 🎉${NC}\n"
+    printf "  ${GRAY}Tipe   :${NC} %s\n" "$file_type"
+    printf "  ${GRAY}File   :${NC} ${CYAN}%s${NC}\n" "$SCRIPT"
+    printf "  ${GRAY}Backup :${NC} ${CYAN}%s${NC}\n" "$backup"
+    printf "  ${GREEN}✓ Permission executable telah diaktifkan.${NC}\n"
+    return 0
 }
 
 echo -e "${L_GREEN}"
