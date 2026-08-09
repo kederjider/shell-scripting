@@ -138,7 +138,7 @@ echo -e "  ${y}│${NC}${dkblu}[${g}•2${dkblu}]${NC}\033[0;36m SPEEDTEST      
 echo -e "  ${y}│${NC}${dkblu}[${g}•3${dkblu}]${NC}\033[0;36m MONITORING                  ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•4${dkblu}]${NC}\033[0;36m EDIT FILE SCRIPT            ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•5${dkblu}]${NC}\033[0;36m SETUP DDNS                  ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m RUNNING SERVICE             ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m UPGRADER SCRIPT             ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•7${dkblu}]${NC}\033[0;36m CLEARLOG                    ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•8${dkblu}]${NC}\033[0;36m DELETE USER EXP             ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•9${dkblu}]${NC}\033[0;36m EDIT BENNER                 ${y}│${NC}"
@@ -174,10 +174,10 @@ case $plh in
 5 | 05)
     clear
     ddns
-#    ;;
-#6 | 06)
-#    run
-#    ;;
+    ;;
+6 | 06)
+    upgrader
+    ;;
 #7 | 07)
 #    clear
 #    clearlog
@@ -225,5 +225,5 @@ x | X)
     clear
     exit 0
     ;;
-*) echo "Silakan Masukkan Angka [1 - 3]." ; loading ; m-setting ;;
+*) echo "Silakan Masukkan Angka [1 - 6]." ; loading ; m-setting ;;
 esac

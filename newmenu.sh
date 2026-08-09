@@ -113,9 +113,7 @@ display_menu() {
     echo -e "        ${r}└──────────────────────────────────────┘${NC}"
     echo -e "      ${w}           BW ${tahun} : ${total} ${giga} ${NC}"
     echo -e "      ${w}           Sc Version : 3.0.1 ${NC}"
-    echo "                 _____________________"
     echo ""
-    echo -e "        ${r}│${y}[${u}•0${y}]${NC} KELUAR                               ${r}│"
     echo -e "${CYAN}        ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}0${CYAN}-${YELLOW}12${CYAN}]───▶️${RST}"
     read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " opt
     echo ""

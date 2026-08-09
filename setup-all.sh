@@ -177,7 +177,7 @@ main() {
   install_file sub-domain-finder sub-domain-finder.sh
   install_file ua.txt ua.txt 777
   install_file spam_post spam_post.py
-  install_file .env .env.example 777
+  install_file .env env.example 666
   install_file editfile editfile.sh
   install_file ip_to_host ip_to_host.py
   install_file host_to_ip host_to_ip.py

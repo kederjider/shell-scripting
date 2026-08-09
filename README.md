@@ -35,10 +35,10 @@ Kumpulan shell script untuk automasi server Linux.
 **_Kalau sukses:_**
 **_Hi username! You've successfully authenticated..._**
 
-# zerotier
+# script sederhana untuk mempermudah pengguan server local
 
 **_jangan lupa jalankan di root_**
-**_Install Script Di Bawa Ini untuk mempermudah penggunaan zerotier_**
+**_Install Script Di Bawa Ini untuk mempermudah penginstallan_**
 
 <pre><code>apt update && apt upgrade -y && apt install -y wget curl sed && sleep 2 && wget -O /root/setup-all.sh https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/setup-all.sh && bash setup-all.sh
 
