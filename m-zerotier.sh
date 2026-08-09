@@ -72,7 +72,7 @@ done
 
 pause(){
   read -n 1 -s -r -p "  Press any key to continue"
-  source zerotier
+  source m-zerotier
 }  
 #-------------- status --------------
 zerotier_status=$(systemctl status zerotier-one | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
@@ -586,7 +586,7 @@ case $plh in
 #7 | 07) noobz_revome_user ;;
 #8 | 08) fn_noobzvpn_reset_user ;;
 #9 | 09) clear ; bar_noobz "Restart NoobzVpn Usr Account." ; systemctl restart noobzvpns.service ; loadingrestart ; sleep 3 ; menu ;;
-0)  clear ; loading ; menu ;;
+0) clear ; newmenu ;;
 x | X) clear ; exit 0 ;;
 *) echo_warn "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 6." ; loading ; source zerotier ;;
 esac

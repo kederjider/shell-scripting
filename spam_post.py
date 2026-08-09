@@ -8,6 +8,10 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 RESET = "\033[0m"
 RED = "\033[91m"
@@ -36,34 +40,30 @@ def print_box(label: str, text: str, color: str = BLUE):
     print(f"{color}{BOLD}[{label}]{RESET} {text}")
 
 
-def send_telegram_notification(message: str, token: str, chat_id: str):
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": message,
-        "parse_mode": "HTML",
-    }
-    try:
-        response = requests.post(url, data=payload, timeout=10)
-        if response.ok:
-            print_box("TELEGRAM", "Notifikasi terkirim ke Telegram.", GREEN)
-        else:
-            print_box("TELEGRAM", f"Gagal mengirim notifikasi: {response.status_code}", RED)
-    except requests.exceptions.RequestException as e:
-        print_box("TELEGRAM", f"Error notifikasi: {e}", RED)
-
-
-def send_request(index: int):
-    # URL tujuan
-    input_url = input(f"{BOLD}{CYAN}Masukkan URL tujuan (contoh: https://mlbbevent-skin.2-e.vu/datafinal.php): {RESET}")
-    url = input_url.strip()  # Menghapus spasi di awal dan akhir
-    #url = "https://mlbbevent-skin.2-e.vu/datafinal.php"
+def send_telegram_notification(message: str, token: str, chat_ids_str: str):
+    # Memisahkan chat ID jika ada lebih dari satu (dipisahkan dengan koma)
+    chat_ids = [cid.strip() for cid in chat_ids_str.split(",") if cid.strip()]
     
-    origin = input(f"{BOLD}{CYAN}Masukkan Origin (contoh: https://mlbbevent-skin.2-e.vu): {RESET}")
-    #origin = "https://mlbbevent-skin.2-e.vu"
+    for chat_id in chat_ids:
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        payload = {
+            "chat_id": chat_id,
+            "text": message,
+            "parse_mode": "HTML",
+        }
+        try:
+            response = requests.post(url, data=payload, timeout=10)
+            if response.ok:
+                print_box("TELEGRAM", f"Notifikasi terkirim ke Telegram (Chat ID: {chat_id}).", GREEN)
+            else:
+                print_box("TELEGRAM", f"Gagal mengirim notifikasi ke {chat_id}: {response.status_code}", RED)
+        except requests.exceptions.RequestException as e:
+            print_box("TELEGRAM", f"Error notifikasi ke {chat_id}: {e}", RED)
+
+
+def send_request(index: int, url: str, origin: str, cookie: str):
+    # URL tujuan, origin, dan cookie sudah diterima sebagai parameter
     referer = origin + "/"
-    cookie = input(f"{BOLD}{CYAN}Masukkan Cookie (contoh: PHPSESSID=3445cdcb059d8f664d3167a6a0919a6e): {RESET}")
-    #cookie = "PHPSESSID=3445cdcb059d8f664d3167a6a0919a6e"
     
     email_local = f"{random_text(10)}"
     emailnya = random.choice(["SELAT4D", "RatuMacau", "LBSATSET", "ABANGKU", "RAJA717", "3DBET", "pptotonet"])
@@ -134,34 +134,40 @@ def send_request(index: int):
         print("❌ Error:", str(e)) 
 
 
-def tugas(index: int):
-    send_request(index)
+def tugas(args):
+    index, url, origin, cookie = args
+    send_request(index, url, origin, cookie)
     time.sleep(0.5)
     return f"{GREEN}Thread {index} selesai.{RESET}"
 
-
-THREAD_COUNT = int(input(f"{BOLD}{CYAN}Masukkan jumlah thread (contoh: 8): {RESET}"))
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 
 def main():
-    
+
     banner()
     start_time = time.time()
+
+    # ── Input sekali di awal ──────────────────────────────────────────
+    target_url = input(f"{BOLD}{CYAN}Masukkan URL tujuan (contoh: https://mlbbevent-skin.2-e.vu/datafinal.php): {RESET}").strip()
+    
+    # Parsing origin dari target_url (menghapus path seperti /datafinal.php atau /index.html)
+    from urllib.parse import urlparse
+    parsed_url = urlparse(target_url)
+    origin = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    
+    cookie     = input(f"{BOLD}{CYAN}Masukkan Cookie (contoh: PHPSESSID=xxx): {RESET}").strip()
+    thread_count = int(input(f"{BOLD}{CYAN}Masukkan jumlah thread (contoh: 8): {RESET}").strip())
+    # ─────────────────────────────────────────────────────────────────
 
     bot_token = TELEGRAM_BOT_TOKEN
     chat_id = TELEGRAM_CHAT_ID
 
-    if not bot_token or not chat_id:
-        enable_telegram = input(f"{BOLD}{CYAN}Kirim notifikasi Telegram saat selesai? (y/n): {RESET}").strip().lower()
-        if enable_telegram in ("y", "yes"):
-            bot_token = input(f"{BOLD}{CYAN}Masukkan Telegram Bot Token: {RESET}").strip()
-            chat_id = input(f"{BOLD}{CYAN}Masukkan Chat ID Telegram: {RESET}").strip()
-
-    with ThreadPoolExecutor(max_workers=THREAD_COUNT) as executor:
-        results = list(executor.map(tugas, range(1, 3000)))
+    task_args = [(i, target_url, origin, cookie) for i in range(1, 5001)]
+    with ThreadPoolExecutor(max_workers=thread_count) as executor:
+        results = list(executor.map(tugas, task_args))
 
     print(f"\n{BOLD}{CYAN}========================================{RESET}")
     print(f"{BOLD}{CYAN}      📌 RINGKASAN EKSEKUSI              {RESET}")
@@ -171,7 +177,7 @@ def main():
         print(result)
 
     elapsed = time.time() - start_time
-    summary_message = f"Program selesai dalam {elapsed:.2f} detik dengan {THREAD_COUNT} thread."
+    summary_message = f"Program selesai dalam {elapsed:.2f} detik dengan {thread_count} thread."
     print(f"\n{BOLD}{GREEN}{summary_message}{RESET}\n")
 
     if bot_token and chat_id:

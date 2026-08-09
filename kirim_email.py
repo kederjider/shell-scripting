@@ -91,7 +91,7 @@ def kirim_email():
                 {body_text}
                 
                 <div style="text-align: center;">
-                    <a href="wa.me/60137009088" class="button">Klik Disini</a>
+                    <a href="https://t.me/tuan_mubot" class="button">Klik Disini</a>
                 </div>
             </div>
             <div class="footer">

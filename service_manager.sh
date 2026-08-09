@@ -565,7 +565,7 @@ main_menu() {
         echo -e "  ${BG_RED}${BWHT}${BOLD}  7 ${NC} ${BRED} 🗑   Hapus File Service${NC}"
         echo -e "  ${BG_BLU}${BWHT}${BOLD}  8 ${NC} ${BBLU} ⏯   Stop / Start / Restart Service${NC}"
         echo -e "  ${BG_CYN}${BWHT}${BOLD}  9 ${NC} ${BCYN} 📝  Tampilkan (cat) / Edit (nano)${NC}"
-        echo -e "  ${BG_BLK}${BWHT}${BOLD}  0 ${NC} ${DIM} 🚪  Keluar${NC}"
+        echo -e "  ${BG_BLK}${BWHT}${BOLD}  0 ${NC} ${DIM} ↩   Kembali ke Menu Utama${NC}"
         echo ""
         sep_thick
         printf "  ${BCYN}${BOLD}❯ Masukkan pilihan ${BWHT}[1-9]${BCYN} : ${NC}"
@@ -582,11 +582,7 @@ main_menu() {
             8)  menu_stop_start ;;
             9)  menu_cat_edit_service ;;
             0)
-                echo ""
-                echo -e "  ${BG_BLU}${BWHT}${BOLD}                                      ${NC}"
-                echo -e "  ${BG_BLU}${BWHT}${BOLD}   👋  Terima kasih! Sampai jumpa.    ${NC}"
-                echo -e "  ${BG_BLU}${BWHT}${BOLD}                                      ${NC}"
-                echo ""; exit 0 ;;
+                echo ""; clear; newmenu ;;
             *)
                 msg_err "Pilihan tidak valid! Masukkan angka 1–9."
                 sleep 1 ;;

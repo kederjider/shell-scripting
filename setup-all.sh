@@ -31,6 +31,22 @@ fail() {
   exit 1
 }
 
+# Unduh satu file dari repo dan pasang ke /usr/local/bin.
+# mode default 755; pakai 777 untuk file data (ua.txt, .env).
+install_file() {
+  local name="$1"
+  local src="$2"
+  local mode="${3:-755}"
+  local url="https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/$src"
+
+  if wget -q -O "/usr/local/bin/$name" "$url"; then
+    chmod "$mode" "/usr/local/bin/$name"
+    ok "$name terinstall -> /usr/local/bin/$name"
+  else
+    warn "Gagal mengunduh '$src' — pastikan file sudah di-push ke repo"
+  fi
+}
+
 check_root() {
   if [ "$(id -u)" -ne 0 ]; then
     fail "Jalankan script ini sebagai root / sudo"
@@ -53,14 +69,14 @@ install_redhat() {
     dnf install -y \
       python3 python3-pip \
       wget curl sed git ca-certificates \
-      unzip tar gzip bzip2 xz-utils \
-      gcc make procps
+      unzip tar gzip bzip2 xz \
+      gcc make procps-ng
   elif command -v yum >/dev/null 2>&1; then
     yum install -y \
       python3 python3-pip \
       wget curl sed git ca-certificates \
-      unzip tar gzip bzip2 xz-utils \
-      gcc make procps
+      unzip tar gzip bzip2 xz \
+      gcc make procps-ng
   else
     fail "Tidak ditemukan package manager yang didukung (dnf/yum)"
   fi
@@ -68,11 +84,12 @@ install_redhat() {
 
 install_arch() {
   log "Menginstall paket dasar untuk Arch Linux..."
-  pacman -Sy --noconfirm \
+  pacman -Sy --noconfirm
+  pacman -S --needed --noconfirm \
     python python-pip \
     wget curl sed git ca-certificates \
-    unzip tar gzip bzip2 xz-utils \
-    base-devel procps
+    unzip tar gzip bzip2 xz \
+    base-devel procps-ng
 }
 
 install_alpine() {
@@ -80,8 +97,8 @@ install_alpine() {
   apk add --no-cache \
     python3 py3-pip \
     wget curl sed git ca-certificates \
-    unzip tar gzip bzip2 xz-utils \
-    build-base procps
+    unzip tar gzip bzip2 xz \
+    build-base
 }
 
 main() {
@@ -125,49 +142,67 @@ main() {
   echo -e "${GREEN}========================================${NC}"
   echo -e "${GREEN}  MENJALANKAN INSTALASI                  ${NC}"
   echo -e "${GREEN}========================================${NC}"
-  #echo -e "${GREEN}Sekarang Anda bisa langsung memakai:${NC}"
   echo -e "  ${CYAN}wget https://github.com/....${NC}"
   echo -e "  ${CYAN}git clone https://github.com/....${NC}"
   echo -e "  ${CYAN}python3 --version${NC}"
   echo -e "  ${CYAN}pip3 --version${NC}"
   echo -e "  ${CYAN}zerotier${NC}"
-  wget -O /usr/local/bin/a-reboot https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/a-reboot.sh && chmod +x /usr/local/bin/a-reboot
-  wget -O /usr/local/bin/cek_service https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/cek_service.sh && chmod +x /usr/local/bin/cek_service
-  wget -O /usr/local/bin/ddos https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/ddos.py && chmod +x /usr/local/bin/ddos
-  wget -O /usr/local/bin/disk https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/disk.sh && chmod +x /usr/local/bin/disk
-  wget -O /usr/local/bin/dns-records https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/dns-records.sh && chmod +x /usr/local/bin/dns-records
-  wget -O /usr/local/bin/install-domain-finder https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/install-domain-finder.sh && chmod +x /usr/local/bin/install-domain-finder
-  wget -O /usr/local/bin/kirim_email https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/kirim_email.py && chmod +x /usr/local/bin/kirim_email
-  wget -O /usr/local/bin/loading https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/loading.sh && chmod +x /usr/local/bin/loading
-  wget -O /usr/local/bin/lookup-dns https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/lookup-dns.sh && chmod +x /usr/local/bin/lookup-dns
-  wget -O /usr/local/bin/m-ddos https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-ddos.sh && chmod +x /usr/local/bin/m-ddos
-  wget -O /usr/local/bin/install-sherlock https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/install-sherlock.sh && chmod +x /usr/local/bin/install-sherlock
-  wget -O /usr/local/bin/m-domain https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-domain.py && chmod +x /usr/local/bin/m-domain
-  wget -O /usr/local/bin/m-monitor https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-monitor.sh && chmod +x /usr/local/bin/m-monitor
-  wget -O /usr/local/bin/m-screen https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-screen.sh && chmod +x /usr/local/bin/m-screen
-  wget -O /usr/local/bin/m-nginx https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-nginx.sh && chmod +x /usr/local/bin/m-nginx
-  wget -O /usr/local/bin/m-tailscale https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-tailscale.sh && chmod +x /usr/local/bin/m-tailscale
-  wget -O /usr/local/bin/m-tracker https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-tracker.py && chmod +x /usr/local/bin/m-tracker
-  wget -O /usr/local/bin/m-zerotier https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-zerotier.sh && chmod +x /usr/local/bin/m-zerotier
-  wget -O /usr/local/bin/m-setting https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-setting.sh && chmod +x /usr/local/bin/m-setting
-  wget -O /usr/local/bin/m-user-finder https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/m-user-finder.sh && chmod +x /usr/local/bin/m-user-finder
-  wget -O /usr/local/bin/menu https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/menu.sh && chmod +x /usr/local/bin/menu
-  wget -O /usr/local/bin/mode-hack https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/mode-hack.sh && chmod +x /usr/local/bin/mode-hack 
-  wget -O /usr/local/bin/nobody-spam https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/nobody-spam.py && chmod +x /usr/local/bin/nobody-spam
-  wget -O /usr/local/bin/root https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/root.sh && chmod +x /usr/local/bin/root
-  wget -O /usr/local/bin/service_manager https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/service_manager.sh && chmod +x /usr/local/bin/service_manager
-  wget -O /usr/local/bin/sub-domain-finder https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/sub-domain-finder.sh && chmod +x /usr/local/bin/sub-domain-finder
-  wget -O /usr/local/bin/ua.txt https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/ua.txt && chmod 777 /usr/local/bin/ua.txt
-  wget -O /usr/local/bin/spam_post https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/spam_post.py && chmod +x /usr/local/bin/spam_post
 
-  cat >> /root/.bashrc << 'EOF'
-  # Auto run menu saat login
-if [ -f /usr/local/bin/menu ]; then
-    /usr/local/bin/menu
+  log "Mengunduh dan memasang tools dari GitHub..."
+  install_file a-reboot a-reboot.sh
+  install_file cek_service cek_service.sh
+  install_file ddos ddos.py
+  install_file disk disk.sh
+  install_file dns-records dns-records.sh
+  install_file install-domain-finder install-domain-finder.sh
+  install_file kirim_email kirim_email.py
+  install_file loading loading.sh
+  install_file lookup-dns lookup-dns.sh
+  install_file m-ddos m-ddos.sh
+  install_file install-sherlock install-sherlock.sh
+  install_file m-domain m-domain.py
+  install_file m-monitor m-monitor.sh
+  install_file m-screen m-screen.sh
+  install_file m-nginx m-nginx.sh
+  install_file m-tailscale m-tailscale.sh
+  install_file m-tracker m-tracker.py
+  install_file m-zerotier m-zerotier.sh
+  install_file m-setting m-setting.sh
+  install_file m-user-finder m-user-finder.sh
+  install_file newmenu newmenu.sh
+  install_file mode-hack mode-hack.sh
+  install_file nobody-spam nobody-spam.py
+  install_file root root.sh
+  install_file service_manager service_manager.sh
+  install_file sub-domain-finder sub-domain-finder.sh
+  install_file ua.txt ua.txt 777
+  install_file spam_post spam_post.py
+  install_file .env .env.example 777
+  install_file editfile editfile.sh
+  install_file ip_to_host ip_to_host.py
+  install_file host_to_ip host_to_ip.py
+  install_file m-ip-to-host m-ip-to-host.sh
+  install_file m-host-to-ip m-host-to-ip.sh
+  install_file pinghost pinghost.sh
+  install_file ddns ddns.sh
+
+  if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
+    cat >> /root/.bashrc << 'EOF'
+# Auto run newmenu saat login
+if [ -f /usr/local/bin/newmenu ]; then
+    /usr/local/bin/newmenu
 fi
 EOF
+    ok "Autostart newmenu ditambahkan ke /root/.bashrc"
+  else
+    warn "Autostart newmenu sudah ada di /root/.bashrc, dilewati"
+  fi
   echo -e "${GREEN}========================================${NC}"
   echo -e "${GREEN}  INSTALASI SELESAI                      ${NC}"
+  echo -e "${GREEN}========================================${NC}"
+  echo -e "${YELLOW} Untuk menjalankan newmenu, ketik: newmenu    ${NC}"
+  echo -e "${YELLOW} jangan lupa edit .env sesuai kebutuhan    ${NC}"
+  echo -e "${YELLOW} lokasi ada di /usr/local/bin/.env    ${NC}"
   echo -e "${GREEN}========================================${NC}"
 }
 

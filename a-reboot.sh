@@ -67,7 +67,7 @@ while true; do
     echo -e "${CYAN}│ ${w}7${NC} ${YELLOW}•${NC} ${RED}Matikan Auto Reboot                    ${CYAN}│${NC}"
     echo -e "${CYAN}│ ${w}8${NC} ${YELLOW}• Ubah Waktu Reboot                      ${CYAN}│${NC}"
     echo -e "${CYAN}│                                            │${NC}"
-    echo -e "${CYAN}│ ${RED}0${NC} ${YELLOW}•${NC}${RED} Keluar                                 ${CYAN}│${NC}"
+    echo -e "${CYAN}│ ${RED}0${NC} ${YELLOW}•${NC}${RED} Kembali ke Menu Utama                 ${CYAN}│${NC}"
     echo -e "${CYAN}└────────────────────────────────────────────┘${NC}"
     
     echo -e "${CYAN}┌───(${YELLOW}Pilih${CYAN}─${YELLOW}menu${CYAN})──[${YELLOW}0${CYAN}-${YELLOW}8${CYAN}]───▶️${NC}"
@@ -120,8 +120,8 @@ while true; do
             continue
             ;;
         0)
-            echo -e "${GREEN}👋 Terima kasih telah menggunakan Auto Reboot Manager!${NC}"
-            exit 0
+            clear
+            newmenu
             ;;
         *)
             echo -e "${RED}❌ Pilihan tidak valid!${NC}"

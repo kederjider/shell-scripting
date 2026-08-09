@@ -101,7 +101,7 @@ echo -e "${GRAY}║${L_GREEN} [${CYAN}1${L_GREEN}]${NC} ${YELLOW}Ddos Multi Thre
 echo -e "${GRAY}║${L_GREEN} [${CYAN}2${L_GREEN}]${NC} ${YELLOW}Ddos + Thread + Durasi${NC}                    ${GRAY}║${NC}"
 #echo -e "${GRAY}║${L_GREEN} [${CYAN}3${L_GREEN}]${NC} ${YELLOW}Scan Site (No Save)${NC}                       ${GRAY}║${NC}"
 echo -e "${GRAY}║${NC}                                               ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Keluar      ${NC}                              ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Kembali ke Menu Utama${NC}                     ${GRAY}║${NC}"
 echo -e "${GRAY}╚═══════════════════════════════════════════════╝${NC}"
 echo -e ""
 echo -e "${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}ddos-attacker${L_CYAN}]${NC}"
@@ -114,7 +114,7 @@ case $plh in
 2 | 02) fn_ddos_thread_duration ;;
 #3 | 03) fn_scan_site_no_txt ;;
 #4 | 04) fn_scan_simpan ;;
-0 | 00) clear ; exit 0 ;;
+0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED}[!] DISCONNECTING FROM MATRIX...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; m-ddos ;;
 esac

@@ -65,7 +65,7 @@ while true; do
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[3]${RST} Lihat daftar session (screen -ls)   ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[4]${RST} Masuk ke session (screen -r)        ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[5]${RST} Paksa masuk session (screen -r -d)  ${CYAN}│${RST}"
-    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Exit                                ${CYAN}│${RST}"
+    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Kembali ke Menu Utama                ${CYAN}│${RST}"
     echo -e "${CYAN}└─────────────────────────────────────────┘${RST}"
     echo -e ""
     echo -e "${CYAN}┌───(${YELLOW}Screen${RST}${CYAN})──[Module]"
@@ -171,8 +171,8 @@ while true; do
             ;;
 
         0)
-            echo -e "${GREEN}[+]${RST} Terima kasih! ${BOLD}Keluar...${RST}"
-            exit 0
+            clear
+            newmenu
             ;;
 
         *)

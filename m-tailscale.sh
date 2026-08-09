@@ -236,7 +236,7 @@ while true; do
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[3]${RST} Toggle Service (On/Off)             ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[4]${RST} Advanced Mode (Subnet+Exit+SSH)     ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[5]${RST} Troubleshooting (Reset Koneksi)     ${CYAN}│${RST}"
-    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Keluar                              ${CYAN}│${RST}"
+    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Kembali ke Menu Utama               ${CYAN}│${RST}"
     echo -e "${CYAN}└─────────────────────────────────────────┘${RST}"
     echo ""
 
@@ -261,8 +261,8 @@ while true; do
             troubleshoot
             ;;
         0)
-            echo -e "${GREEN}[✓]${RST} Terima kasih! ${BOLD}Keluar...${RST}"
-            exit 0
+            clear
+            newmenu
             ;;
         *)
             err "Pilihan tidak valid"

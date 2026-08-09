@@ -356,9 +356,7 @@ while true; do
         0)
             clear
             echo ""
-            echo -e "  ${BG_BLUE}${BWHITE}  👋  Terima kasih! Sampai jumpa.  ${RESET}"
-            echo ""
-            exit 0
+            newmenu
             ;;
         *)
             echo ""

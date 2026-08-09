@@ -120,8 +120,8 @@ main() {
                 run_tool "$choice"
                 ;;
             0)
-                ok "Keluar"
-                exit 0
+                clear
+                newmenu
                 ;;
             *)
                 err "Pilihan salah"

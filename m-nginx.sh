@@ -258,7 +258,7 @@ case $opt in
 9) reverse_proxy ;;
 10) block_attack ;;
 11) cloudflare_ddns ;;
-0) exit ;;
+0) clear; newmenu ;;
 *) err "Pilihan salah" ;;
 esac
 

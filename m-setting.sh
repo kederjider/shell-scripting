@@ -34,11 +34,6 @@ grenbo="\e[92;1m"
 dkblu="\033[34m"
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 # Getting
-#tadinya chatid dan key itu kosong
-export CHATID="5867172791"
-export KEY="1421129669:AAHnO59rW7YPdIMgaf9H0lFueZpA2Hk76OA"
-export TIME="10"
-export URL="https://api.telegram.org/bot$KEY/sendMessage"
 
 # =============================================
 # Fungsi Install Official Ookla Speedtest CLI
@@ -100,8 +95,11 @@ echo -e "${cyan} jika terjadi error \n anda bisa sampaikan kepada kami \n jika a
     echo -e "  \033[1;93m────────────────────────────────────────────\033[0m"
 
 read -p "   Masukan Pesan: " pesannya
-BOT_TOKEN=""
-CHAT_ID="5867172791"
+set -a
+source .env
+set +a
+BOT_TOKEN="${TELEGRAM_BOT_TOKEN}"
+CHAT_ID="6406806868"
 MYIP=$(wget -qO- ipinfo.io/ip)
 ISP=$(wget -qO- ipinfo.io/org)
 CITY=$(curl -s ipinfo.io/city)
@@ -138,8 +136,8 @@ echo -e    "\033[1;33m  ┌─────────────────�
 echo -e "  ${y}│${NC}${dkblu}[${g}•1${dkblu}]${NC}\033[0;36m KIRIM PESAN KEDEVELOPER     ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•2${dkblu}]${NC}\033[0;36m SPEEDTEST                   ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•3${dkblu}]${NC}\033[0;36m MONITORING                  ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•4${dkblu}]${NC}\033[0;36m RESTART ALL SERVICE         ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•5${dkblu}]${NC}\033[0;36m REBOOT                      ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•4${dkblu}]${NC}\033[0;36m EDIT FILE SCRIPT            ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•5${dkblu}]${NC}\033[0;36m SETUP DDNS                  ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m RUNNING SERVICE             ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•7${dkblu}]${NC}\033[0;36m CLEARLOG                    ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•8${dkblu}]${NC}\033[0;36m DELETE USER EXP             ${y}│${NC}"
@@ -169,17 +167,13 @@ case $plh in
 3 | 03)
     m-monitor
     ;;
-#4 | 04)
-#    clear
-    #restart
-#    restart_all_services
-#    echo ""
-#    echo -e " ${GREEN} Back to menu in 1 sec ${NC}"
-#    sleep 1
-#    menu
-#    ;;
-#5 | 05)
-#    reboot
+4 | 04)
+    clear
+    editfile
+    ;;
+5 | 05)
+    clear
+    ddns
 #    ;;
 #6 | 06)
 #    run
@@ -226,7 +220,7 @@ case $plh in
 #    ;;
 0)
     clear
-    loading ; menu ;;
+    newmenu ;;
 x | X)
     clear
     exit 0

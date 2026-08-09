@@ -286,7 +286,7 @@ echo -e "${GRAY}║${L_GREEN} [${CYAN}1${L_GREEN}]${NC} ${YELLOW}Install User Fi
 echo -e "${GRAY}║${L_GREEN} [${CYAN}2${L_GREEN}]${NC} ${YELLOW}Scan Cepat (No Save)${NC}    ${GRAY}║${L_GREEN} [${CYAN}7${L_GREEN}]${NC} ${YELLOW}Scan Site Tertentu${NC}       ${GRAY}║${NC}"
 echo -e "${GRAY}║${L_GREEN} [${CYAN}3${L_GREEN}]${NC} ${YELLOW}Scan Site (No Save)${NC}     ${GRAY}║${L_GREEN} [${CYAN}8${L_GREEN}]${NC} ${YELLOW}Scan Semua Situs${NC}         ${GRAY}║${NC}"
 echo -e "${GRAY}║${L_GREEN} [${CYAN}4${L_GREEN}]${NC} ${YELLOW}Scan + Save file${NC}        ${GRAY}║${L_GREEN} [${CYAN}9${L_GREEN}]${NC} ${YELLOW}Lihat Hasil Scan${NC}         ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}5${L_GREEN}]${NC} ${YELLOW}Scan + Proxy${NC}            ${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Keluar${NC}                   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}5${L_GREEN}]${NC} ${YELLOW}Scan + Proxy${NC}            ${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Kembali ke Menu Utama${NC}   ${GRAY}║${NC}"
 echo -e "${GRAY}╚════════════════════════════════════════════════════════════╝${NC}"
 echo -e ""
 echo -e "${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}user-finder${L_CYAN}]${NC}"
@@ -304,7 +304,7 @@ case $plh in
 7 | 07) fn_scan_site ;;
 8 | 08) fn_scan_site_all ;;
 9 | 09) fn_hasil_scan ;;
-0 | 00) clear ; exit 0 ;;
+0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED}[!] DISCONNECTING FROM MATRIX...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; m-user-finder ;;
 esac

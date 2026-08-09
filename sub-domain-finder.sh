@@ -151,9 +151,10 @@ echo -e "${NC}"
 echo -e " ${GRAY}╔════════════════════════════════════════════════════════════╗${NC}"
 echo -e " ${GRAY}║${L_CYAN}               SYSTEM ACCESS TERMINAL v2.0                  ${GRAY}║${NC}"
 echo -e " ${GRAY}╠════════════════════════════════════════════════════════════╣${NC}"
-echo -e " ${GRAY}║${L_GREEN} [${CYAN}1${L_GREEN}]${NC} ${YELLOW}Install Domain Finder${NC}                                    ${GRAY}║${NC}"
-echo -e " ${GRAY}║${L_GREEN} [${CYAN}2${L_GREEN}]${NC} ${YELLOW}Sub Domain Finder${NC}                                        ${GRAY}║${NC}"
-echo -e " ${GRAY}║${L_GREEN} [${CYAN}3${L_GREEN}]${NC} ${YELLOW}Lihat Hasil Finder${NC}                                       ${GRAY}║${NC}"
+echo -e " ${GRAY}║${L_GREEN} [${CYAN}1${L_GREEN}]${NC} ${YELLOW}Install Domain Finder${NC}                            ${GRAY}║${NC}"
+echo -e " ${GRAY}║${L_GREEN} [${CYAN}2${L_GREEN}]${NC} ${YELLOW}Sub Domain Finder${NC}                            ${GRAY}║${NC}"
+echo -e " ${GRAY}║${L_GREEN} [${CYAN}3${L_GREEN}]${NC} ${YELLOW}Lihat Hasil Finder${NC}                            ${GRAY}║${NC}"
+echo -e " ${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Kembali ke Menu Utama${NC}                                  ${GRAY}║${NC}"
 #echo -e " ${GRAY}║${L_GREEN} [${CYAN}4${L_GREEN}]${NC} ${YELLOW}Scan + Save file${NC}                                                    ${GRAY}║${NC}"
 #echo -e " ${GRAY}║${L_GREEN} [${CYAN}5${L_GREEN}]${NC} ${YELLOW}Scan + Proxy${NC}                                                            ${GRAY}║${NC}"
 echo -e " ${GRAY}╚════════════════════════════════════════════════════════════╝${NC}"
@@ -167,7 +168,7 @@ case $plh in
 1 | 01) clear ; check_go ;;
 2 | 02) run_recon ;;
 3 | 03) fn_lihat_hasil_scan ;;
-0 | 00) clear ; exit 0 ;;
+0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED}[!] DISCONNECTING FROM MATRIX...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; m-domain-finder ;;
 esac
