@@ -185,6 +185,7 @@ main() {
   install_file m-host-to-ip m-host-to-ip.sh
   install_file pinghost pinghost.sh
   install_file ddns ddns.sh
+  install_file upgrader upgrader.sh
 
   if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
     cat >> /root/.bashrc << 'EOF'

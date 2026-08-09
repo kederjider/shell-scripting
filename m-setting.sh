@@ -153,7 +153,7 @@ echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m UPGRADER SCRIPT
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 3 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 6 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
