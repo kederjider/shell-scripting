@@ -137,6 +137,4 @@ display_menu() {
 
 # ========== START ==========
 gather_all_data
-while true; do
-    display_menu
-done
+display_menu
