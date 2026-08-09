@@ -50,8 +50,7 @@ show_status() {
 }
 
 # Menu Utama
-while true; do
-    header
+header
     show_status
     
     echo -e "${CYAN}┌────┐───────────────────────────────────────┐${NC}"
@@ -84,7 +83,7 @@ while true; do
             header
             show_status
             read -p "Tekan Enter untuk kembali..."
-            continue
+            exit 0
             ;;
         7)
             header
@@ -95,7 +94,7 @@ while true; do
                 echo -e "${YELLOW}ℹ️ Auto Reboot sudah dalam keadaan mati.${NC}"
             fi
             read -p "Tekan Enter untuk kembali..."
-            continue
+            exit 0
             ;;
         8)
             header
@@ -117,16 +116,16 @@ while true; do
                 echo -e "${RED}❌ Jam tidak valid!${NC}"
             fi
             read -p "Tekan Enter untuk kembali..."
-            continue
+            exit 0
             ;;
         0)
             clear
-            newmenu
+            exit 0
             ;;
         *)
             echo -e "${RED}❌ Pilihan tidak valid!${NC}"
             sleep 1
-            continue
+            exit 1
             ;;
     esac
 
@@ -147,4 +146,3 @@ while true; do
         show_status
         read -p "Tekan Enter untuk kembali ke menu..."
     fi
-done

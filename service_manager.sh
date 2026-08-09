@@ -544,8 +544,7 @@ menu_cat_edit_service() {
 #  MAIN MENU
 # ════════════════════════════════════════════════════════════════
 main_menu() {
-    while true; do
-        print_header
+    print_header
 
         local run_count fail_count
         run_count=$(systemctl list-units --type=service --state=running --no-pager --plain 2>/dev/null | grep -c "running" || echo 0)
@@ -587,7 +586,7 @@ main_menu() {
                 msg_err "Pilihan tidak valid! Masukkan angka 1–9."
                 sleep 1 ;;
         esac
-    done
+    exit 0
 }
 
 # ════════════════════════════════════════════════════════════════

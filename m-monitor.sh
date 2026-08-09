@@ -110,8 +110,7 @@ main() {
     ensure_tools
     clear
     show_header
-    while true; do
-        show_menu
+    show_menu
         #read -rp "$(echo -e "${CYAN}▶ Pilih alat monitoring:${RESET}" )" choice
         echo -e "${CYAN}┌───(${YELLOW}Pilih alat monitoring${RESET}${CYAN})───${RESET}"
         read -rp "$(echo -e "${CYAN}└──▶️ ${RESET}") " choice
@@ -128,7 +127,7 @@ main() {
                 ;;
         esac
         echo
-    done
+        exit 1
 }
 
 main "$@"

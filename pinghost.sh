@@ -239,9 +239,8 @@ show_menu() {
 # ─────────────────────────────────────────────
 # 🚀 PROGRAM UTAMA
 # ─────────────────────────────────────────────
-while true; do
-    clear
-    show_menu
+clear
+show_menu
 
     case "$pilihan" in
         1)
@@ -272,4 +271,3 @@ while true; do
             sleep 1
             ;;
     esac
-done

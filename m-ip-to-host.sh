@@ -315,9 +315,8 @@ bye() {
 # 🏗️ ENTRY POINT
 # ─────────────────────────────────────────────
 main() {
-    while true; do
-        clear
-        show_menu
+    clear
+    show_menu
 
         case "$pilihan" in
             1) run_ip_to_host ;;
@@ -328,12 +327,11 @@ main() {
                 box "$GREEN" "🏠 Kembali ke menu utama..."
                 echo
                 if [[ -f "newmenu" ]]; then
-                    bash newmenu
-                    exit 0
+                    exec newmenu
                 else
                     msg fail "File 'newmenu' tidak ditemukan!"
-                    msg warn "Kembali ke menu ini."
-                    pause
+                    msg warn "File menu utama tidak ditemukan."
+                    exit 1
                 fi
                 ;;
             x|X) bye ;;
@@ -343,7 +341,6 @@ main() {
                 pause
                 ;;
         esac
-    done
 }
 
 main

@@ -241,7 +241,6 @@ cloudflare_ddns(){
 # ==============================
 # MAIN MENU
 # ==============================
-while true; do
 header
 show_menu
 read -rp " ▶ Pilih menu: " opt
@@ -263,4 +262,3 @@ case $opt in
 esac
 
 pause
-done

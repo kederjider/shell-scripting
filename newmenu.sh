@@ -88,53 +88,50 @@ gather_all_data() {
     echo -e "\r\033[K" >&2  # hapus pesan loading
 }
 
-display_menu() {
-    clear
-    echo -e "${g}${NC}"
-    echo -e "       ╭──────────────────────────────────────────╮"
-    echo -e "       │${GB}            MAMAT HACKING TEAM            ${NC}│"
-    echo -e "       ╰──────────────────────────────────────────╯"
-    echo -e "          ┌──────────────────────────────────┐"
-    echo -e "          │ ${c} SYSTEM OS : ${MODEL} ${NC}"
-    echo -e "          │ ${c} ISP VPS   : ${ISP} ${NC}"
-    echo -e "          │ ${c} CPU       : ${CORE} CORE${NC}"
-    echo -e "          │ ${c} RAM       : ${TRAM} MB (Used: ${URAM} MB, Free: ${FRAM} MB)${NC}"
-    echo -e "          │ ${c} UPTIME    : ${uptime} ${NC}"
-    echo -e "          │ ${c} IP VPS    : ${IPVPS} ${NC}"
-    echo -e "          │ ${c} DATE      : ${DATE}${NC}"
-    echo -e "          └──────────────────────────────────┘"
-    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
-    echo -e "        ${r}│${y}[${u}•1${y}]${NC} CHECK SERVICE  ""${y}[${u}•7${y}]${NC} MONITORING   ${r}│"
-    echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SCREEN       ${r}│"
-    echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} AUTO ROOT    ${r}│"
-    echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} AUTO REBOOT  ${r}│"
-    echo -e "        ${r}│${y}[${u}•5${y}]${NC} TAILSCALE      ""${y}[${u}11${y}]${NC} TOOLS HACK   ${r}│"
-    echo -e "        ${r}│${y}[${u}•6${y}]${NC} ZEROTIER       ""${y}[${u}12${y}]${NC} SETTING      ${r}│"
-    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
-    echo -e "      ${w}           BW ${tahun} : ${total} ${giga} ${NC}"
-    echo -e "      ${w}           Sc Version : 3.0.1 ${NC}"
-    echo ""
-    echo -e "${CYAN}        ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}0${CYAN}-${YELLOW}12${CYAN}]───▶️${RST}"
-    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " opt
-    echo ""
-    case $opt in
-        1)  clear; cek_service ;;
-        2)  clear; service_manager ;;
-        3)  clear; m-nginx ;;
-        4)  clear; disk ;;
-        5)  clear; m-tailscale ;;
-        6)  clear; m-zerotier ;;
-        7)  clear; m-monitor ;;
-        8)  clear; m-screen ;;
-        9)  clear; root ;;
-        10) clear; a-reboot ;;
-        11) clear; mode-hack ;;
-        12) clear; m-setting ;; 
-        0|x|X) exit 0 ;;
-        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1 ; clear ; display_menu ;;
-    esac
-}
-
 # ========== START ==========
 gather_all_data
-display_menu
+
+clear
+echo -e "${g}${NC}"
+echo -e "       ╭──────────────────────────────────────────╮"
+echo -e "       │${GB}            MAMAT HACKING TEAM            ${NC}│"
+echo -e "       ╰──────────────────────────────────────────╯"
+echo -e "          ┌──────────────────────────────────┐"
+echo -e "          │ ${c} SYSTEM OS : ${MODEL} ${NC}"
+echo -e "          │ ${c} ISP VPS   : ${ISP} ${NC}"
+echo -e "          │ ${c} CPU       : ${CORE} CORE${NC}"
+echo -e "          │ ${c} RAM       : ${TRAM} MB (Used: ${URAM} MB, Free: ${FRAM} MB)${NC}"
+echo -e "          │ ${c} UPTIME    : ${uptime} ${NC}"
+echo -e "          │ ${c} IP VPS    : ${IPVPS} ${NC}"
+echo -e "          │ ${c} DATE      : ${DATE}${NC}"
+echo -e "          └──────────────────────────────────┘"
+echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+echo -e "        ${r}│${y}[${u}•1${y}]${NC} CHECK SERVICE  ""${y}[${u}•7${y}]${NC} MONITORING   ${r}│"
+echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SCREEN       ${r}│"
+echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} AUTO ROOT    ${r}│"
+echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} AUTO REBOOT  ${r}│"
+echo -e "        ${r}│${y}[${u}•5${y}]${NC} TAILSCALE      ""${y}[${u}11${y}]${NC} TOOLS HACK   ${r}│"
+echo -e "        ${r}│${y}[${u}•6${y}]${NC} ZEROTIER       ""${y}[${u}12${y}]${NC} SETTING      ${r}│"
+echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+echo -e "      ${w}           BW ${tahun} : ${total} ${giga} ${NC}"
+echo -e "      ${w}           Sc Version : 3.0.1 ${NC}"
+echo ""
+echo -e "${CYAN}        ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}0${CYAN}-${YELLOW}12${CYAN}]───▶️${RST}"
+read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " opt
+echo ""
+case $opt in
+    1)  clear; cek_service ;;
+    2)  clear; service_manager ;;
+    3)  clear; m-nginx ;;
+    4)  clear; disk ;;
+    5)  clear; m-tailscale ;;
+    6)  clear; m-zerotier ;;
+    7)  clear; m-monitor ;;
+    8)  clear; m-screen ;;
+    9)  clear; root ;;
+    10) clear; a-reboot ;;
+    11) clear; mode-hack ;;
+    12) clear; m-setting ;; 
+    0|x|X) exit 0 ;;
+    *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1 ; exec "$0" ;;
+esac

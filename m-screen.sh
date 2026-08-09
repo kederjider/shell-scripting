@@ -54,12 +54,11 @@ tampil_session() {
 }
 
 # ===============================
-# LOOP MENU
+# MENU
 # ===============================
-while true; do
-    header
-    echo -e "${CYAN}${BOLD}PILIH MENU:${RST}"
-    echo -e "${CYAN}┌─────────────────────────────────────────┐${RST}"
+header
+echo -e "${CYAN}${BOLD}PILIH MENU:${RST}"
+echo -e "${CYAN}┌─────────────────────────────────────────┐${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[1]${RST} Install screen                      ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[2]${RST} Buat session baru screen            ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[3]${RST} Lihat daftar session (screen -ls)   ${CYAN}│${RST}"
@@ -91,13 +90,13 @@ while true; do
             if ! command -v screen >/dev/null 2>&1; then
                 echo -e "${RED}[-]${RST} Screen belum terinstall. Pilih menu ${BOLD}1${RST} dulu."
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             read -p "$(echo -e ${MAGENTA}[?]${RST} Masukkan nama session: ) " nama_session
             if [ -z "$nama_session" ]; then
                 echo -e "${RED}[-]${RST} Nama session tidak boleh kosong!"
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             echo ""
             echo -e "${GREEN}[+]${RST} Membuat session: ${BOLD}${CYAN}${nama_session}${RST}"
@@ -119,7 +118,7 @@ while true; do
             if ! command -v screen >/dev/null 2>&1; then
                 echo -e "${RED}[-]${RST} Screen belum terinstall."
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             echo -e "${GREEN}[+]${RST} ${BOLD}Daftar session aktif:${RST}"
             tampil_session
@@ -128,7 +127,7 @@ while true; do
             SESSION_LIST=$(screen -ls 2>/dev/null | grep -E '^\s+[0-9]+\.' | awk '{print $1}')
             if [ -z "$SESSION_LIST" ]; then
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
 
             echo -e "${CYAN}┌────[${YELLOW}Masukkan nama session${RST}${CYAN}]${RST}"
@@ -136,7 +135,7 @@ while true; do
             if [ -z "$nama_session" ]; then
                 echo -e "${RED}[-]${RST} Nama session tidak boleh kosong!"
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             echo ""
             echo -e "${GREEN}[+]${RST} Masuk ke session: ${BOLD}${CYAN}${nama_session}${RST}"
@@ -147,7 +146,7 @@ while true; do
             if ! command -v screen >/dev/null 2>&1; then
                 echo -e "${RED}[-]${RST} Screen belum terinstall."
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             echo -e "${GREEN}[+]${RST} ${BOLD}Daftar session aktif:${RST}"
             tampil_session
@@ -156,14 +155,14 @@ while true; do
             SESSION_LIST=$(screen -ls 2>/dev/null | grep -E '^\s+[0-9]+\.' | awk '{print $1}')
             if [ -z "$SESSION_LIST" ]; then
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
 
             read -p "$(echo -e ${MAGENTA}[?]${RST} Masukkan nama session: )" nama_session
             if [ -z "$nama_session" ]; then
                 echo -e "${RED}[-]${RST} Nama session tidak boleh kosong!"
                 read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
-                continue
+                exec "$0"
             fi
             echo ""
             echo -e "${YELLOW}[*]${RST} Paksa masuk ke session: ${BOLD}${CYAN}${nama_session}${RST}"
@@ -172,14 +171,16 @@ while true; do
 
         0)
             clear
-            newmenu
+            exec newmenu
             ;;
 
         *)
             echo -e "${RED}[-]${RST} Pilihan tidak valid!"
+            read -p "$(echo -e ${CYAN}[Enter untuk lanjut...]${RST})"
+            exec "$0"
             ;;
     esac
 
     echo ""
     read -p "$(echo -e ${CYAN}[Enter untuk kembali ke menu...]${RST})"
-done
+    exec "$0"

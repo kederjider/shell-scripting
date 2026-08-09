@@ -588,5 +588,5 @@ case $plh in
 #9 | 09) clear ; bar_noobz "Restart NoobzVpn Usr Account." ; systemctl restart noobzvpns.service ; loadingrestart ; sleep 3 ; menu ;;
 0) clear ; newmenu ;;
 x | X) clear ; exit 0 ;;
-*) echo_warn "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 6." ; loading ; source zerotier ;;
+*) echo_warn "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 6." ; loading ; exec "$0" ;;
 esac

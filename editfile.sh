@@ -108,15 +108,13 @@ menu_cat_edit_service() {
     echo ""
 
         # Pilih file dan ulangi pertanyaan sampai nomornya valid.
-        while true; do
-            read -rp "Masukkan nomor file yang ingin dilihat atau diedit: " nomor
-            if [[ "$nomor" =~ ^[0-9]+$ ]] && (( nomor >= 1 && nomor <= ${#files[@]} )); then
-                file="${files[$((nomor - 1))]}"
-                SERVICE_FILE="${FOLDER}/${file}"
-                break
-            fi
+        read -rp "Masukkan nomor file yang ingin dilihat atau diedit: " nomor
+        if ! [[ "$nomor" =~ ^[0-9]+$ ]] || (( nomor < 1 || nomor > ${#files[@]} )); then
             msg_err "Nomor tidak valid. Pilih nomor 1-${#files[@]}."
-        done
+            exit 1
+        fi
+        file="${files[$((nomor - 1))]}"
+        SERVICE_FILE="${FOLDER}/${file}"
     echo -e "  ${BG_CYN}${BLK}${BOLD}  [1]  🔎  TAMPILKAN ISI FILE (cat)  ${NC}"
     echo -e "  ${BG_YLW}${BLK}${BOLD}  [2]  ✏   EDIT FILE MANUAL (nano)   ${NC}"
         msg_info "File terpilih: ${file}"

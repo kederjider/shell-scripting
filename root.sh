@@ -98,16 +98,13 @@ print_step() {
 ask_password() {
     local prompt="$1"
     local password
-    while true; do
-        echo -en "${BOLD}${YELLOW}${prompt}${RESET}"
-        read -s password
-        echo
-        if [[ -z "$password" ]]; then
-            print_error "Password tidak boleh kosong, goblok."
-            continue
-        fi
-        break
-    done
+    echo -en "${BOLD}${YELLOW}${prompt}${RESET}"
+    read -s password
+    echo
+    if [[ -z "$password" ]]; then
+        print_error "Password tidak boleh kosong."
+        exit 1
+    fi
     echo "$password"
 }
 
@@ -132,26 +129,22 @@ echo -e "${ITALIC}${DIM}   • Minimal 8 karakter${RESET}"
 echo -e "${ITALIC}${DIM}   • Kombinasi huruf besar/kecil, angka, simbol${RESET}"
 echo -e "${ITALIC}${DIM}   • Jangan pake nama binatang peliharaan lo${RESET}\n"
 
-while true; do
-    # Gunakan read langsung (lebih rapi) dengan prompt berwarna
-    echo -en "${BOLD}${YELLOW}${KEY} Masukkan password root baru: ${RESET}"
-    read -s root_pass
-    echo
-    echo -en "${BOLD}${YELLOW}${KEY} Konfirmasi password root: ${RESET}"
-    read -s root_pass_confirm
-    echo
+echo -en "${BOLD}${YELLOW}${KEY} Masukkan password root baru: ${RESET}"
+read -s root_pass
+echo
+echo -en "${BOLD}${YELLOW}${KEY} Konfirmasi password root: ${RESET}"
+read -s root_pass_confirm
+echo
 
-    if [[ "$root_pass" != "$root_pass_confirm" ]]; then
-        print_error "Password tidak cocok, coba lagi. Fokus, asu!"
-        echo ""
-        continue
-    fi
+if [[ "$root_pass" != "$root_pass_confirm" ]]; then
+    print_error "Password tidak cocok."
+    exit 1
+fi
 
-    if [[ ${#root_pass} -lt 8 ]]; then
-        print_warning "Password minimal 8 karakter. Jangan lemah kayak mental lo."
-        echo ""
-        continue
-    fi
+if [[ ${#root_pass} -lt 8 ]]; then
+    print_warning "Password minimal 8 karakter."
+    exit 1
+fi
 
     # Set password root non-interaktif
     echo ""
@@ -170,8 +163,6 @@ while true; do
         print_warning "Tidak bisa unlock akun root, mungkin sudah unlocked."
     fi
 
-    break
-done
 
 # ===================== LANGKAH 2: KONFIGURASI SSH =====================
 print_step 2 "Konfigurasi SSH Server"

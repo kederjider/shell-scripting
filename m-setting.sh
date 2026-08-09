@@ -225,5 +225,5 @@ x | X)
     clear
     exit 0
     ;;
-*) echo "Silakan Masukkan Angka [1 - 6]." ; loading ; m-setting ;;
+*) echo "Silakan Masukkan Angka [1 - 6]." ; loading ; exec "$0" ;;
 esac

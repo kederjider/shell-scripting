@@ -226,8 +226,7 @@ troubleshoot() {
 
 check_root
 
-while true; do
-    header
+header
 
     echo -e "${CYAN}${BOLD}PILIH MENU:${RST}"
     echo -e "${CYAN}┌─────────────────────────────────────────┐${RST}"
@@ -266,10 +265,11 @@ while true; do
             ;;
         *)
             err "Pilihan tidak valid"
+            sleep 2
+            exec "$0"
             ;;
     esac
 
     echo ""
     echo -e "${CYAN}[i]${RST} Tekan Enter untuk melanjutkan..."
     read
-done

@@ -340,10 +340,9 @@ menu_7() {
 # ══════════════════════════════════════════════
 #  MAIN LOOP
 # ══════════════════════════════════════════════
-while true; do
-    tampil_header
-    tampil_menu
-    read PILIHAN
+tampil_header
+tampil_menu
+read PILIHAN
 
     case $PILIHAN in
         1) menu_1 ;;
@@ -362,6 +361,7 @@ while true; do
             echo ""
             echo -e "  ${BG_RED}${BWHITE}  ✘  Pilihan tidak valid! Silakan pilih 0–7.  ${RESET}"
             sleep 1
+            exit 1
             ;;
-    esac
 done
+    esac
