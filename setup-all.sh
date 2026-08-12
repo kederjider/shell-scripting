@@ -186,6 +186,10 @@ main() {
   install_file pinghost pinghost.sh
   install_file ddns ddns.sh
   install_file upgrader upgrader.sh
+  install_file anti_spam anti_spam.py
+  install_file spam_detector spam_detector.py
+  install_file pentester_tools pentester_tools.py
+  install_file m-spam-post m-spam-post.sh
 
   if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
     cat >> /root/.bashrc << 'EOF'

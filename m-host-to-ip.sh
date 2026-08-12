@@ -54,7 +54,7 @@ line() {
 print_banner() {
     echo
     printf "${CYAN}  ╔══════════════════════════════════════════════════════════╗${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_BLUE}${WHITE}      🌐  H O S T   T O   I P   L O O K U P             ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_BLUE}${WHITE}      🌐  H O S T   T O   I P   L O O K U P               ${RESET}${CYAN}║${RESET}\n"
     printf "${CYAN}  ║${RESET}${BG_CYAN}${BOLD}      🔍  Cari alamat IP dari sebuah domain               ${RESET}${CYAN}║${RESET}\n"
     printf "${CYAN}  ╚══════════════════════════════════════════════════════════╝${RESET}\n"
     echo
@@ -74,7 +74,7 @@ show_menu() {
     print_banner
 
     printf "${CYAN}  ┌──────────────────────────────────────────────────────────┐${RESET}\n"
-    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    🌐 HOST TO IP LOOKUP - MENU UTAMA                   ${RESET}${CYAN}│${RESET}\n"
+    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    🌐 HOST TO IP LOOKUP - MENU UTAMA                    ${RESET}${CYAN}│${RESET}\n"
     printf "${CYAN}  ├──────────────────────────────────────────────────────────┤${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[1]${RESET} ${YELLOW}🔍${RESET}  ${WHITE}Jalankan Host to IP${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[2]${RESET} ${YELLOW}📊${RESET}  ${WHITE}Lihat Hasil Host to IP${RESET}\n"
@@ -304,7 +304,7 @@ main() {
                 echo
                 box "$GREEN" "🏠 Kembali ke menu utama..."
                 echo
-                if [[ -f "newmenu" ]]; then
+                if [[ -f "/usr/local/bin/newmenu" ]]; then
                     exec newmenu
                 else
                     msg fail "File 'newmenu' tidak ditemukan!"

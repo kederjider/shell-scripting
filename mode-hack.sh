@@ -59,22 +59,23 @@ echo -e "${NC}"
 echo -e "${CYAN} ╔═════════════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN} ║${bgred}                 HACKING TOOLS MENU                  ${NC}${CYAN}║${NC}"
 echo -e "${CYAN} ╠═════════════════════════════════════════════════════╣${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•1${drakgry}]${pth} DNS LOOKUP${NC}           ${CYAN}║${drakgry}[${liggry}•8${drakgry}]${pth} SUB DOMAIN FINDER${NC}    ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}•8${drakgry}]${pth} KIRIM EMAIL${NC}          ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•3${drakgry}]${pth} DNS RECORDS${NC}          ${CYAN}║${drakgry}[${liggry}•10${drakgry}]${pth} SPAM POST${NC}           ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•4${drakgry}]${pth} USER FINDER${NC}          ${CYAN}║${drakgry}[${liggry}•11${drakgry}]${pth} IP TO HOST${NC}          ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•5${drakgry}]${pth} TRACKER${NC}              ${CYAN}║${drakgry}[${liggry}•12${drakgry}]${pth} HOST TO IP${NC}          ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•6${drakgry}]${pth} SPAMING${NC}              ${CYAN}║${drakgry}[${liggry}•13${drakgry}]${pth} PING${NC}                ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•7${drakgry}]${pth} DDOS${NC}                 ${CYAN}║${drakgry}[${RED}•0${drakgry}]${RED} Kembali Ke Menu${NC}      ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•1${drakgry}]${pth} DNS LOOKUP${NC}           ${CYAN}║${drakgry}[${liggry}•9${drakgry}]${pth} KIRIM EMAIL${NC}          ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}10${drakgry}]${pth} SPAM POST${NC}            ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•3${drakgry}]${pth} DNS RECORDS${NC}          ${CYAN}║${drakgry}[${liggry}11${drakgry}]${pth} IP TO HOST${NC}           ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•4${drakgry}]${pth} USER FINDER${NC}          ${CYAN}║${drakgry}[${liggry}12${drakgry}]${pth} HOST TO IP${NC}           ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•5${drakgry}]${pth} TRACKER${NC}              ${CYAN}║${drakgry}[${liggry}13${drakgry}]${pth} PING${NC}                 ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•6${drakgry}]${pth} SPAMING${NC}              ${CYAN}║${drakgry}[${liggry}14${drakgry}]${pth} ANTI SPAM${NC}            ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•7${drakgry}]${pth} DDOS${NC}                 ${CYAN}║${drakgry}[${liggry}15${drakgry}]${pth} SPAM DETECTOR${NC}        ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•8${drakgry}]${pth} SUB DOMAIN FINDER${NC}    ${CYAN}║${drakgry}[${RED}•0${drakgry}]${RED} Kembali Ke Menu${NC}      ${CYAN}║${NC}"
 echo -e "${CYAN} ╚═════════════════════════════════════════════════════╝${NC}"
-    echo -e "${CYAN} ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}13${CYAN}]───▶️${RST}"
+    echo -e "${CYAN} ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}15${CYAN}]───▶️${RST}"
     read -p " $(echo -e ${CYAN}└──▶️ ${NC}) " plh
 echo -e ""
 
 case $plh in
 1 | 01) lookup-dns ;;
-2 | 02) m-domain ;;
-3 | 03) dns-records ;;
+2 | 02) clear ; m-domain ;;
+3 | 03) clear ; dns-records ;;
 4 | 04) m-user-finder ;;
 5 | 05) m-tracker ;;
 6 | 06) nobody-spam ;;
@@ -85,7 +86,9 @@ case $plh in
 11) m-ip-to-host ;;
 12) m-host-to-ip ;;
 13) pinghost ;;
+14) clear ; anti_spam ;;
+15) clear ; spam_detector ;;
 0 | 00) clear ; newmenu ;;
 x | X) clear ; exit 0 ;;
-*) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 13.\n" ; loading ; mode-hack ;;
+*) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 15.\n" ; loading ; mode-hack ;;
 esac

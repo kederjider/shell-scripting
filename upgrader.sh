@@ -127,25 +127,27 @@ echo -e "${NC}"
 echo -e "${GRAY}╔═══════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${GRAY}║${L_CYAN}                 SYSTEM SCRIPT UPGRADER v1.0                   ${GRAY}║${NC}"
 echo -e "${GRAY}╠═══════════════════════════════════════════════════════════════╣${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}01${L_GREEN}]${NC} ${YELLOW}update sc check service${NC} ${GRAY}║${L_GREEN} [${CYAN}18${L_GREEN}]${NC} ${YELLOW}update sc spaming${NC}         ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}02${L_GREEN}]${NC} ${YELLOW}update sc servic manager${NC}${GRAY}║${L_GREEN} [${CYAN}19${L_GREEN}]${NC} ${YELLOW}update sc ddos${NC}            ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}03${L_GREEN}]${NC} ${YELLOW}update sc config nginx${NC}  ${GRAY}║${L_GREEN} [${CYAN}20${L_GREEN}]${NC} ${YELLOW}update sc subdomain finder${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}04${L_GREEN}]${NC} ${YELLOW}update sc check disk${NC}    ${GRAY}║${L_GREEN} [${CYAN}21${L_GREEN}]${NC} ${YELLOW}update sc kirim email${NC}     ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}05${L_GREEN}]${NC} ${YELLOW}update sc tailscale${NC}     ${GRAY}║${L_GREEN} [${CYAN}22${L_GREEN}]${NC} ${YELLOW}update sc spam post${NC}       ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}06${L_GREEN}]${NC} ${YELLOW}update sc zeroTier${NC}      ${GRAY}║${L_GREEN} [${CYAN}23${L_GREEN}]${NC} ${YELLOW}update sc menu ip to host${NC} ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}07${L_GREEN}]${NC} ${YELLOW}update sc monitoring${NC}    ${GRAY}║${L_GREEN} [${CYAN}24${L_GREEN}]${NC} ${YELLOW}update sc menu host to ip${NC} ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}08${L_GREEN}]${NC} ${YELLOW}update sc screen${NC}        ${GRAY}║${L_GREEN} [${CYAN}25${L_GREEN}]${NC} ${YELLOW}update sc ping${NC}            ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}09${L_GREEN}]${NC} ${YELLOW}update sc auto root${NC}     ${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}10${L_GREEN}]${NC} ${YELLOW}update sc auto reboot${NC}   ${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}11${L_GREEN}]${NC} ${YELLOW}update sc tools hack${NC}    ${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}update sc edit file script${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}12${L_GREEN}]${NC} ${YELLOW}update sc setting${NC}       ${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}update sc istl dmain finde${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}13${L_GREEN}]${NC} ${YELLOW}update sc dns lookup${NC}    ${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}update sc install sherlock${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}14${L_GREEN}]${NC} ${YELLOW}update sc about domain${NC}  ${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}            ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}15${L_GREEN}]${NC} ${YELLOW}update sc dns records${NC}   ${GRAY}║${L_GREEN} [${CYAN}32${L_GREEN}]${NC} ${YELLOW}update sc menu utama${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}16${L_GREEN}]${NC} ${YELLOW}update sc user finder${NC}   ${GRAY}║${L_GREEN} [${CYAN}33${L_GREEN}]${NC} ${YELLOW}update sc upgreader${NC}       ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}17${L_GREEN}]${NC} ${YELLOW}update sc tracker${NC}       ${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Kembali ke Menu Utama${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}01${L_GREEN}]${NC} ${YELLOW}update sc check service${NC} ${GRAY}║${L_GREEN} [${CYAN}20${L_GREEN}]${NC} ${YELLOW}update sc subdomain finder${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}02${L_GREEN}]${NC} ${YELLOW}update sc servic manager${NC}${GRAY}║${L_GREEN} [${CYAN}21${L_GREEN}]${NC} ${YELLOW}update sc kirim email${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}03${L_GREEN}]${NC} ${YELLOW}update sc config nginx${NC}  ${GRAY}║${L_GREEN} [${CYAN}22${L_GREEN}]${NC} ${YELLOW}update sc spam post${NC}       ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}04${L_GREEN}]${NC} ${YELLOW}update sc check disk${NC}    ${GRAY}║${L_GREEN} [${CYAN}23${L_GREEN}]${NC} ${YELLOW}update sc menu ip to host${NC} ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}05${L_GREEN}]${NC} ${YELLOW}update sc tailscale${NC}     ${GRAY}║${L_GREEN} [${CYAN}24${L_GREEN}]${NC} ${YELLOW}update sc menu host to ip${NC} ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}06${L_GREEN}]${NC} ${YELLOW}update sc zeroTier${NC}      ${GRAY}║${L_GREEN} [${CYAN}25${L_GREEN}]${NC} ${YELLOW}update sc ping${NC}            ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}07${L_GREEN}]${NC} ${YELLOW}update sc monitoring${NC}    ${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}08${L_GREEN}]${NC} ${YELLOW}update sc screen${NC}        ${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}09${L_GREEN}]${NC} ${YELLOW}update sc auto root${NC}     ${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}update sc edit file script${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}10${L_GREEN}]${NC} ${YELLOW}update sc auto reboot${NC}   ${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}update sc istl dmain finde${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}11${L_GREEN}]${NC} ${YELLOW}update sc tools hack${NC}    ${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}update sc install sherlock${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}12${L_GREEN}]${NC} ${YELLOW}update sc setting${NC}       ${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}            ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}13${L_GREEN}]${NC} ${YELLOW}update sc dns lookup${NC}    ${GRAY}║${L_GREEN} [${CYAN}32${L_GREEN}]${NC} ${YELLOW}update sc menu utama${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}14${L_GREEN}]${NC} ${YELLOW}update sc about domain${NC}  ${GRAY}║${L_GREEN} [${CYAN}33${L_GREEN}]${NC} ${YELLOW}update sc upgreader${NC}       ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}15${L_GREEN}]${NC} ${YELLOW}update sc dns records${NC}   ${GRAY}║${L_GREEN} [${CYAN}34${L_GREEN}]${NC} ${YELLOW}update sc anti spam${NC}       ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}16${L_GREEN}]${NC} ${YELLOW}update sc user finder${NC}   ${GRAY}║${L_GREEN} [${CYAN}35${L_GREEN}]${NC} ${YELLOW}update sc spam detector${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}17${L_GREEN}]${NC} ${YELLOW}update sc tracker${NC}       ${GRAY}║${L_GREEN} [${CYAN}36${L_GREEN}]${NC} ${YELLOW}update sc pentesting${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}18${L_GREEN}]${NC} ${YELLOW}update sc spaming${NC}       ${GRAY}║${L_GREEN} [${CYAN}37${L_GREEN}]${NC} ${YELLOW}update sc menu spam post${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}19${L_GREEN}]${NC} ${YELLOW}update sc ddos${NC}          ${GRAY}║${L_GREEN} [${RED}0${L_GREEN}]${NC} ${RED}Kembali ke Menu Utama${NC}      ${GRAY}║${NC}"
 echo -e "${GRAY}╚═══════════════════════════════════════════════════════════════╝${NC}"
-echo -e ""
+
 echo -e "${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}upgrader${L_CYAN}]${NC}"
 echo -e -n "${L_CYAN}└──▶️ ${NC}"
 read -p "" plh
@@ -185,6 +187,10 @@ case $plh in
 31) upgrade "$DIRECTORY/ddns" "$REPO/ddns.sh" ; exit 0 ;;
 32) upgrade "$DIRECTORY/newmenu" "$REPO/newmenu.sh" ; exit 0 ;;
 33) upgrade "$DIRECTORY/upgrader" "$REPO/upgrader.sh" ; exit 0 ;;
+34) upgrade "$DIRECTORY/anti_spam" "$REPO/anti_spam.py" ; exit 0 ;;
+35) upgrade "$DIRECTORY/spam_detector" "$REPO/spam_detector.py" ; exit 0 ;;
+36) upgrade "$DIRECTORY/pentester_tools" "$REPO/pentester_tools.py" ; exit 0 ;;
+37) upgrade "$DIRECTORY/m-spam-post" "$REPO/m-spam-post.sh" ; exit 0 ;;
 0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED} TERIMA KASIH TELAH MENGGUNAKAN PROGRAM INI...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; exec "$0" ;;

@@ -108,7 +108,7 @@ echo -e "          └───────────────────�
 echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
 echo -e "        ${r}│${y}[${u}•1${y}]${NC} CHECK SERVICE  ""${y}[${u}•7${y}]${NC} MONITORING   ${r}│"
 echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SCREEN       ${r}│"
-echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} AUTO ROOT    ${r}│"
+echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} PENTESTING   ${r}│"
 echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} AUTO REBOOT  ${r}│"
 echo -e "        ${r}│${y}[${u}•5${y}]${NC} TAILSCALE      ""${y}[${u}11${y}]${NC} TOOLS HACK   ${r}│"
 echo -e "        ${r}│${y}[${u}•6${y}]${NC} ZEROTIER       ""${y}[${u}12${y}]${NC} SETTING      ${r}│"
@@ -128,7 +128,7 @@ case $opt in
     6)  clear; m-zerotier ;;
     7)  clear; m-monitor ;;
     8)  clear; m-screen ;;
-    9)  clear; root ;;
+    9)  clear; pentester_tools ;;
     10) clear; a-reboot ;;
     11) clear; mode-hack ;;
     12) clear; m-setting ;; 

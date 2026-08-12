@@ -326,7 +326,7 @@ main() {
                 echo
                 box "$GREEN" "🏠 Kembali ke menu utama..."
                 echo
-                if [[ -f "newmenu" ]]; then
+                if [[ -f "/usr/local/bin/newmenu" ]]; then
                     exec newmenu
                 else
                     msg fail "File 'newmenu' tidak ditemukan!"

@@ -139,7 +139,7 @@ echo -e "  ${y}│${NC}${dkblu}[${g}•3${dkblu}]${NC}\033[0;36m MONITORING     
 echo -e "  ${y}│${NC}${dkblu}[${g}•4${dkblu}]${NC}\033[0;36m EDIT FILE SCRIPT            ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•5${dkblu}]${NC}\033[0;36m SETUP DDNS                  ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m UPGRADER SCRIPT             ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•7${dkblu}]${NC}\033[0;36m CLEARLOG                    ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•7${dkblu}]${NC}\033[0;36m ROOTING                     ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•8${dkblu}]${NC}\033[0;36m DELETE USER EXP             ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}•9${dkblu}]${NC}\033[0;36m EDIT BENNER                 ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}10${dkblu}]${NC}\033[0;36m CHANGE DOMAIN               ${y}│${NC}"
@@ -178,10 +178,10 @@ case $plh in
 6 | 06)
     upgrader
     ;;
-#7 | 07)
-#    clear
-#    clearlog
-#    ;;
+7 | 07)
+    clear
+    root
+    ;;
 #8 | 08)
 #    clear
 #    xp

@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Nobody Spam Tool v2.0 — Professional Edition
-"""
+
 
 import os
 import sys
@@ -17,6 +14,7 @@ import traceback
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
+
 
 # ═══════════════════════════════════════════════════════════
 #  IMPORT CHECK — fail early with a clear message

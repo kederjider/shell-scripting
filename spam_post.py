@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # IMPORT MODULE
 
+import re
 import os
 import random
 import string
+import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlparse
 
 import requests
 from dotenv import load_dotenv
@@ -28,6 +31,8 @@ def banner():
     print(f"{BOLD}{CYAN}     ✦ RANDOM PAYLOAD DEMO ✦           {RESET}")
     print(f"{BOLD}{CYAN}========================================{RESET}\n")
 
+def clean_terminal_input(value):
+    return re.sub(r'\x1b\[[0-9;?]*[ -/]*[@-~]', '', value)
 
 def generate_random_password(length=12):
     characters = string.ascii_letters + string.digits + "!@#$%^&*"
@@ -150,17 +155,26 @@ def main():
     banner()
     start_time = time.time()
 
-    # ── Input sekali di awal ──────────────────────────────────────────
-    target_url = input(f"{BOLD}{CYAN}Masukkan URL tujuan (contoh: https://mlbbevent-skin.2-e.vu/datafinal.php): {RESET}").strip()
-    
+    # ── Mode CLI (parameter) vs Mode Interaktif ─────────────────────
+    if len(sys.argv) >= 3:
+        # Mode CLI: python spam_post.py <url> <cookie> [thread_count]
+        target_url = sys.argv[1].strip()
+        cookie = sys.argv[2].strip()
+        thread_count = int(sys.argv[3].strip()) if len(sys.argv) >= 4 else 8
+        print_box("MODE", "CLI (Parameter)", GREEN)
+        print_box("URL", target_url, CYAN)
+        print_box("COOKIE", cookie[:30] + "..." if len(cookie) > 30 else cookie, CYAN)
+        print_box("THREAD", str(thread_count), CYAN)
+    else:
+        # ── Input sekali di awal (interaktif) ───────────────────────
+        target_url = clean_terminal_input(input(f"{BOLD}{CYAN}Masukkan URL tujuan (contoh: https://mlbbevent-skin.2-e.vu/datafinal.php): {RESET}").strip())
+        cookie     = clean_terminal_input(input(f"{BOLD}{CYAN}Masukkan Cookie (contoh: PHPSESSID=xxx): {RESET}").strip())
+        thread_count = int(clean_terminal_input(input(f"{BOLD}{CYAN}Masukkan jumlah thread (contoh: 8): {RESET}").strip()))
+    # ─────────────────────────────────────────────────────────────────
+
     # Parsing origin dari target_url (menghapus path seperti /datafinal.php atau /index.html)
-    from urllib.parse import urlparse
     parsed_url = urlparse(target_url)
     origin = f"{parsed_url.scheme}://{parsed_url.netloc}"
-    
-    cookie     = input(f"{BOLD}{CYAN}Masukkan Cookie (contoh: PHPSESSID=xxx): {RESET}").strip()
-    thread_count = int(input(f"{BOLD}{CYAN}Masukkan jumlah thread (contoh: 8): {RESET}").strip())
-    # ─────────────────────────────────────────────────────────────────
 
     bot_token = TELEGRAM_BOT_TOKEN
     chat_id = TELEGRAM_CHAT_ID
@@ -177,7 +191,8 @@ def main():
         print(result)
 
     elapsed = time.time() - start_time
-    summary_message = f"Program selesai dalam {elapsed:.2f} detik dengan {thread_count} thread."
+    elapsed_minutes = elapsed / 60
+    summary_message = f"Program selesai dalam {elapsed_minutes:.2f} menit dengan {thread_count} thread."
     print(f"\n{BOLD}{GREEN}{summary_message}{RESET}\n")
 
     if bot_token and chat_id:

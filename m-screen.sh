@@ -64,7 +64,7 @@ echo -e "${CYAN}┌────────────────────�
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[3]${RST} Lihat daftar session (screen -ls)   ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[4]${RST} Masuk ke session (screen -r)        ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} ${BLUE}${BOLD}[5]${RST} Paksa masuk session (screen -r -d)  ${CYAN}│${RST}"
-    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Kembali ke Menu Utama                ${CYAN}│${RST}"
+    echo -e "${CYAN}│${RST} ${RED}${BOLD}[0]${RST} Kembali ke Menu Utama               ${CYAN}│${RST}"
     echo -e "${CYAN}└─────────────────────────────────────────┘${RST}"
     echo -e ""
     echo -e "${CYAN}┌───(${YELLOW}Screen${RST}${CYAN})──[Module]"
