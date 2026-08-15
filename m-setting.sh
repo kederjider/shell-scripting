@@ -247,7 +247,7 @@ echo -e "  ${y}│${NC}${dkblu}[${g}11${dkblu}]${NC}\033[0;36m AUTO REBOOT      
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 6 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 11 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
@@ -322,5 +322,5 @@ x | X)
     clear
     exit 0
     ;;
-*) echo "Silakan Masukkan Angka [1 - 6]." ; loading ; exec "$0" ;;
+*) echo "Silakan Masukkan Angka [1 - 11]." ; loading ; exec "$0" ;;
 esac
