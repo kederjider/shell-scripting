@@ -1,5 +1,8 @@
 #!/bin/bash
+
+# ==================== WARNA ====================
 Green="\e[92;1m"
+CYAN='\033[0;36m'
 RED="\033[31m"
 YELLOW="\033[33m"
 BLUE="\033[36m"
@@ -14,6 +17,7 @@ red='\e[1;31m'
 green='\e[0;32m'
 DF='\e[39m'
 Bold='\e[1m'
+BOLD='\033[1m'
 g="\033[1;92m"
 y='\033[1;33m' #yellow
 Blink='\e[5m'
@@ -26,7 +30,6 @@ cyan='\e[36m'
 Lred='\e[91m'
 Lgreen='\e[92m'
 Lyellow='\e[93m'
-NC='\e[0m'
 GREEN='\033[0;32m'
 ORANGE='\033[0;33m'
 LIGHT='\033[0;37m'
@@ -34,6 +37,97 @@ grenbo="\e[92;1m"
 dkblu="\033[34m"
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 # Getting
+
+# ==================== FUNGSI UTAMA ====================
+wget_github() {
+    if [ $# -ne 2 ]; then
+        echo -e "${RED}❌  Usage: wget_github <path/nama_script.sh> <url atau username/repo/branch/file.sh>${NC}"
+        return 1
+    fi
+
+    local dest="$1"
+    local source="$2"
+    local url=""
+
+    # Deteksi apakah input kedua sudah full URL atau hanya path GitHub
+    if [[ "$source" =~ ^https?:// ]]; then
+        url="$source"
+    else
+        url="https://raw.githubusercontent.com/${source}"
+    fi
+
+    echo -e "\n${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}📥  Informasi Unduhan:${NC}"
+    echo -e "   ${BLUE}• Sumber   :${NC} ${url}"
+    echo -e "   ${BLUE}• Tujuan   :${NC} ${dest}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+    # Buat folder tujuan jika belum ada
+    mkdir -p "$(dirname "$dest")" 2>/dev/null
+
+    echo -e "${PURPLE}⏳  Sedang mengunduh...${NC}"
+    
+    if wget -q --show-progress -O "$dest" "$url"; then
+        chmod +x "$dest"
+        echo -e "\n${GREEN}✅  Berhasil!${NC}"
+        echo -e "   File disimpan di : ${BOLD}${dest}${NC}"
+        echo -e "   Permission       : executable (+x)"
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+    else
+        echo -e "\n${RED}❌  Gagal mengunduh file!${NC}"
+        echo -e "   Silakan cek URL / koneksi internet Anda."
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+        return 1
+    fi
+}
+
+# ==================== FUNGSI INTERAKTIF ====================
+download_script() {
+    clear
+    echo -e "${CYAN}"
+    echo "  ██████╗  ██████╗ ██╗    ██╗███╗   ██╗██╗      ██████╗  █████╗ ██████╗ "
+    echo "  ██╔══██╗██╔═══██╗██║    ██║████╗  ██║██║     ██╔═══██╗██╔══██╗██╔══██╗"
+    echo "  ██║  ██║██║   ██║██║ █╗ ██║██╔██╗ ██║██║     ██║   ██║███████║██║  ██║"
+    echo "  ██║  ██║██║   ██║██║███╗██║██║╚██╗██║██║     ██║   ██║██╔══██║██║  ██║"
+    echo "  ██████╔╝╚██████╔╝╚███╔███╔╝██║ ╚████║███████╗╚██████╔╝██║  ██║██████╔╝"
+    echo "  ╚═════╝  ╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ "
+    echo -e "${NC}"
+    echo -e "${YELLOW}          🚀  GitHub Script Downloader  🚀${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+    # Input 1: Path / Nama Script
+    echo -e "${GREEN}📁  Masukkan path + nama file tujuan${NC}"
+    echo -e "   Contoh: /usr/local/bin/script  atau  ~/tools/setup.sh"
+    echo -ne "${BOLD}➤  Path/Nama Script : ${NC}"
+    read -r path_script
+
+    # Validasi input kosong
+    if [ -z "$path_script" ]; then
+        echo -e "\n${RED}❌  Path tidak boleh kosong!${NC}\n"
+        return 1
+    fi
+
+    echo ""
+
+    # Input 2: URL
+    echo -e "${GREEN}🌐  Masukkan URL file yang ingin diunduh${NC}"
+    echo -e "   Bisa full URL atau format GitHub: username/repo/branch/path/file.sh"
+    echo -e "   Contoh full URL:"
+    echo -e "   ${CYAN}https://raw.githubusercontent.com/user/repo/main/script.sh${NC}"
+    echo -ne "${BOLD}➤  URL / GitHub Path : ${NC}"
+    read -r url_file
+
+    if [ -z "$url_file" ]; then
+        echo -e "\n${RED}❌  URL tidak boleh kosong!${NC}\n"
+        return 1
+    fi
+
+    echo ""
+    echo -e "${YELLOW}🔄  Memproses...${NC}"
+
+    # Panggil fungsi wget_github
+    wget_github "$path_script" "$url_file"
+}
 
 # =============================================
 # Fungsi Install Official Ookla Speedtest CLI
@@ -140,10 +234,10 @@ echo -e "  ${y}│${NC}${dkblu}[${g}•4${dkblu}]${NC}\033[0;36m EDIT FILE SCRIP
 echo -e "  ${y}│${NC}${dkblu}[${g}•5${dkblu}]${NC}\033[0;36m SETUP DDNS                  ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•6${dkblu}]${NC}\033[0;36m UPGRADER SCRIPT             ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}•7${dkblu}]${NC}\033[0;36m ROOTING                     ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•8${dkblu}]${NC}\033[0;36m DELETE USER EXP             ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}•9${dkblu}]${NC}\033[0;36m EDIT BENNER                 ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}10${dkblu}]${NC}\033[0;36m CHANGE DOMAIN               ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}11${dkblu}]${NC}\033[0;36m CERT SSL/DOMAIN             ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•8${dkblu}]${NC}\033[0;36m DOWNLOAD SCRIPT             ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}•9${dkblu}]${NC}\033[0;36m ENCRYPT & DECRYPT           ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}10${dkblu}]${NC}\033[0;36m SSH MANAGER                 ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}11${dkblu}]${NC}\033[0;36m AUTO REBOOT                 ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}12${dkblu}]${NC}\033[0;36m INFO PORT                   ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m AUTO REBOOT                 ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m CLEAR CHACE                 ${y}│${NC}"
@@ -182,19 +276,22 @@ case $plh in
     clear
     root
     ;;
-#8 | 08)
-#    clear
-#    xp
-#    ;;
-#9 | 09)
-#    nano /etc/kyt.txt  
-#    ;;
-#10)
-#    addhost
-#    ;;    
-#11)
-#    fixcert
-#    ;;
+8 | 08)
+    clear
+    download_script
+    ;;
+9 | 09)
+    clear
+    openssl-encrypt
+    ;;
+10)
+    clear
+    ssh_manager
+    ;;    
+11)
+    clear
+    a-reboot
+    ;;
 #12)
 #    clear
 #    prot
