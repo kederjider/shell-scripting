@@ -1,4 +1,6 @@
 git_manager.sh
-ssh_manager.sh
-ssh_managser.sh
 *.sh.bak
+__pycache__/
+.venv/
+venv/
+.env
