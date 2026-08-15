@@ -86,7 +86,10 @@ function upgrade() {
         }
     fi
 
-    if ! cp "$tmp" "$SCRIPT"; then
+    # Gunakan mv (bukan cp) agar file lama di-unlink & dapat inode baru.
+    # Ini mencegah korupsi ketika script yang SEDANG BERJALAN ikut ditimpa
+    # (mis. saat "Upgrade All" menimpa m-setting/newmenu/upgrader itu sendiri).
+    if ! mv -f "$tmp" "$SCRIPT"; then
         printf "${RED}✖ Gagal mengganti file.${NC}\n"
         rm -f "$tmp"
         return 1
@@ -97,12 +100,11 @@ function upgrade() {
         chmod 755 "$SCRIPT"
     elif [[ "$URL" == *.sh ]] || [[ "$SCRIPT" == *.sh ]]; then
         file_type="Bash/Shell"
-        chmod +x "$SCRIPT"
+        chmod 755 "$SCRIPT"
     else
         file_type="File umum"
     fi
 
-    rm -f "$tmp"
     printf "${GREEN}${BOLD}✓ BERHASIL DIUPDATE! 🎉${NC}\n"
     printf "  ${GRAY}Tipe   :${NC} %s\n" "$file_type"
     printf "  ${GRAY}File   :${NC} ${CYAN}%s${NC}\n" "$SCRIPT"
@@ -119,7 +121,7 @@ cat << "EOF"
 | |_| | |_) | (_| | | | (_| | (_| |  __/ |    \__ \ (__| |  | | |_) | |_ 
  \__,_| .__/ \__, |_|  \__,_|\__,_|\___|_|    |___/\___|_|  |_| .__/ \__|
       |_|    |___/                                            |_|        
-                 [ UPGRADER - SCRIPT v1.0 ]
+                 [ UPGRADER - SCRIPT v2.0 ]
                  MAMAT SCRIPTING - 2026
 EOF
 echo -e "${NC}"
