@@ -222,7 +222,7 @@ pilih_session() {
 install_tmux() {
     header
     echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-    echo -e "${BCYAN}║${RST}              ${BOLD}📦 INSTALL TMUX${RST}                              ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}              ${BOLD}📦 INSTALL TMUX${RST}                                 ${BCYAN}║${RST}"
     echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
     echo ""
 
@@ -310,8 +310,8 @@ install_tmux() {
     echo ""
     if command -v tmux >/dev/null 2>&1; then
         echo -e "${BGREEN}╔══════════════════════════════════════════════════════════════╗${RST}"
-        echo -e "${BGREEN}║${RST}  ${BWHITE}✅ Tmux berhasil diinstall!${RST}                            ${BGREEN}║${RST}"
-        echo -e "${BGREEN}║${RST}  ${BWHITE}Versi: $(tmux -V 2>/dev/null)${RST}                              ${BGREEN}║${RST}"
+        echo -e "${BGREEN}║${RST}  ${BWHITE}✅ Tmux berhasil diinstall!${RST}                                 ${BGREEN}║${RST}"
+        echo -e "${BGREEN}║${RST}  ${BWHITE}Versi: $(tmux -V 2>/dev/null)${RST}                                         ${BGREEN}║${RST}"
         echo -e "${BGREEN}╚══════════════════════════════════════════════════════════════╝${RST}"
         log_action "Tmux berhasil diinstall: $(tmux -V)"
     else

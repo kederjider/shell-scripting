@@ -96,11 +96,11 @@ session() {
     echo -e "       │${GB}            SESSION MANAGER               ${NC}│"
     echo -e "       ╰──────────────────────────────────────────╯"
     echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
-    echo -e "        ${r}│${y}[${u}•1${y}]${NC} TMUX SESSION     ""${y}[${u}•0${y}]${NC} BACK TO MENU  ${r}│"
-    echo -e "        ${r}│${y}[${u}•2${y}]${NC} SCREEN SESSION   ""${y}[${u}•X${y}]${NC} EXIT (0)      ${r}│"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} TMUX SESSION    ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} SCREEN SESSION  ""${y}[${u}•X${y}]${NC} EXIT (0)    ${r}│"
     echo -e "        ${r}└──────────────────────────────────────┘${NC}"
     echo ""
-    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}4${CYAN}]───▶️${RST}"
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}2${CYAN}]───▶️${RST}"
     read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
     echo ""
     case $sess_opt in
@@ -108,7 +108,7 @@ session() {
         02|2)  clear; bash m-screen ;;
         0|00)  clear; exec "$0" ;;
         X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
-        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exec "$0" ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
 

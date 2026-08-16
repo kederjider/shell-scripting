@@ -51,8 +51,8 @@ print_banner() {
     clear
     echo
     printf "${CYAN}  ╔══════════════════════════════════════════════════════════╗${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📧  S P A M   P O S T   -   M E N U              ${RESET}${CYAN}║${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}      🚀  Kirim payload spam dengan URL & Cookie         ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📧  S P A M   P O S T   -   M E N U                 ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}      🚀  Kirim payload spam dengan URL & Cookie          ${RESET}${CYAN}║${RESET}\n"
     printf "${CYAN}  ╚══════════════════════════════════════════════════════════╝${RESET}\n"
     echo
 }
@@ -71,11 +71,11 @@ show_menu() {
     print_banner
 
     printf "${CYAN}  ┌──────────────────────────────────────────────────────────┐${RESET}\n"
-    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    📧 SPAM POST - MENU UTAMA                             ${RESET}${CYAN}│${RESET}\n"
+    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    📧 SPAM POST - MENU UTAMA                            ${RESET}${CYAN}│${RESET}\n"
     printf "${CYAN}  ├──────────────────────────────────────────────────────────┤${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[1]${RESET} ${YELLOW}🚀${RESET}  ${WHITE}Jalankan Spam Post (Input Manual)${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[2]${RESET} ${YELLOW}📋${RESET}  ${WHITE}Jalankan Spam Post (Dari History)${RESET}\n"
-    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[3]${RESET} ${YELLOW}🗑️${RESET}  ${WHITE}Hapus History${RESET}\n"
+    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[3]${RESET} ${YELLOW}🗑️${RESET}   ${WHITE}Hapus History${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[0]${RESET} ${YELLOW}🏠${RESET}  ${WHITE}Menu Utama (newmenu)${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[x]${RESET} ${YELLOW}🚪${RESET}  ${WHITE}Keluar${RESET}\n"
     printf "${CYAN}  ├──────────────────────────────────────────────────────────┤${RESET}\n"
@@ -354,7 +354,7 @@ while true; do
             clear
             echo
             printf "  ${CYAN}╔══════════════════════════════════════════════════════════╗${RESET}\n"
-            printf "  ${CYAN}║${RESET}          ${WHITE}${BOLD}👋 Terima kasih! Sampai jumpa!${RESET}              ${CYAN}║${RESET}\n"
+            printf "  ${CYAN}║${RESET}          ${WHITE}${BOLD}👋 Terima kasih! Sampai jumpa!${RESET}                  ${CYAN}║${RESET}\n"
             printf "  ${CYAN}╚══════════════════════════════════════════════════════════╝${RESET}\n"
             echo
             exit 0
