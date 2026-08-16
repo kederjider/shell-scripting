@@ -43,3 +43,10 @@ Kumpulan shell script untuk automasi server Linux.
 <pre><code>apt update && apt upgrade -y && apt install -y wget curl sed && sleep 2 && wget -O /root/setup-all.sh https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/setup-all.sh && bash setup-all.sh
 
 </code></pre>
+
+
+# script git untuk mempermudah penggunaan git
+
+<pre><code>wget -O git_manager.sh https://raw.githubusercontent.com/kederjider/shell-scripting/refs/heads/main/custom/git_tools.sh
+
+</code></pre>

@@ -132,7 +132,7 @@ check_dependencies() {
 show_menu() {
     echo -e "${BOLD}  ${WHITE}Pilih Operasi:${NC}"
     echo
-    echo -e "  ${GREEN}[1]${NC} ${ICON_LOCK}  ${WHITE}Encrypt File${NC}  ${DIM}— Amankan file dengan AES-256${NC}"
+    echo -e "  ${GREEN}[1]${NC} ${ICON_LOCK} ${WHITE}Encrypt File${NC}  ${DIM}— Amankan file dengan AES-256${NC}"
     echo -e "  ${GREEN}[2]${NC} ${ICON_UNLOCK} ${WHITE}Decrypt File${NC}  ${DIM}— Kembalikan file terenkripsi${NC}"
     echo -e "  ${GREEN}[3]${NC} ${ICON_INFO}  ${WHITE}Bantuan${NC}        ${DIM}— Tampilkan informasi penggunaan${NC}"
     echo -e "  ${GREEN}[0]${NC} ${DIM}Keluar${NC}"
