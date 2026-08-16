@@ -193,6 +193,7 @@ main() {
   install_file openssl-encrypt openssl-encrypt.sh
   install_file ssh_manager ssh_manager.sh
   install_file setup_proxy_squid setup_proxy_squid.sh
+  install_file m-tmux m-tmux.sh
 
   if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
     cat >> /root/.bashrc << 'EOF'

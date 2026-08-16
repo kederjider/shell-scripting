@@ -82,7 +82,7 @@ case $plh in
 7 | 07) m-ddos ;;
 8 | 08) sub-domain-finder ;;
 9 | 09) kirim_email ;;
-10) spam_post;;
+10) m-spam-post;;
 11) m-ip-to-host ;;
 12) m-host-to-ip ;;
 13) pinghost ;;

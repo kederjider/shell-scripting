@@ -88,6 +88,30 @@ gather_all_data() {
     echo -e "\r\033[K" >&2  # hapus pesan loading
 }
 
+# ========== FUNGSI SESION (SUB-MENU) ==========
+session() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}            SESSION MANAGER               ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} TMUX SESSION     ""${y}[${u}•0${y}]${NC} BACK TO MENU  ${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} SCREEN SESSION   ""${y}[${u}•X${y}]${NC} EXIT (0)      ${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}4${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  clear; bash m-tmux ;;
+        02|2)  clear; bash m-screen ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exec "$0" ;;
+    esac
+}
+
 # ========== START ==========
 gather_all_data
 
@@ -107,7 +131,7 @@ echo -e "          │ ${c} DATE      : ${DATE}${NC}"
 echo -e "          └──────────────────────────────────┘"
 echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
 echo -e "        ${r}│${y}[${u}•1${y}]${NC} CHECK SERVICE  ""${y}[${u}•7${y}]${NC} MONITORING   ${r}│"
-echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SCREEN       ${r}│"
+echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SESSION      ${r}│"
 echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} PENTESTING   ${r}│"
 echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} PROXY SQUID  ${r}│"
 echo -e "        ${r}│${y}[${u}•5${y}]${NC} TAILSCALE      ""${y}[${u}11${y}]${NC} TOOLS HACK   ${r}│"
@@ -127,7 +151,7 @@ case $opt in
     5)  clear; m-tailscale ;;
     6)  clear; m-zerotier ;;
     7)  clear; m-monitor ;;
-    8)  clear; m-screen ;;
+    8)  clear; session ;;
     9)  clear; pentester_tools ;;
     10) clear; setup_proxy_squid ;;
     11) clear; mode-hack ;;

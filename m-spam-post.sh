@@ -40,7 +40,7 @@ INFO="${CYAN}ℹ${RESET}"
 # ─────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HISTORY_FILE="${SCRIPT_DIR}/history_spam_post.txt"
-PYTHON_SCRIPT="${SCRIPT_DIR}/spam_post.py"
+PYTHON_SCRIPT="${SCRIPT_DIR}/spam_post"
 
 # ─────────────────────────────────────────────
 # 🧩 FUNGSI UTILITAS
