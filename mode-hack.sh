@@ -1,6 +1,11 @@
 #!/bin/bash
 
 # Colors
+# Colors
+GREEN='\033[0;32m'
+WHITE='\033[1;37m'
+GB='\033[42;37m'; c='\e[1;36m'; g='\e[1;32m'; y='\e[1;33m'; w='\e[1;37m'
+u='\e[1;35m'; r='\e[1;31m'
 y='\033[1;33m' #yellow
 Green="\e[92;1m"
 RED="\033[31m"
@@ -42,6 +47,30 @@ red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 bgred="\033[41m"
 L_GREEN='\e[92m'
 
+spammingpost() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}            SPAMMING MANAGER               ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} M SPAMING POST  ""${y}[${u}•3${y}]${NC} M SPAMING AL${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} M SPAM DISKFILL ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}3${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  clear; bash m-spam-post ;;
+        02|2)  clear; bash m-diskfill ;;
+        03|3)  clear; bash m-post-all ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
+    esac
+}
+
 clear
 echo -e "${L_GREEN}"
 cat << "EOF"
@@ -60,7 +89,7 @@ echo -e "${CYAN} ╔════════════════════
 echo -e "${CYAN} ║${bgred}                 HACKING TOOLS MENU                  ${NC}${CYAN}║${NC}"
 echo -e "${CYAN} ╠═════════════════════════════════════════════════════╣${NC}"
 echo -e "${CYAN} ║${drakgry}[${liggry}•1${drakgry}]${pth} DNS LOOKUP${NC}           ${CYAN}║${drakgry}[${liggry}•9${drakgry}]${pth} KIRIM EMAIL${NC}          ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}10${drakgry}]${pth} SPAM POST${NC}            ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}10${drakgry}]${pth} SPAMING POST${NC}         ${CYAN}║${NC}"
 echo -e "${CYAN} ║${drakgry}[${liggry}•3${drakgry}]${pth} DNS RECORDS${NC}          ${CYAN}║${drakgry}[${liggry}11${drakgry}]${pth} IP TO HOST${NC}           ${CYAN}║${NC}"
 echo -e "${CYAN} ║${drakgry}[${liggry}•4${drakgry}]${pth} USER FINDER${NC}          ${CYAN}║${drakgry}[${liggry}12${drakgry}]${pth} HOST TO IP${NC}           ${CYAN}║${NC}"
 echo -e "${CYAN} ║${drakgry}[${liggry}•5${drakgry}]${pth} TRACKER${NC}              ${CYAN}║${drakgry}[${liggry}13${drakgry}]${pth} PING${NC}                 ${CYAN}║${NC}"
@@ -82,7 +111,7 @@ case $plh in
 7 | 07) m-ddos ;;
 8 | 08) sub-domain-finder ;;
 9 | 09) kirim_email ;;
-10) m-spam-post;;
+10) spammingpost;;
 11) m-ip-to-host ;;
 12) m-host-to-ip ;;
 13) pinghost ;;

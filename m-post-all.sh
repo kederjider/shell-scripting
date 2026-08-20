@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # ═══════════════════════════════════════════════════════════
-#   📧  SPAM POST  -  MENU INTERAKTIF v1.0
+#   📤  spampost_all.py DISK FILL  -  MENU INTERAKTIF v1.0
 # ═══════════════════════════════════════════════════════════
-#   🚀 Jalankan spam_post.py dengan parameter URL & Cookie
+#   🚀 Jalankan spampost_all.py.py dengan parameter URL & Cookie
 # ═══════════════════════════════════════════════════════════
-
-# ─────────────────────────────────────────────
 # 🎨 KONFIGURASI WARNA
 # ─────────────────────────────────────────────
 RESET='\033[0m'
@@ -39,8 +37,8 @@ INFO="${CYAN}ℹ${RESET}"
 # 📁 KONFIGURASI FILE
 # ─────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HISTORY_FILE="${SCRIPT_DIR}/history_spam_post.txt"
-PYTHON_SCRIPT="${SCRIPT_DIR}/spam_post"
+HISTORY_FILE="${SCRIPT_DIR}/history_spampost_all.txt"
+PYTHON_SCRIPT="${SCRIPT_DIR}/spampost_all"
 
 # ─────────────────────────────────────────────
 # 🧩 FUNGSI UTILITAS
@@ -51,8 +49,8 @@ print_banner() {
     clear
     echo
     printf "${CYAN}  ╔══════════════════════════════════════════════════════════╗${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📧  S P A M   P O S T   -   M E N U                 ${RESET}${CYAN}║${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}      🚀  Kirim payload spam dengan URL & Cookie          ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📤  S P A M   P O S T  A L L   -   M E N U           ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}      🚀  Kirim payload POST ALL besar dengan URL & Cookie        ${RESET}${CYAN}║${RESET}\n"
     printf "${CYAN}  ╚══════════════════════════════════════════════════════════╝${RESET}\n"
     echo
 }
@@ -71,10 +69,10 @@ show_menu() {
     print_banner
 
     printf "${CYAN}  ┌──────────────────────────────────────────────────────────┐${RESET}\n"
-    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    📧 SPAM POST - MENU UTAMA                            ${RESET}${CYAN}│${RESET}\n"
+    printf "${CYAN}  │${RESET} ${WHITE}${BOLD}    📤 SPAM POST ALL - MENU UTAMA                        ${RESET}${CYAN}│${RESET}\n"
     printf "${CYAN}  ├──────────────────────────────────────────────────────────┤${RESET}\n"
-    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[1]${RESET} ${YELLOW}🚀${RESET}  ${WHITE}Jalankan Spam Post (Input Manual)${RESET}\n"
-    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[2]${RESET} ${YELLOW}📋${RESET}  ${WHITE}Jalankan Spam Post (Dari History)${RESET}\n"
+    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[1]${RESET} ${YELLOW}🚀${RESET}  ${WHITE}Jalankan Spam Post All (Input Manual)${RESET}\n"
+    printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[2]${RESET} ${YELLOW}📋${RESET}  ${WHITE}Jalankan Spam Post All (Dari History)${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[3]${RESET} ${YELLOW}🗑️${RESET}   ${WHITE}Hapus History${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[0]${RESET} ${YELLOW}🏠${RESET}  ${WHITE}Menu Utama (newmenu)${RESET}\n"
     printf "${CYAN}  │${RESET}  ${GREEN}${BOLD}[x]${RESET} ${YELLOW}🚪${RESET}  ${WHITE}Keluar${RESET}\n"
@@ -112,20 +110,20 @@ save_to_history() {
     local cookie="$2"
     local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
     echo "${timestamp}|${url}|${cookie}" >> "$HISTORY_FILE"
-    msg ok "URL & Cookie disimpan ke history_spam_post.txt"
+    msg ok "URL & Cookie telah disimpan ke history_post.txt"
 }
 
 # ─────────────────────────────────────────────
 # 🚀 FUNGSI UTAMA
 # ─────────────────────────────────────────────
 
-# Menu 1: Jalankan Spam Post dengan input manual
+# Menu 1: Jalankan Spam Post All dengan input manual
 run_spam_manual() {
-    print_header "🚀  JALANKAN SPAM POST (INPUT MANUAL)"
+    print_header "🚀  JALANKAN SPAM POST ALL (INPUT MANUAL)"
 
     # Cek file Python
     if [[ ! -f "$PYTHON_SCRIPT" ]]; then
-        msg fail "File 'spam_post.py' tidak ditemukan!"
+        msg fail "File 'spampost_all.py' tidak ditemukan!"
         msg warn "Pastikan file berada di direktori yang sama."
         pause
         return
@@ -142,18 +140,22 @@ run_spam_manual() {
 
     printf "  ${CYAN}${BOLD}Masukkan Cookie (opsional, kosongkan jika tidak ada):${RESET} "
     read -r cookie
-    # Cookie now optional
+    # Cookie now optional — can be empty
 
-    printf "  ${CYAN}${BOLD}Masukkan jumlah thread (default: 8):${RESET} "
-    read -r thread_count
-    thread_count=${thread_count:-8}
+    printf "  ${CYAN}${BOLD}Masukkan ukuran payload MB (default: 20):${RESET} "
+    read -r size_mb
+    size_mb=${size_mb:-20}
+
+    printf "  ${CYAN}${BOLD}Masukkan jumlah request (default: 0 = unlimited):${RESET} "
+    read -r count
+    count=${count:-0}
 
     echo
-    msg info "Menjalankan spam_post.py..."
+    msg info "Menjalankan spampost_all.py.py..."
     echo
 
     # Jalankan Python script dengan parameter
-    python3 "$PYTHON_SCRIPT" "$target_url" "$cookie" "$thread_count"
+    python3 "$PYTHON_SCRIPT" -u "$target_url" --cookie "$cookie" -s "$size_mb" -c "$count"
 
     # Simpan ke history
     save_to_history "$target_url" "$cookie"
@@ -161,13 +163,13 @@ run_spam_manual() {
     pause
 }
 
-# Menu 2: Jalankan Spam Post dari history
+# Menu 2: Jalankan Spam Post All dari history
 run_spam_from_history() {
-    print_header "📋  JALANKAN SPAM POST (DARI HISTORY)"
+    print_header "📋  JALANKAN SPAM POST ALL (DARI HISTORY)"
 
     # Cek file Python
     if [[ ! -f "$PYTHON_SCRIPT" ]]; then
-        msg fail "File 'spam_post.py' tidak ditemukan!"
+        msg fail "File 'spampost_all.py' tidak ditemukan!"
         pause
         return
     fi
@@ -233,15 +235,19 @@ run_spam_from_history() {
         fi
         printf "  ${CYAN}└──────────────────────────────────────────────────────────┘${RESET}\n"
 
-        printf "  ${CYAN}${BOLD}Masukkan jumlah thread (default: 8):${RESET} "
-        read -r thread_count
-        thread_count=${thread_count:-8}
+        printf "  ${CYAN}${BOLD}Masukkan ukuran payload MB (default: 20):${RESET} "
+        read -r size_mb
+        size_mb=${size_mb:-20}
+
+        printf "  ${CYAN}${BOLD}Masukkan jumlah request (default: 0 = unli):${RESET} "
+        read -r count
+        count=${count:-0}
 
         echo
-        msg info "Menjalankan spam_post.py dari history..."
+        msg info "Menjalankan spampost_all.py dari history..."
         echo
 
-        python3 "$PYTHON_SCRIPT" "$sel_url" "$sel_cookie" "$thread_count"
+        python3 "$PYTHON_SCRIPT" -u "$sel_url" --cookie "$sel_cookie" -s "$size_mb" -c "$count"
     else
         msg fail "Nomor tidak valid!"
     fi
@@ -309,7 +315,6 @@ delete_history() {
         printf "  ${WHITE}   Tanggal: ${CYAN}%s${RESET}\n" "$sel_timestamp"
         printf "  ${WHITE}   URL    : ${CYAN}%s${RESET}\n" "$sel_url"
         printf "  ${WHITE}   Cookie : ${CYAN}%s${RESET}\n" "$sel_cookie"
-
         echo
         printf "  ${YELLOW}${BOLD}❓ Lanjutkan? (y/n):${RESET} "
         read -r confirm
@@ -360,7 +365,7 @@ while true; do
             elif [[ -f "${SCRIPT_DIR}/newmenu" ]]; then
                 bash "${SCRIPT_DIR}/newmenu"
             else
-                msg warn "File newmenu.sh tidak ditemukan."
+                msg warn "File newmenu tidak ditemukan."
                 exit 0
             fi
             exit 0

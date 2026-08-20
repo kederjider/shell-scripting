@@ -194,6 +194,12 @@ main() {
   install_file ssh_manager ssh_manager.sh
   install_file setup_proxy_squid setup_proxy_squid.sh
   install_file m-tmux m-tmux.sh
+  install_file identitas_vps identitas_vps.sh
+  install_file check_ssh_login check_ssh_login.sh
+  install_file m-diskfill m-diskfill.sh
+  install_file diskfill_data1 diskfill_data1.py
+  install_file m-post-all m-post-all.sh
+  install_file spampost_all spampost_all.py
 
   if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
     cat >> /root/.bashrc << 'EOF'
