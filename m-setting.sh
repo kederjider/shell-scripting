@@ -566,15 +566,15 @@ echo -e "  ${y}│${NC}${dkblu}[${g}•9${dkblu}]${NC}\033[0;36m ENCRYPT & DECRY
 echo -e "  ${y}│${NC}${dkblu}[${g}10${dkblu}]${NC}\033[0;36m SSH MANAGER                 ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}11${dkblu}]${NC}\033[0;36m AUTO REBOOT                 ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}12${dkblu}]${NC}\033[0;36m INFO PORT                   ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m AUTO REBOOT                 ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m CLEAR CHACE                 ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m INFO DETAIL VPS             ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m SCAN SECURITY VPS           ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}15${dkblu}]${NC}\033[0;36m CHECK BW                    ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}16${dkblu}]${NC}\033[0;36m CEK PENYIMPANAN             ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m KIRIM PESAN KEDEVELOPER     ${y}│${NC}"
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 12 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 14 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
@@ -625,13 +625,14 @@ case $plh in
     clear
     info_port
     ;;
-#13)
-#    autoreboot
-#    ;;
-#14)
-#    clear
-#    clearcache
-#    ;;
+13)
+    clear
+    identitas_vps
+    ;;
+14)
+    clear
+    check_ssh_login
+    ;;
 #15)
 #    clear
 #    cek_bw
@@ -651,5 +652,5 @@ x | X)
     clear
     exit 0
     ;;
-*) echo "Silakan Masukkan Angka [1 - 12]." ; loading ; exec "$0" ;;
+*) echo "Silakan Masukkan Angka [1 - 14]." ; loading ; exec "$0" ;;
 esac

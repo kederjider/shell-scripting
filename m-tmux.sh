@@ -186,19 +186,19 @@ pilih_session() {
     local SESSION_LIST=$(tmux ls 2>/dev/null | cut -d':' -f1)
 
     if [ -z "$SESSION_LIST" ]; then
-        echo -e "${BRED}❌ Tidak ada session tersedia!${RST}"
+        echo -e "${BRED}❌ Tidak ada session tersedia!${RST}" >&2
         return 1
     fi
 
-    echo -e "${BCYAN}┌────[${BYELLOW}Session tersedia${RST}${BCYAN}]${RST}"
+    echo -e "${BCYAN}┌────[${BYELLOW}Session tersedia${RST}${BCYAN}]${RST}" >&2
     local i=1
     declare -gA SESSION_MAP
     while IFS= read -r s; do
-        echo -e "${BCYAN}│${RST} ${BOLD}[${i}]${RST} ${BWHITE}${s}${RST}"
+        echo -e "${BCYAN}│${RST} ${BOLD}[${i}]${RST} ${BWHITE}${s}${RST}" >&2
         SESSION_MAP[$i]="$s"
         ((i++))
     done <<< "$SESSION_LIST"
-    echo -e "${BCYAN}└─────────────────────────────${RST}"
+    echo -e "${BCYAN}└─────────────────────────────${RST}" >&2
 
     read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pilih nomor/ nama]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" pilihan
 
@@ -211,7 +211,7 @@ pilih_session() {
         echo "$pilihan"
         return 0
     else
-        echo -e "${BRED}❌ Session '${pilihan}' tidak ditemukan!${RST}"
+        echo -e "${BRED}❌ Session '${pilihan}' tidak ditemukan!${RST}" >&2
         return 1
     fi
 }
@@ -664,162 +664,172 @@ rename_session() {
 # 🪟 [7] WINDOW MANAGEMENT
 # ===============================
 window_management() {
-    header
-    echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-    echo -e "${BCYAN}║${RST}              ${BOLD}🪟  WINDOW MANAGEMENT${RST}                            ${BCYAN}║${RST}"
-    echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
-    echo ""
+    local chosen="${1:-}"
 
-    if ! command -v tmux >/dev/null 2>&1; then
-        echo -e "${BRED}❌ Tmux belum terinstall!${RST}"
-        read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-        return
-    fi
-
-    local chosen
-    chosen=$(pilih_session "Pilih session")
-    [ $? -ne 0 ] && { read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"; return; }
-
-    while true; do
+    # Jika belum ada session terpilih, pilih dulu
+    if [ -z "$chosen" ]; then
         header
         echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-        echo -e "${BCYAN}║${RST}          ${BOLD}🪟 WINDOWS: ${BWHITE}${chosen}${RST}                              ${BCYAN}║${RST}"
-        echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
-
-        # List windows
-        local windows=$(tmux list-windows -t "$chosen" -F "#{window_index}:#{window_name} [#{window_panes} panes] #{?window_active,🟢,⚫} #{window_layout}" 2>/dev/null)
-        while IFS= read -r w; do
-            echo -e "${BCYAN}║${RST} ${BWHITE}${w}${RST}"
-        done <<< "$windows"
-
-        echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[1]${RST} ➕ New Window       ${BOLD}[4]${RST} ✏️  Rename Window    ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[2]${RST} 💀 Kill Window      ${BOLD}[5]${RST} 🔄 Swap Window      ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[3]${RST} 📋 List Windows     ${BOLD}[6]${RST} 🔗 Link Window      ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[0]${RST} ↩️  Kembali${RST}                                          ${BCYAN}║${RST}"
+        echo -e "${BCYAN}║${RST}              ${BOLD}🪟  WINDOW MANAGEMENT${RST}                            ${BCYAN}║${RST}"
         echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
-        read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Window Menu]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" win_menu
-
-        case "$win_menu" in
-            1)
-                read -p "$(echo -e ${BCYAN}📝 Nama window baru:${RST} ) " new_win
-                [ -n "$new_win" ] && tmux new-window -t "$chosen" -n "$new_win" && echo -e "${BGREEN}✅ Window '${new_win}' dibuat.${RST}"
-                ;;
-            2)
-                read -p "$(echo -e ${BRED}💀 Nomor window yang di-kill:${RST} ) " kill_win
-                [ -n "$kill_win" ] && tmux kill-window -t "${chosen}:${kill_win}" && echo -e "${BGREEN}✅ Window ${kill_win} di-kill.${RST}"
-                ;;
-            3)
-                echo ""
-                tmux list-windows -t "$chosen"
-                ;;
-            4)
-                read -p "$(echo -e ${BCYAN}📝 Nomor window:${RST} ) " rn_win
-                read -p "$(echo -e ${BCYAN}📝 Nama baru:${RST} ) " rn_name
-                [ -n "$rn_win" ] && [ -n "$rn_name" ] && tmux rename-window -t "${chosen}:${rn_win}" "$rn_name" && echo -e "${BGREEN}✅ Window di-rename.${RST}"
-                ;;
-            5)
-                read -p "$(echo -e ${BCYAN}🔄 Swap source window:${RST} ) " sw_src
-                read -p "$(echo -e ${BCYAN}🔄 Swap target window:${RST} ) " sw_dst
-                [ -n "$sw_src" ] && [ -n "$sw_dst" ] && tmux swap-window -s "${chosen}:${sw_src}" -t "${chosen}:${sw_dst}" && echo -e "${BGREEN}✅ Window di-swap.${RST}"
-                ;;
-            6)
-                read -p "$(echo -e ${BCYAN}🔗 Source window:${RST} ) " lk_src
-                read -p "$(echo -e ${BCYAN}🔗 Target window:${RST} ) " lk_dst
-                [ -n "$lk_src" ] && [ -n "$lk_dst" ] && tmux link-window -s "${chosen}:${lk_src}" -t "${chosen}:${lk_dst}" && echo -e "${BGREEN}✅ Window di-link.${RST}"
-                ;;
-            0) break ;;
-            *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
-        esac
         echo ""
-        read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-    done
+
+        if ! command -v tmux >/dev/null 2>&1; then
+            echo -e "${BRED}❌ Tmux belum terinstall!${RST}"
+            read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+            return
+        fi
+
+        chosen=$(pilih_session "Pilih session")
+        [ $? -ne 0 ] && { read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"; return; }
+    fi
+
+    header
+    echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
+    echo -e "${BCYAN}║${RST}          ${BOLD}🪟 WINDOWS: ${BWHITE}${chosen}${RST}                              ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
+
+    # List windows
+    local windows=$(tmux list-windows -t "$chosen" -F "#{window_index}:#{window_name} [#{window_panes} panes] #{?window_active,🟢,⚫} #{window_layout}" 2>/dev/null)
+    while IFS= read -r w; do
+        echo -e "${BCYAN}║${RST} ${BWHITE}${w}${RST}"
+    done <<< "$windows"
+
+    echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[1]${RST} ➕ New Window       ${BOLD}[4]${RST} ✏️  Rename Window    ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[2]${RST} 💀 Kill Window      ${BOLD}[5]${RST} 🔄 Swap Window      ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[3]${RST} 📋 List Windows     ${BOLD}[6]${RST} 🔗 Link Window      ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[0]${RST} ↩️  Kembali${RST}                                          ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
+    read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Window Menu]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" win_menu
+
+    case "$win_menu" in
+        1)
+            read -p "$(echo -e ${BCYAN}📝 Nama window baru:${RST} ) " new_win
+            [ -n "$new_win" ] && tmux new-window -t "$chosen" -n "$new_win" && echo -e "${BGREEN}✅ Window '${new_win}' dibuat.${RST}"
+            ;;
+        2)
+            read -p "$(echo -e ${BRED}💀 Nomor window yang di-kill:${RST} ) " kill_win
+            [ -n "$kill_win" ] && tmux kill-window -t "${chosen}:${kill_win}" && echo -e "${BGREEN}✅ Window ${kill_win} di-kill.${RST}"
+            ;;
+        3)
+            echo ""
+            tmux list-windows -t "$chosen"
+            ;;
+        4)
+            read -p "$(echo -e ${BCYAN}📝 Nomor window:${RST} ) " rn_win
+            read -p "$(echo -e ${BCYAN}📝 Nama baru:${RST} ) " rn_name
+            [ -n "$rn_win" ] && [ -n "$rn_name" ] && tmux rename-window -t "${chosen}:${rn_win}" "$rn_name" && echo -e "${BGREEN}✅ Window di-rename.${RST}"
+            ;;
+        5)
+            read -p "$(echo -e ${BCYAN}🔄 Swap source window:${RST} ) " sw_src
+            read -p "$(echo -e ${BCYAN}🔄 Swap target window:${RST} ) " sw_dst
+            [ -n "$sw_src" ] && [ -n "$sw_dst" ] && tmux swap-window -s "${chosen}:${sw_src}" -t "${chosen}:${sw_dst}" && echo -e "${BGREEN}✅ Window di-swap.${RST}"
+            ;;
+        6)
+            read -p "$(echo -e ${BCYAN}🔗 Source window:${RST} ) " lk_src
+            read -p "$(echo -e ${BCYAN}🔗 Target window:${RST} ) " lk_dst
+            [ -n "$lk_src" ] && [ -n "$lk_dst" ] && tmux link-window -s "${chosen}:${lk_src}" -t "${chosen}:${lk_dst}" && echo -e "${BGREEN}✅ Window di-link.${RST}"
+            ;;
+        0) return ;;
+        *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
+    esac
+
+    echo ""
+    read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+    # Rekursi dengan session yang sama
+    window_management "$chosen"
 }
 
 # ===============================
 # 📐 [8] PANE MANAGEMENT
 # ===============================
 pane_management() {
-    header
-    echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-    echo -e "${BCYAN}║${RST}              ${BOLD}📐 PANE MANAGEMENT${RST}                              ${BCYAN}║${RST}"
-    echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
-    echo ""
+    local chosen="${1:-}"
 
-    if ! command -v tmux >/dev/null 2>&1; then
-        echo -e "${BRED}❌ Tmux belum terinstall!${RST}"
-        read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-        return
-    fi
-
-    local chosen
-    chosen=$(pilih_session "Pilih session")
-    [ $? -ne 0 ] && { read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"; return; }
-
-    while true; do
+    # Jika belum ada session terpilih, pilih dulu
+    if [ -z "$chosen" ]; then
         header
         echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-        echo -e "${BCYAN}║${RST}          ${BOLD}📐 PANES: ${BWHITE}${chosen}${RST}                                 ${BCYAN}║${RST}"
-        echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
-
-        # List panes
-        local panes=$(tmux list-panes -t "$chosen" -F "#{pane_index}: #{pane_width}x#{pane_height} #{?pane_active,🟢,⚫} PID=#{pane_pid}" 2>/dev/null)
-        while IFS= read -r p; do
-            echo -e "${BCYAN}║${RST} ${DIM}${p}${RST}"
-        done <<< "$panes"
-
-        echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[1]${RST} ⬇️  Split Vertikal   ${BOLD}[5]${RST} 🔄 Swap Pane        ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[2]${RST} ➡️  Split Horizontal ${BOLD}[6]${RST} 💀 Kill Pane         ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[3]${RST} 🖼️  Break Pane       ${BOLD}[7]${RST} 🔀 Rotate Pane       ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[4]${RST} 🔲 Join Pane         ${BOLD}[8]${RST} 📐 Resize Pane       ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}[0]${RST} ↩️  Kembali${RST}                                          ${BCYAN}║${RST}"
+        echo -e "${BCYAN}║${RST}              ${BOLD}📐 PANE MANAGEMENT${RST}                              ${BCYAN}║${RST}"
         echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
-        read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pane Menu]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" pane_menu
-
-        case "$pane_menu" in
-            1)
-                tmux split-window -t "$chosen" -v
-                echo -e "${BGREEN}✅ Pane vertikal dibuat.${RST}"
-                ;;
-            2)
-                tmux split-window -t "$chosen" -h
-                echo -e "${BGREEN}✅ Pane horizontal dibuat.${RST}"
-                ;;
-            3)
-                read -p "$(echo -e ${BCYAN}🖼️  Pane index untuk break:${RST} ) " brk_idx
-                [ -n "$brk_idx" ] && tmux break-pane -t "${chosen}:.${brk_idx}" && echo -e "${BGREEN}✅ Pane di-break ke window baru.${RST}"
-                ;;
-            4)
-                read -p "$(echo -e ${BCYAN}🔲 Source pane index:${RST} ) " jn_src
-                read -p "$(echo -e ${BCYAN}🔲 Target pane index:${RST} ) " jn_dst
-                [ -n "$jn_src" ] && [ -n "$jn_dst" ] && tmux join-pane -s "${chosen}:.${jn_src}" -t "${chosen}:.${jn_dst}" && echo -e "${BGREEN}✅ Pane di-join.${RST}"
-                ;;
-            5)
-                read -p "$(echo -e ${BCYAN}🔄 Source pane:${RST} ) " sp_src
-                read -p "$(echo -e ${BCYAN}🔄 Target pane:${RST} ) " sp_dst
-                [ -n "$sp_src" ] && [ -n "$sp_dst" ] && tmux swap-pane -s "${chosen}:.${sp_src}" -t "${chosen}:.${sp_dst}" && echo -e "${BGREEN}✅ Pane di-swap.${RST}"
-                ;;
-            6)
-                read -p "$(echo -e ${BRED}💀 Pane index untuk kill:${RST} ) " kp_idx
-                [ -n "$kp_idx" ] && tmux kill-pane -t "${chosen}:.${kp_idx}" && echo -e "${BGREEN}✅ Pane di-kill.${RST}"
-                ;;
-            7)
-                tmux rotate-window -t "$chosen"
-                echo -e "${BGREEN}✅ Pane di-rotate.${RST}"
-                ;;
-            8)
-                read -p "$(echo -e ${BCYAN}📐 Pane index:${RST} ) " rz_idx
-                read -p "$(echo -e ${BCYAN}📐 Arah (U/D/L/R):${RST} ) " rz_dir
-                read -p "$(echo -e ${BCYAN}📐 Jumlah cell:${RST} ) " rz_amt
-                [ -n "$rz_idx" ] && [ -n "$rz_dir" ] && [ -n "$rz_amt" ] && tmux resize-pane -t "${chosen}:.${rz_idx}" -"${rz_dir}" "${rz_amt}" && echo -e "${BGREEN}✅ Pane di-resize.${RST}"
-                ;;
-            0) break ;;
-            *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
-        esac
         echo ""
-        read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-    done
+
+        if ! command -v tmux >/dev/null 2>&1; then
+            echo -e "${BRED}❌ Tmux belum terinstall!${RST}"
+            read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+            return
+        fi
+
+        chosen=$(pilih_session "Pilih session")
+        [ $? -ne 0 ] && { read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"; return; }
+    fi
+
+    header
+    echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
+    echo -e "${BCYAN}║${RST}          ${BOLD}📐 PANES: ${BWHITE}${chosen}${RST}                                 ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
+
+    # List panes
+    local panes=$(tmux list-panes -t "$chosen" -F "#{pane_index}: #{pane_width}x#{pane_height} #{?pane_active,🟢,⚫} PID=#{pane_pid}" 2>/dev/null)
+    while IFS= read -r p; do
+        echo -e "${BCYAN}║${RST} ${DIM}${p}${RST}"
+    done <<< "$panes"
+
+    echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[1]${RST} ⬇️  Split Vertikal   ${BOLD}[5]${RST} 🔄 Swap Pane        ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[2]${RST} ➡️  Split Horizontal ${BOLD}[6]${RST} 💀 Kill Pane         ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[3]${RST} 🖼️  Break Pane       ${BOLD}[7]${RST} 🔀 Rotate Pane       ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[4]${RST} 🔲 Join Pane         ${BOLD}[8]${RST} 📐 Resize Pane       ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}[0]${RST} ↩️  Kembali${RST}                                          ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
+    read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pane Menu]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" pane_menu
+
+    case "$pane_menu" in
+        1)
+            tmux split-window -t "$chosen" -v
+            echo -e "${BGREEN}✅ Pane vertikal dibuat.${RST}"
+            ;;
+        2)
+            tmux split-window -t "$chosen" -h
+            echo -e "${BGREEN}✅ Pane horizontal dibuat.${RST}"
+            ;;
+        3)
+            read -p "$(echo -e ${BCYAN}🖼️  Pane index untuk break:${RST} ) " brk_idx
+            [ -n "$brk_idx" ] && tmux break-pane -t "${chosen}:.${brk_idx}" && echo -e "${BGREEN}✅ Pane di-break ke window baru.${RST}"
+            ;;
+        4)
+            read -p "$(echo -e ${BCYAN}🔲 Source pane index:${RST} ) " jn_src
+            read -p "$(echo -e ${BCYAN}🔲 Target pane index:${RST} ) " jn_dst
+            [ -n "$jn_src" ] && [ -n "$jn_dst" ] && tmux join-pane -s "${chosen}:.${jn_src}" -t "${chosen}:.${jn_dst}" && echo -e "${BGREEN}✅ Pane di-join.${RST}"
+            ;;
+        5)
+            read -p "$(echo -e ${BCYAN}🔄 Source pane:${RST} ) " sp_src
+            read -p "$(echo -e ${BCYAN}🔄 Target pane:${RST} ) " sp_dst
+            [ -n "$sp_src" ] && [ -n "$sp_dst" ] && tmux swap-pane -s "${chosen}:.${sp_src}" -t "${chosen}:.${sp_dst}" && echo -e "${BGREEN}✅ Pane di-swap.${RST}"
+            ;;
+        6)
+            read -p "$(echo -e ${BRED}💀 Pane index untuk kill:${RST} ) " kp_idx
+            [ -n "$kp_idx" ] && tmux kill-pane -t "${chosen}:.${kp_idx}" && echo -e "${BGREEN}✅ Pane di-kill.${RST}"
+            ;;
+        7)
+            tmux rotate-window -t "$chosen"
+            echo -e "${BGREEN}✅ Pane di-rotate.${RST}"
+            ;;
+        8)
+            read -p "$(echo -e ${BCYAN}📐 Pane index:${RST} ) " rz_idx
+            read -p "$(echo -e ${BCYAN}📐 Arah (U/D/L/R):${RST} ) " rz_dir
+            read -p "$(echo -e ${BCYAN}📐 Jumlah cell:${RST} ) " rz_amt
+            [ -n "$rz_idx" ] && [ -n "$rz_dir" ] && [ -n "$rz_amt" ] && tmux resize-pane -t "${chosen}:.${rz_idx}" -"${rz_dir}" "${rz_amt}" && echo -e "${BGREEN}✅ Pane di-resize.${RST}"
+            ;;
+        0) return ;;
+        *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
+    esac
+
+    echo ""
+    read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+    # Rekursi dengan session yang sama
+    pane_management "$chosen"
 }
 
 # ===============================
@@ -832,27 +842,26 @@ konfigurasi_tmux() {
     echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
     echo ""
 
-    while true; do
-        echo -e "${BCYAN}┌────[${BYELLOW}Pilih Aksi${RST}${BCYAN}]${RST}"
-        echo -e "${BCYAN}│${RST} ${BOLD}[1]${RST} 📝 Buat file konfigurasi baru (~/.tmux.conf)"
-        echo -e "${BCYAN}│${RST} ${BOLD}[2]${RST} 👁️  Lihat konfigurasi saat ini"
-        echo -e "${BCYAN}│${RST} ${BOLD}[3]${RST} 📋 Terapkan template konfigurasi keren"
-        echo -e "${BCYAN}│${RST} ${BOLD}[4]${RST} 💾 Backup konfigurasi"
-        echo -e "${BCYAN}│${RST} ${BOLD}[5]${RST} 🔄 Reload konfigurasi (source ~/.tmux.conf)"
-        echo -e "${BCYAN}│${RST} ${BOLD}[6]${RST} 📦 Install TPM (Tmux Plugin Manager)"
-        echo -e "${BCYAN}│${RST} ${BOLD}[7]${RST} 🗑️  Hapus konfigurasi"
-        echo -e "${BCYAN}│${RST} ${BOLD}[0]${RST} ↩️  Kembali"
-        echo -e "${BCYAN}└─────────────────────────────────────────────${RST}"
-        read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pilih]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" config_menu
+    echo -e "${BCYAN}┌────[${BYELLOW}Pilih Aksi${RST}${BCYAN}]${RST}"
+    echo -e "${BCYAN}│${RST} ${BOLD}[1]${RST} 📝 Buat file konfigurasi baru (~/.tmux.conf)"
+    echo -e "${BCYAN}│${RST} ${BOLD}[2]${RST} 👁️  Lihat konfigurasi saat ini"
+    echo -e "${BCYAN}│${RST} ${BOLD}[3]${RST} 📋 Terapkan template konfigurasi keren"
+    echo -e "${BCYAN}│${RST} ${BOLD}[4]${RST} 💾 Backup konfigurasi"
+    echo -e "${BCYAN}│${RST} ${BOLD}[5]${RST} 🔄 Reload konfigurasi (source ~/.tmux.conf)"
+    echo -e "${BCYAN}│${RST} ${BOLD}[6]${RST} 📦 Install TPM (Tmux Plugin Manager)"
+    echo -e "${BCYAN}│${RST} ${BOLD}[7]${RST} 🗑️  Hapus konfigurasi"
+    echo -e "${BCYAN}│${RST} ${BOLD}[0]${RST} ↩️  Kembali"
+    echo -e "${BCYAN}└─────────────────────────────────────────────${RST}"
+    read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pilih]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️  ${RST})" config_menu
 
-        case "$config_menu" in
-            1)
-                if [ -f "$TMUX_CONFIG_FILE" ]; then
-                    echo -e "${BYELLOW}⚠️  File ~/.tmux.conf sudah ada.${RST}"
-                    read -p "$(echo -e ${BCYAN}Timpa? [y/N]:${RST} ) " timpa
-                    [[ ! "$timpa" =~ ^[Yy]$ ]] && continue
-                fi
-                cat > "$TMUX_CONFIG_FILE" << 'TMUXEOF'
+    case "$config_menu" in
+        1)
+            if [ -f "$TMUX_CONFIG_FILE" ]; then
+                echo -e "${BYELLOW}⚠️  File ~/.tmux.conf sudah ada.${RST}"
+                read -p "$(echo -e ${BCYAN}Timpa? [y/N]:${RST} ) " timpa
+                [[ ! "$timpa" =~ ^[Yy]$ ]] && { konfigurasi_tmux; return; }
+            fi
+            cat > "$TMUX_CONFIG_FILE" << 'TMUXEOF'
 # ===========================================
 # 🎨 TMUX CONFIGURATION
 # ===========================================
@@ -915,38 +924,38 @@ set -g renumber-windows on
 # --- Focus events ---
 set -g focus-events on
 TMUXEOF
-                echo -e "${BGREEN}✅ Konfigurasi dibuat di ~/.tmux.conf${RST}"
-                echo -e "${BYELLOW}💡 Jalankan 'tmux source ~/.tmux.conf' atau prefix + r untuk reload.${RST}"
-                log_action "Membuat tmux.conf baru"
-                ;;
-            2)
-                echo ""
-                if [ -f "$TMUX_CONFIG_FILE" ]; then
-                    echo -e "${BCYAN}📄 ~/.tmux.conf:${RST}"
-                    echo -e "${DIM}─────────────────────────────────────────────${RST}"
-                    cat -n "$TMUX_CONFIG_FILE"
-                    echo -e "${DIM}─────────────────────────────────────────────${RST}"
-                else
-                    echo -e "${BYELLOW}⚠️  Belum ada file ~/.tmux.conf${RST}"
-                fi
-                echo ""
-                ;;
-            3)
-                echo ""
-                echo -e "${BCYAN}📋 Pilih template:${RST}"
-                echo -e "  ${BOLD}[1]${RST} 🎨 Tokyo Night (gelap, ungu/biru)"
-                echo -e "  ${BOLD}[2]${RST} 🌿 Gruvbox (retro, hangat)"
-                echo -e "  ${BOLD}[3]${RST} ⚡ Minimal (sederhana, cepat)"
-                read -p "$(echo -e ${BCYAN}Pilih:${RST} ) " tpl
+            echo -e "${BGREEN}✅ Konfigurasi dibuat di ~/.tmux.conf${RST}"
+            echo -e "${BYELLOW}💡 Jalankan 'tmux source ~/.tmux.conf' atau prefix + r untuk reload.${RST}"
+            log_action "Membuat tmux.conf baru"
+            ;;
+        2)
+            echo ""
+            if [ -f "$TMUX_CONFIG_FILE" ]; then
+                echo -e "${BCYAN}📄 ~/.tmux.conf:${RST}"
+                echo -e "${DIM}─────────────────────────────────────────────${RST}"
+                cat -n "$TMUX_CONFIG_FILE"
+                echo -e "${DIM}─────────────────────────────────────────────${RST}"
+            else
+                echo -e "${BYELLOW}⚠️  Belum ada file ~/.tmux.conf${RST}"
+            fi
+            echo ""
+            ;;
+        3)
+            echo ""
+            echo -e "${BCYAN}📋 Pilih template:${RST}"
+            echo -e "  ${BOLD}[1]${RST} 🎨 Tokyo Night (gelap, ungu/biru)"
+            echo -e "  ${BOLD}[2]${RST} 🌿 Gruvbox (retro, hangat)"
+            echo -e "  ${BOLD}[3]${RST} ⚡ Minimal (sederhana, cepat)"
+            read -p "$(echo -e ${BCYAN}Pilih:${RST} ) " tpl
 
-                case "$tpl" in
-                    1) theme_bg='#1a1b26'; theme_fg='#a9b1d6'; theme_accent='#7aa2f7';;
-                    2) theme_bg='#282828'; theme_fg='#ebdbb2'; theme_accent='#fabd2f';;
-                    3) theme_bg='#000000'; theme_fg='#ffffff'; theme_accent='#00ff00';;
-                    *) echo -e "${BRED}❌ Tidak valid.${RST}"; continue ;;
-                esac
+            case "$tpl" in
+                1) theme_bg='#1a1b26'; theme_fg='#a9b1d6'; theme_accent='#7aa2f7';;
+                2) theme_bg='#282828'; theme_fg='#ebdbb2'; theme_accent='#fabd2f';;
+                3) theme_bg='#000000'; theme_fg='#ffffff'; theme_accent='#00ff00';;
+                *) echo -e "${BRED}❌ Tidak valid.${RST}"; konfigurasi_tmux; return ;;
+            esac
 
-                cat > "$TMUX_CONFIG_FILE" << EOF
+            cat > "$TMUX_CONFIG_FILE" << EOF
 # ╔══════════════════════════════════════════════╗
 # ║         🎨 TMUX CONFIG TEMPLATE             ║
 # ╚══════════════════════════════════════════════╝
@@ -984,61 +993,63 @@ set -sg escape-time 0
 set -g renumber-windows on
 set -g focus-events on
 EOF
-                echo -e "${BGREEN}✅ Template diterapkan!${RST}"
-                log_action "Template tmux.conf diterapkan"
-                ;;
-            4)
-                if [ -f "$TMUX_CONFIG_FILE" ]; then
-                    local backup_file="$TMUX_CONFIG_FILE.backup.$(date +%Y%m%d_%H%M%S)"
-                    cp "$TMUX_CONFIG_FILE" "$backup_file"
-                    echo -e "${BGREEN}✅ Backup disimpan: ${backup_file}${RST}"
-                    log_action "Backup tmux.conf: $backup_file"
-                else
-                    echo -e "${BYELLOW}⚠️  Tidak ada file untuk di-backup.${RST}"
+            echo -e "${BGREEN}✅ Template diterapkan!${RST}"
+            log_action "Template tmux.conf diterapkan"
+            ;;
+        4)
+            if [ -f "$TMUX_CONFIG_FILE" ]; then
+                local backup_file="$TMUX_CONFIG_FILE.backup.$(date +%Y%m%d_%H%M%S)"
+                cp "$TMUX_CONFIG_FILE" "$backup_file"
+                echo -e "${BGREEN}✅ Backup disimpan: ${backup_file}${RST}"
+                log_action "Backup tmux.conf: $backup_file"
+            else
+                echo -e "${BYELLOW}⚠️  Tidak ada file untuk di-backup.${RST}"
+            fi
+            ;;
+        5)
+            if [ -f "$TMUX_CONFIG_FILE" ]; then
+                tmux source-file "$TMUX_CONFIG_FILE" 2>/dev/null
+                echo -e "${BGREEN}✅ Konfigurasi di-reload!${RST}"
+                log_action "Reload tmux.conf"
+            else
+                echo -e "${BRED}❌ Tidak ada ~/.tmux.conf${RST}"
+            fi
+            ;;
+        6)
+            echo ""
+            echo -e "${BYELLOW}📦 Menginstall TPM (Tmux Plugin Manager)...${RST}"
+            if [ -d "$TMUX_PLUGIN_DIR/tpm" ]; then
+                echo -e "${BYELLOW}⚠️  TPM sudah terinstall.${RST}"
+            else
+                mkdir -p "$TMUX_PLUGIN_DIR"
+                git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_DIR/tpm"
+                echo -e "${BGREEN}✅ TPM terinstall!${RST}"
+                echo -e "${DIM}   Tambahkan ini ke ~/.tmux.conf:${RST}"
+                echo -e "${DIM}   set -g @plugin 'tmux-plugins/tpm'${RST}"
+                echo -e "${DIM}   run '~/.tmux/plugins/tpm/tpm'${RST}"
+                log_action "TPM diinstall"
+            fi
+            ;;
+        7)
+            if [ -f "$TMUX_CONFIG_FILE" ]; then
+                read -p "$(echo -e ${BRED}🗑️  Yakin hapus ~/.tmux.conf? [y/N]:${RST} ) " del_confirm
+                if [[ "$del_confirm" =~ ^[Yy]$ ]]; then
+                    rm "$TMUX_CONFIG_FILE"
+                    echo -e "${BGREEN}✅ Konfigurasi dihapus.${RST}"
+                    log_action "Hapus tmux.conf"
                 fi
-                ;;
-            5)
-                if [ -f "$TMUX_CONFIG_FILE" ]; then
-                    tmux source-file "$TMUX_CONFIG_FILE" 2>/dev/null
-                    echo -e "${BGREEN}✅ Konfigurasi di-reload!${RST}"
-                    log_action "Reload tmux.conf"
-                else
-                    echo -e "${BRED}❌ Tidak ada ~/.tmux.conf${RST}"
-                fi
-                ;;
-            6)
-                echo ""
-                echo -e "${BYELLOW}📦 Menginstall TPM (Tmux Plugin Manager)...${RST}"
-                if [ -d "$TMUX_PLUGIN_DIR/tpm" ]; then
-                    echo -e "${BYELLOW}⚠️  TPM sudah terinstall.${RST}"
-                else
-                    mkdir -p "$TMUX_PLUGIN_DIR"
-                    git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_DIR/tpm"
-                    echo -e "${BGREEN}✅ TPM terinstall!${RST}"
-                    echo -e "${DIM}   Tambahkan ini ke ~/.tmux.conf:${RST}"
-                    echo -e "${DIM}   set -g @plugin 'tmux-plugins/tpm'${RST}"
-                    echo -e "${DIM}   run '~/.tmux/plugins/tpm/tpm'${RST}"
-                    log_action "TPM diinstall"
-                fi
-                ;;
-            7)
-                if [ -f "$TMUX_CONFIG_FILE" ]; then
-                    read -p "$(echo -e ${BRED}🗑️  Yakin hapus ~/.tmux.conf? [y/N]:${RST} ) " del_confirm
-                    if [[ "$del_confirm" =~ ^[Yy]$ ]]; then
-                        rm "$TMUX_CONFIG_FILE"
-                        echo -e "${BGREEN}✅ Konfigurasi dihapus.${RST}"
-                        log_action "Hapus tmux.conf"
-                    fi
-                else
-                    echo -e "${BYELLOW}⚠️  Tidak ada file untuk dihapus.${RST}"
-                fi
-                ;;
-            0) break ;;
-            *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
-        esac
-        echo ""
-        read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-    done
+            else
+                echo -e "${BYELLOW}⚠️  Tidak ada file untuk dihapus.${RST}"
+            fi
+            ;;
+        0) return ;;
+        *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
+    esac
+
+    echo ""
+    read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+    # Rekursi untuk kembali ke menu konfigurasi
+    konfigurasi_tmux
 }
 
 # ===============================
@@ -1051,21 +1062,20 @@ help_dokumentasi() {
     echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
     echo ""
 
-    while true; do
-        echo -e "${BCYAN}┌────[${BYELLOW}📚 Pilih Topik${RST}${BCYAN}]${RST}"
-        echo -e "${BCYAN}│${RST} ${BOLD}[1]${RST} 🎓 Apa itu Tmux? (Pengenalan untuk Pemula)"
-        echo -e "${BCYAN}│${RST} ${BOLD}[2]${RST} ⌨️  Cheatsheet Keyboard Shortcuts"
-        echo -e "${BCYAN}│${RST} ${BOLD}[3]${RST} 🪟 Konsep Session, Window, Pane"
-        echo -e "${BCYAN}│${RST} ${BOLD}[4]${RST} 📋 Perintah Dasar (CLI Commands)"
-        echo -e "${BCYAN}│${RST} ${BOLD}[5]${RST} 🎨 Customisasi & Plugin"
-        echo -e "${BCYAN}│${RST} ${BOLD}[6]${RST} 💡 Tips & Trik"
-        echo -e "${BCYAN}│${RST} ${BOLD}[7]${RST} 🐛 Troubleshooting"
-        echo -e "${BCYAN}│${RST} ${BOLD}[0]${RST} ↩️  Kembali"
-        echo -e "${BCYAN}└─────────────────────────────────────────────${RST}"
-        read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pilih]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️   ${RST})" help_menu
+    echo -e "${BCYAN}┌────[${BYELLOW}📚 Pilih Topik${RST}${BCYAN}]${RST}"
+    echo -e "${BCYAN}│${RST} ${BOLD}[1]${RST} 🎓 Apa itu Tmux? (Pengenalan untuk Pemula)"
+    echo -e "${BCYAN}│${RST} ${BOLD}[2]${RST} ⌨️  Cheatsheet Keyboard Shortcuts"
+    echo -e "${BCYAN}│${RST} ${BOLD}[3]${RST} 🪟 Konsep Session, Window, Pane"
+    echo -e "${BCYAN}│${RST} ${BOLD}[4]${RST} 📋 Perintah Dasar (CLI Commands)"
+    echo -e "${BCYAN}│${RST} ${BOLD}[5]${RST} 🎨 Customisasi & Plugin"
+    echo -e "${BCYAN}│${RST} ${BOLD}[6]${RST} 💡 Tips & Trik"
+    echo -e "${BCYAN}│${RST} ${BOLD}[7]${RST} 🐛 Troubleshooting"
+    echo -e "${BCYAN}│${RST} ${BOLD}[0]${RST} ↩️  Kembali"
+    echo -e "${BCYAN}└─────────────────────────────────────────────${RST}"
+    read -p "$(echo -e ${BCYAN}┌──${RST}${BYELLOW}[Pilih]${RST})"$'\n'"$(echo -e ${BCYAN}└──▶️   ${RST})" help_menu
 
-        case "$help_menu" in
-            1)
+    case "$help_menu" in
+        1)
                 clear
                 echo ""
                 echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
@@ -1363,12 +1373,13 @@ help_dokumentasi() {
                 echo -e "  ${DIM}→${RST} Gunakan plugin tmux-yank"
                 echo ""
                 ;;
-            0) break ;;
+            0) return ;;
             *) echo -e "${BRED}❌ Pilihan tidak valid!${RST}" ;;
         esac
         echo ""
         read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-    done
+    # Rekursi untuk kembali ke menu help
+    help_dokumentasi
 }
 
 # ===============================
@@ -1433,58 +1444,59 @@ server_info() {
 # 🎯 MAIN MENU
 # ===============================
 main_menu() {
-    while true; do
-        header
-        status_bar
-        tampil_session_detail
+    header
+    status_bar
+    tampil_session_detail
 
-        echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
-        echo -e "${BCYAN}║${RST} ${BOLD}${BWHITE}📋 MENU UTAMA${RST}                                                ${BCYAN}║${RST}"
-        echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
-        echo -e "${BCYAN}║${RST}                                                              ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}📦${RST} ${BOLD}[1]${RST}  Install Tmux          ${DIM}┃${RST}  ${BOLD}${BCYAN}🪟${RST}  ${BOLD}[7]${RST}  Window Management  ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}🆕${RST} ${BOLD}[2]${RST}  Buat Session Baru     ${DIM}┃${RST}  ${BOLD}${BMAGENTA}📐${RST} ${BOLD}[8]${RST}  Pane Management    ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}👁️ ${RST} ${BOLD}[3]${RST}  Attach ke Session     ${DIM}┃${RST}  ${BOLD}${BYELLOW}⚙️ ${RST} ${BOLD}[9]${RST}  Konfigurasi Tmux   ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}🔍${RST} ${BOLD}[4]${RST}  Lihat Detail Session  ${DIM}┃${RST}  ${BOLD}${BCYAN}🖥️ ${RST} ${BOLD}[A]${RST}  Server Info        ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BRED}💀${RST} ${BOLD}[5]${RST}  Kill Session          ${DIM}┃${RST}  ${BOLD}${BGREEN}📖${RST} ${BOLD}[H]${RST}  Help & Dokumentasi ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}✏️ ${RST} ${BOLD}[6]${RST}  Rename Session        ${DIM}┃${RST}  ${BOLD}${BRED}🚪${RST} ${BOLD}[0]${RST}  Keluar             ${BCYAN}║${RST}"
-        echo -e "${BCYAN}║${RST}                                                              ${BCYAN}║${RST}"
-        echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
-        echo ""
+    echo -e "${BCYAN}╔══════════════════════════════════════════════════════════════╗${RST}"
+    echo -e "${BCYAN}║${RST} ${BOLD}${BWHITE}📋 MENU UTAMA${RST}                                                ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╠══════════════════════════════════════════════════════════════╣${RST}"
+    echo -e "${BCYAN}║${RST}                                                              ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}📦${RST} ${BOLD}[1]${RST}  Install Tmux          ${DIM}┃${RST}  ${BOLD}${BCYAN}🪟${RST}  ${BOLD}[7]${RST}  Window Management  ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}🆕${RST} ${BOLD}[2]${RST}  Buat Session Baru     ${DIM}┃${RST}  ${BOLD}${BMAGENTA}📐${RST} ${BOLD}[8]${RST}  Pane Management    ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}👁️ ${RST} ${BOLD}[3]${RST}  Attach ke Session     ${DIM}┃${RST}  ${BOLD}${BYELLOW}⚙️ ${RST} ${BOLD}[9]${RST}  Konfigurasi Tmux   ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}🔍${RST} ${BOLD}[4]${RST}  Lihat Detail Session  ${DIM}┃${RST}  ${BOLD}${BCYAN}🖥️ ${RST} ${BOLD}[A]${RST}  Server Info        ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BRED}💀${RST} ${BOLD}[5]${RST}  Kill Session          ${DIM}┃${RST}  ${BOLD}${BGREEN}📖${RST} ${BOLD}[H]${RST}  Help & Dokumentasi ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}  ${BOLD}${BGREEN}✏️ ${RST} ${BOLD}[6]${RST}  Rename Session        ${DIM}┃${RST}  ${BOLD}${BRED}🚪${RST} ${BOLD}[0]${RST}  Keluar             ${BCYAN}║${RST}"
+    echo -e "${BCYAN}║${RST}                                                              ${BCYAN}║${RST}"
+    echo -e "${BCYAN}╚══════════════════════════════════════════════════════════════╝${RST}"
+    echo ""
 
-        echo -e "${BCYAN}┌──(${BYELLOW}${SCRIPT_NAME} v${SCRIPT_VERSION}${RST}${BCYAN})${RST}"
-        read -p "$(echo -e ${BCYAN}└──▶️  ${RST}) " pilih
-        echo ""
+    echo -e "${BCYAN}┌──(${BYELLOW}${SCRIPT_NAME} v${SCRIPT_VERSION}${RST}${BCYAN})${RST}"
+    read -p "$(echo -e ${BCYAN}└──▶️  ${RST}) " pilih
+    echo ""
 
-        case "$pilih" in
-            1)  install_tmux ;;
-            2)  buat_session ;;
-            3)  attach_session ;;
-            4)  lihat_detail_session ;;
-            5)  kill_session ;;
-            6)  rename_session ;;
-            7)  window_management ;;
-            8)  pane_management ;;
-            9)  konfigurasi_tmux ;;
-            [Aa]) server_info ;;
-            [Hh]) help_dokumentasi ;;
-            0)
-                clear
-                echo ""
-                echo -e "${BGREEN}╔══════════════════════════════════════════════════════════════╗${RST}"
-                echo -e "${BGREEN}║${RST}  ${BWHITE}👋 Terima kasih telah menggunakan Tmux Manager!${RST}             ${BGREEN}║${RST}"
-                echo -e "${BGREEN}║${RST}  ${DIM}💡 Tip: Jalankan 'tmux' kapan saja dari terminal.${RST}           ${BGREEN}║${RST}"
-                echo -e "${BGREEN}╚══════════════════════════════════════════════════════════════╝${RST}"
-                echo ""
-                exit 0
-                ;;
-            *)
-                echo -e "${BRED}❌ Pilihan tidak valid!${RST}"
-                echo -e "${DIM}   Pilih angka 1-9, H untuk Help, A untuk Server Info, 0 untuk Keluar.${RST}"
-                read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
-                ;;
-        esac
-    done
+    case "$pilih" in
+        1)  install_tmux ;;
+        2)  buat_session ;;
+        3)  attach_session ;;
+        4)  lihat_detail_session ;;
+        5)  kill_session ;;
+        6)  rename_session ;;
+        7)  window_management ;;
+        8)  pane_management ;;
+        9)  konfigurasi_tmux ;;
+        [Aa]) server_info ;;
+        [Hh]) help_dokumentasi ;;
+        0)
+            clear
+            echo ""
+            echo -e "${BGREEN}╔══════════════════════════════════════════════════════════════╗${RST}"
+            echo -e "${BGREEN}║${RST}  ${BWHITE}👋 Terima kasih telah menggunakan Tmux Manager!${RST}             ${BGREEN}║${RST}"
+            echo -e "${BGREEN}║${RST}  ${DIM}💡 Tip: Jalankan 'tmux' kapan saja dari terminal.${RST}           ${BGREEN}║${RST}"
+            echo -e "${BGREEN}╚══════════════════════════════════════════════════════════════╝${RST}"
+            echo ""
+            exit 0
+            ;;
+        *)
+            echo -e "${BRED}❌ Pilihan tidak valid!${RST}"
+            echo -e "${DIM}   Pilih angka 1-9, H untuk Help, A untuk Server Info, 0 untuk Keluar.${RST}"
+            read -p "$(echo -e ${BCYAN}[Enter untuk lanjut...]${RST})"
+            ;;
+    esac
+
+    # Restart script untuk mencegah memory leak
+    exec "$0"
 }
 
 # ===============================
