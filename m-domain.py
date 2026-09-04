@@ -1,3 +1,4 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 
 import shutil
@@ -50,7 +51,8 @@ def get_whois(domain):
     if shutil.which("whois") is None:
         return None
 
-    result = subprocess.run(["whois", domain], capture_output=True, text=True, check=False)
+    result = subprocess.run(
+        ["whois", domain], capture_output=True, text=True, check=False)
     if result.returncode != 0 and not result.stdout:
         return []
     return result.stdout.splitlines()
@@ -76,7 +78,8 @@ def format_whois_line(line):
 
 def main():
     if shutil.which("whois") is None:
-        print(colorize("⚠️  whois belum terpasang. Silakan pasang dengan perintah: apt install whois", RED))
+        print(colorize(
+            "⚠️  whois belum terpasang. Silakan pasang dengan perintah: apt install whois", RED))
         sys.exit(1)
 
     domain = input(colorize("🔎 Masukkan domain: ", YELLOW)).strip()

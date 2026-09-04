@@ -1,3 +1,4 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -9,7 +10,14 @@
    Deteksi: email, SMS, komentar, form submission, username, teks.
 """
 
-import subprocess, sys, os, re, json, time, hashlib, math
+import subprocess
+import sys
+import os
+import re
+import json
+import time
+import hashlib
+import math
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -18,13 +26,15 @@ from collections import Counter, defaultdict
 # ═══════════════════════════════════════════════════════════════════
 # 🎨 DARK TERMINAL COLOR SYSTEM
 # ═══════════════════════════════════════════════════════════════════
+
+
 class Color:
-    RESET   = "\033[0m"
-    BOLD    = "\033[1m"
-    DIM     = "\033[2m"
-    ITALIC  = "\033[3m"
-    UNDER   = "\033[4m"
-    BLINK   = "\033[5m"
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    DIM = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDER = "\033[4m"
+    BLINK = "\033[5m"
     R = "\033[0;31m"
     G = "\033[0;32m"
     Y = "\033[1;33m"
@@ -45,31 +55,35 @@ class Color:
     BGB = "\033[44m"
     BGM = "\033[45m"
     BGC = "\033[46m"
-    DARK_FG  = "\033[38;2;180;180;200m"
-    ACCENT   = "\033[38;2;0;255;136m"
-    WARN_C   = "\033[38;2;255;165;0m"
+    DARK_FG = "\033[38;2;180;180;200m"
+    ACCENT = "\033[38;2;0;255;136m"
+    WARN_C = "\033[38;2;255;165;0m"
     DANGER_C = "\033[38;2;255;50;50m"
-    INFO_C   = "\033[38;2;0;200;255m"
-    PURPLE   = "\033[38;2;180;100;255m"
-    GOLD     = "\033[38;2;255;215;0m"
-    SILVER   = "\033[38;2;192;192;192m"
+    INFO_C = "\033[38;2;0;200;255m"
+    PURPLE = "\033[38;2;180;100;255m"
+    GOLD = "\033[38;2;255;215;0m"
+    SILVER = "\033[38;2;192;192;192m"
 
-OK    = f"{Color.G}✔{Color.RESET}"
-FAIL  = f"{Color.R}✘{Color.RESET}"
-WARN  = f"{Color.WARN_C}⚠{Color.RESET}"
-INFO  = f"{Color.INFO_C}ℹ{Color.RESET}"
+
+OK = f"{Color.G}✔{Color.RESET}"
+FAIL = f"{Color.R}✘{Color.RESET}"
+WARN = f"{Color.WARN_C}⚠{Color.RESET}"
+INFO = f"{Color.INFO_C}ℹ{Color.RESET}"
 ARROW = f"{Color.ACCENT}➤{Color.RESET}"
-BULLET= f"{Color.PURPLE}◆{Color.RESET}"
-STAR  = f"{Color.GOLD}★{Color.RESET}"
+BULLET = f"{Color.PURPLE}◆{Color.RESET}"
+STAR = f"{Color.GOLD}★{Color.RESET}"
 
 # ═══════════════════════════════════════════════════════════════════
 # 🧩 UTILITY FUNCTIONS
 # ═══════════════════════════════════════════════════════════════════
 
+
 def cls(): os.system("cls" if os.name == "nt" else "clear")
+
 
 def thin_hr():
     print(f"  {Color.DIM}{'─' * 64}{Color.RESET}")
+
 
 def banner():
     print(f"""
@@ -81,21 +95,27 @@ def banner():
   ║{Color.RESET}  {Color.PURPLE}▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀{Color.ACCENT}  ║
   {Color.ACCENT}╚{'═' * 62}╝{Color.RESET}""")
 
+
 def header(title: str, subtitle: str = ""):
     print(f"\n  {Color.PURPLE}┌{'─' * 62}┐{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.BOLD}{Color.ACCENT}{title}{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.BOLD}{Color.ACCENT}{title}{Color.RESET}")
     if subtitle:
         print(f"  {Color.PURPLE}│{Color.RESET}  {Color.DIM}{subtitle}{Color.RESET}")
     print(f"  {Color.PURPLE}└{'─' * 62}┘{Color.RESET}")
 
-def pause():
-    input(f"\n  {Color.ACCENT}[⏎]{Color.RESET} {Color.DIM}Tekan Enter untuk kembali...{Color.RESET}")
 
-def ok(msg):     print(f"  {OK}  {Color.G}{msg}{Color.RESET}")
-def fail(msg):   print(f"  {FAIL}  {Color.DANGER_C}{msg}{Color.RESET}")
-def warn(msg):   print(f"  {WARN}  {Color.WARN_C}{msg}{Color.RESET}")
-def info(msg):   print(f"  {INFO}  {Color.INFO_C}{msg}{Color.RESET}")
+def pause():
+    input(
+        f"\n  {Color.ACCENT}[⏎]{Color.RESET} {Color.DIM}Tekan Enter untuk kembali...{Color.RESET}")
+
+
+def ok(msg): print(f"  {OK}  {Color.G}{msg}{Color.RESET}")
+def fail(msg): print(f"  {FAIL}  {Color.DANGER_C}{msg}{Color.RESET}")
+def warn(msg): print(f"  {WARN}  {Color.WARN_C}{msg}{Color.RESET}")
+def info(msg): print(f"  {INFO}  {Color.INFO_C}{msg}{Color.RESET}")
 def detail(msg): print(f"     {Color.DIM}{msg}{Color.RESET}")
+
 
 def box(color: str, title: str, text: str):
     print(f"  {color}┌{'─' * 60}┐{Color.RESET}")
@@ -105,8 +125,10 @@ def box(color: str, title: str, text: str):
         print(f"  {color}│{Color.RESET}  {Color.W}{line_text}{Color.RESET}")
     print(f"  {color}└{'─' * 60}┘{Color.RESET}")
 
+
 def get_timestamp() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 def save_result(tool_name: str, data: str):
     dir_name = "hasil_antispam"
@@ -116,6 +138,7 @@ def save_result(tool_name: str, data: str):
     with open(filename, "w", encoding="utf-8") as f:
         f.write(data)
     return filename
+
 
 def progress_bar(current: int, total: int, prefix: str = "", width: int = 36) -> str:
     pct = current / total if total > 0 else 0
@@ -127,6 +150,7 @@ def progress_bar(current: int, total: int, prefix: str = "", width: int = 36) ->
 # 📦 AUTO DEPENDENCY CHECK
 # ═══════════════════════════════════════════════════════════════════
 
+
 def check_deps():
     import importlib
     need = []
@@ -137,16 +161,20 @@ def check_deps():
             need.append(lib)
     if not need:
         return
-    print(f"\n  {Color.WARN_C}[!] Installing {len(need)} package(s)...{Color.RESET}")
+    print(
+        f"\n  {Color.WARN_C}[!] Installing {len(need)} package(s)...{Color.RESET}")
     for lib in need:
         print(f"  {Color.DIM}⏳ {lib}...{Color.RESET}", end=" ", flush=True)
-        r = subprocess.run([sys.executable, "-m", "pip", "install", lib, "--quiet"], capture_output=True, timeout=60)
-        print(f"{Color.G}✔{Color.RESET}" if r.returncode == 0 else f"{Color.R}✘{Color.RESET}")
+        r = subprocess.run([sys.executable, "-m", "pip", "install",
+                           lib, "--quiet"], capture_output=True, timeout=60)
+        print(f"{Color.G}✔{Color.RESET}" if r.returncode ==
+              0 else f"{Color.R}✘{Color.RESET}")
     print()
 
 # ═══════════════════════════════════════════════════════════════════
 # 🧠 SPAM DETECTION DATABASES
 # ═══════════════════════════════════════════════════════════════════
+
 
 # Known spam keywords (weighted)
 SPAM_KEYWORDS = {
@@ -247,7 +275,8 @@ SPAM_SHORTENERS = [
 
 # Spam phrase patterns (regex)
 SPAM_PATTERNS = [
-    (r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", 4, "IP Address"),  # Raw IP in text
+    (r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",
+     4, "IP Address"),  # Raw IP in text
     (r"https?://[^\s]{100,}", 5, "Very long URL"),
     (r"<script[^>]*>", 5, "Script tag in text"),
     (r"<iframe[^>]*>", 5, "Iframe in text"),
@@ -271,8 +300,10 @@ SPAM_PATTERNS = [
 # 🧠 SPAM DETECTION ENGINE — 7 LAYER DEFENSE
 # ═══════════════════════════════════════════════════════════════════
 
+
 class SpamDetectionResult:
     """Container for spam detection result."""
+
     def __init__(self):
         self.score = 0
         self.max_score = 100
@@ -312,6 +343,7 @@ class SpamDetectionResult:
 # LAYER 1: Keyword Density Analysis
 # ───────────────────────────────────────────────────────────────────
 
+
 def layer1_keyword_analysis(text: str, result: SpamDetectionResult):
     """Analyze spam keyword density & score."""
     text_lower = text.lower()
@@ -350,6 +382,7 @@ def layer1_keyword_analysis(text: str, result: SpamDetectionResult):
 # ───────────────────────────────────────────────────────────────────
 # LAYER 2: URL & Link Analysis
 # ───────────────────────────────────────────────────────────────────
+
 
 def layer2_url_analysis(text: str, result: SpamDetectionResult):
     """Analyze URLs, shorteners, suspicious domains."""
@@ -411,6 +444,7 @@ def layer2_url_analysis(text: str, result: SpamDetectionResult):
 # LAYER 3: Email Address Analysis
 # ───────────────────────────────────────────────────────────────────
 
+
 def layer3_email_analysis(text: str, result: SpamDetectionResult):
     """Analyze email addresses in text."""
     email_pattern = r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
@@ -461,6 +495,7 @@ def layer3_email_analysis(text: str, result: SpamDetectionResult):
 # LAYER 4: Text Structure & Formatting Analysis
 # ───────────────────────────────────────────────────────────────────
 
+
 def layer4_text_structure(text: str, result: SpamDetectionResult):
     """Analyze text structure: caps, formatting, length."""
     struct_score = 0
@@ -474,7 +509,8 @@ def layer4_text_structure(text: str, result: SpamDetectionResult):
             caps_ratio = upper_count / letter_count
             if caps_ratio > 0.5:
                 struct_score += 8
-                struct_details.append(f"Excessive CAPS: {int(caps_ratio*100)}%")
+                struct_details.append(
+                    f"Excessive CAPS: {int(caps_ratio*100)}%")
             elif caps_ratio > 0.3:
                 struct_score += 4
                 struct_details.append(f"High CAPS: {int(caps_ratio*100)}%")
@@ -533,6 +569,7 @@ def layer4_text_structure(text: str, result: SpamDetectionResult):
 # LAYER 5: Pattern & Regex Matching
 # ───────────────────────────────────────────────────────────────────
 
+
 def layer5_pattern_matching(text: str, result: SpamDetectionResult):
     """Match known spam patterns via regex."""
     pattern_score = 0
@@ -542,7 +579,8 @@ def layer5_pattern_matching(text: str, result: SpamDetectionResult):
         matches = re.findall(pattern, text, re.IGNORECASE)
         if matches:
             pattern_score += weight
-            pattern_details.append(f"{desc}: {len(matches)} match(es) (+{weight})")
+            pattern_details.append(
+                f"{desc}: {len(matches)} match(es) (+{weight})")
 
     if pattern_score > 15:
         score = 15
@@ -563,6 +601,7 @@ def layer5_pattern_matching(text: str, result: SpamDetectionResult):
 # ───────────────────────────────────────────────────────────────────
 # LAYER 6: Bayesian-Style Heuristic Analysis
 # ───────────────────────────────────────────────────────────────────
+
 
 def layer6_heuristic_analysis(text: str, result: SpamDetectionResult):
     """Heuristic analysis using entropy, word frequency, etc."""
@@ -589,10 +628,12 @@ def layer6_heuristic_analysis(text: str, result: SpamDetectionResult):
         unique_ratio = len(set(words)) / len(words)
         if unique_ratio < 0.3:
             heur_score += 5
-            heur_details.append(f"Repetitive words: uniqueness {unique_ratio:.1%}")
+            heur_details.append(
+                f"Repetitive words: uniqueness {unique_ratio:.1%}")
         elif unique_ratio < 0.5:
             heur_score += 2
-            heur_details.append(f"Somewhat repetitive: uniqueness {unique_ratio:.1%}")
+            heur_details.append(
+                f"Somewhat repetitive: uniqueness {unique_ratio:.1%}")
 
     # Number density (spam often has many numbers)
     digit_count = sum(c.isdigit() for c in text)
@@ -603,12 +644,14 @@ def layer6_heuristic_analysis(text: str, result: SpamDetectionResult):
             heur_details.append(f"High digit density: {digit_ratio:.1%}")
 
     # Special character density
-    special_chars = sum(1 for c in text if not c.isalnum() and not c.isspace() and c not in ".,!?-;:()[]{}'\"")
+    special_chars = sum(1 for c in text if not c.isalnum()
+                        and not c.isspace() and c not in ".,!?-;:()[]{}'\"")
     if len(text) > 0:
         special_ratio = special_chars / len(text)
         if special_ratio > 0.15:
             heur_score += 3
-            heur_details.append(f"High special char density: {special_ratio:.1%}")
+            heur_details.append(
+                f"High special char density: {special_ratio:.1%}")
 
     # Average word length (spam often has weird words)
     if words:
@@ -637,6 +680,7 @@ def layer6_heuristic_analysis(text: str, result: SpamDetectionResult):
 # ───────────────────────────────────────────────────────────────────
 # LAYER 7: Sender/Header Reputation Check
 # ───────────────────────────────────────────────────────────────────
+
 
 def layer7_reputation_check(sender: str, subject: str, result: SpamDetectionResult):
     """Check sender reputation & subject line."""
@@ -679,10 +723,12 @@ def layer7_reputation_check(sender: str, subject: str, result: SpamDetectionResu
                 subj_keywords += w
         if subj_keywords > 10:
             rep_score += 6
-            rep_details.append(f"Spam keywords in subject: {subj_keywords} pts")
+            rep_details.append(
+                f"Spam keywords in subject: {subj_keywords} pts")
         elif subj_keywords > 5:
             rep_score += 3
-            rep_details.append(f"Some spam keywords in subject: {subj_keywords} pts")
+            rep_details.append(
+                f"Some spam keywords in subject: {subj_keywords} pts")
 
         # Subject length (very short or very long = suspicious)
         if len(subject) < 3:
@@ -712,6 +758,7 @@ def layer7_reputation_check(sender: str, subject: str, result: SpamDetectionResu
 # 🏗️ MAIN SCAN FUNCTIONS
 # ═══════════════════════════════════════════════════════════════════
 
+
 def scan_email():
     """Scan a complete email for spam."""
     cls()
@@ -722,10 +769,13 @@ def scan_email():
     print(f"  {Color.DIM}Masukkan detail email untuk dianalisis{Color.RESET}")
     print()
 
-    sender = input(f"  {ARROW} {Color.W}From (pengirim):{Color.RESET} ").strip()
-    subject = input(f"  {ARROW} {Color.W}Subject (judul):{Color.RESET} ").strip()
+    sender = input(
+        f"  {ARROW} {Color.W}From (pengirim):{Color.RESET} ").strip()
+    subject = input(
+        f"  {ARROW} {Color.W}Subject (judul):{Color.RESET} ").strip()
     print(f"  {ARROW} {Color.W}Body (isi email):{Color.RESET}")
-    print(f"  {Color.DIM}  (Ketik isi email, akhiri dengan baris kosong + Enter){Color.RESET}")
+    print(
+        f"  {Color.DIM}  (Ketik isi email, akhiri dengan baris kosong + Enter){Color.RESET}")
 
     lines = []
     while True:
@@ -739,10 +789,12 @@ def scan_email():
 
     if not full_text.strip():
         fail("Isi email kosong!")
-        pause(); return
+        pause()
+        return
 
     # Run analysis
-    print(f"\n  {Color.PURPLE}[*] Running 7-layer spam analysis...{Color.RESET}\n")
+    print(
+        f"\n  {Color.PURPLE}[*] Running 7-layer spam analysis...{Color.RESET}\n")
     time.sleep(0.5)
 
     result = SpamDetectionResult()
@@ -775,7 +827,8 @@ def scan_email():
         bar_width = int(d["score"] / d["max"] * 30) if d["max"] > 0 else 0
         bar_filled = f"{Color.ACCENT}{'█' * bar_width}{Color.DIM}{'░' * (30 - bar_width)}{Color.RESET}"
         pct = int(d["score"] / d["max"] * 100) if d["max"] > 0 else 0
-        print(f"  {Color.PURPLE}║{Color.RESET} {Color.W}{d['layer']:<25}{Color.RESET} {bar_filled} {Color.ACCENT}{pct:>3}%{Color.RESET}  {Color.PURPLE}║{Color.RESET}")
+        print(
+            f"  {Color.PURPLE}║{Color.RESET} {Color.W}{d['layer']:<25}{Color.RESET} {bar_filled} {Color.ACCENT}{pct:>3}%{Color.RESET}  {Color.PURPLE}║{Color.RESET}")
 
     print(f"  {Color.PURPLE}╠{'═' * 60}╣{Color.RESET}")
 
@@ -790,17 +843,20 @@ def scan_email():
     if result.layers.get("keyword_hits"):
         print(f"  {Color.PURPLE}║{Color.RESET} {Color.WARN_C}⚠  Top Spam Keywords:{Color.RESET}{' ' * 36}{Color.PURPLE}║{Color.RESET}")
         for kw, count, weight in result.layers["keyword_hits"][:5]:
-            print(f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {kw} ({count}x, +{weight}){Color.RESET}")
+            print(
+                f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {kw} ({count}x, +{weight}){Color.RESET}")
 
     if result.layers.get("url_details"):
         print(f"  {Color.PURPLE}║{Color.RESET} {Color.WARN_C}⚠  URL Issues:{Color.RESET}{' ' * 43}{Color.PURPLE}║{Color.RESET}")
         for ud in result.layers["url_details"][:3]:
-            print(f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {ud}{Color.RESET}")
+            print(
+                f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {ud}{Color.RESET}")
 
     if result.layers.get("struct_details"):
         print(f"  {Color.PURPLE}║{Color.RESET} {Color.WARN_C}⚠  Structure Issues:{Color.RESET}{' ' * 38}{Color.PURPLE}║{Color.RESET}")
         for sd in result.layers["struct_details"][:3]:
-            print(f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {sd}{Color.RESET}")
+            print(
+                f"  {Color.PURPLE}║{Color.RESET}   {Color.DIM}• {sd}{Color.RESET}")
 
     print(f"  {Color.PURPLE}╚{'═' * 60}╝{Color.RESET}")
 
@@ -808,23 +864,23 @@ def scan_email():
     print()
     if result.is_spam:
         box(Color.DANGER_C, "🚨 SPAM DETECTED",
-             f"Skor: {result.confidence:.1f}%\n"
-             f"Rekomendasi:\n"
-             f"• JANGAN klik link apapun\n"
-             f"• JANGAN balas email ini\n"
-             f"• Laporkan sebagai spam/phishing\n"
-             f"• Blokir pengirim: {sender}")
+            f"Skor: {result.confidence:.1f}%\n"
+            f"Rekomendasi:\n"
+            f"• JANGAN klik link apapun\n"
+            f"• JANGAN balas email ini\n"
+            f"• Laporkan sebagai spam/phishing\n"
+            f"• Blokir pengirim: {sender}")
     elif result.confidence >= 30:
         box(Color.WARN_C, "⚠️  SUSPICIOUS",
-             f"Skor: {result.confidence:.1f}%\n"
-             f"Rekomendasi:\n"
-             f"• Berhati-hati dengan email ini\n"
-             f"• Verifikasi pengirim sebelum bertindak\n"
-             f"• Jangan klik link mencurigakan")
+            f"Skor: {result.confidence:.1f}%\n"
+            f"Rekomendasi:\n"
+            f"• Berhati-hati dengan email ini\n"
+            f"• Verifikasi pengirim sebelum bertindak\n"
+            f"• Jangan klik link mencurigakan")
     else:
         box(Color.G, "✅ CLEAN",
-             f"Skor: {result.confidence:.1f}%\n"
-             f"Email ini kemungkinan besar aman.")
+            f"Skor: {result.confidence:.1f}%\n"
+            f"Email ini kemungkinan besar aman.")
 
     # Save
     report = f"╔══════════════════════════════════════════════╗\n"
@@ -845,6 +901,7 @@ def scan_email():
 
     pause()
 
+
 def scan_text():
     """Scan plain text for spam."""
     cls()
@@ -853,7 +910,8 @@ def scan_text():
     thin_hr()
 
     print(f"  {Color.DIM}Masukkan teks yang akan dianalisis{Color.RESET}")
-    print(f"  {Color.DIM}(Ketik teks, akhiri dengan baris kosong + Enter){Color.RESET}")
+    print(
+        f"  {Color.DIM}(Ketik teks, akhiri dengan baris kosong + Enter){Color.RESET}")
     print()
 
     lines = []
@@ -866,7 +924,8 @@ def scan_text():
 
     if not text.strip():
         fail("Teks kosong!")
-        pause(); return
+        pause()
+        return
 
     print(f"\n  {Color.PURPLE}[*] Running spam analysis...{Color.RESET}\n")
 
@@ -895,7 +954,8 @@ def scan_text():
         bar_width = int(d["score"] / d["max"] * 30) if d["max"] > 0 else 0
         bar_filled = f"{Color.ACCENT}{'█' * bar_width}{Color.DIM}{'░' * (30 - bar_width)}{Color.RESET}"
         pct = int(d["score"] / d["max"] * 100) if d["max"] > 0 else 0
-        print(f"  {Color.PURPLE}║{Color.RESET} {Color.W}{d['layer']:<25}{Color.RESET} {bar_filled} {Color.ACCENT}{pct:>3}%{Color.RESET}  {Color.PURPLE}║{Color.RESET}")
+        print(
+            f"  {Color.PURPLE}║{Color.RESET} {Color.W}{d['layer']:<25}{Color.RESET} {bar_filled} {Color.ACCENT}{pct:>3}%{Color.RESET}  {Color.PURPLE}║{Color.RESET}")
 
     print(f"  {Color.PURPLE}╠{'═' * 60}╣{Color.RESET}")
     verdict_color = Color.DANGER_C if result.is_spam else Color.G
@@ -903,11 +963,14 @@ def scan_text():
     print(f"  {Color.PURPLE}╚{'═' * 60}╝{Color.RESET}")
 
     if result.is_spam:
-        print(f"\n  {Color.DANGER_C}🚨 SPAM DETECTED — Skor: {result.confidence:.1f}%{Color.RESET}")
+        print(
+            f"\n  {Color.DANGER_C}🚨 SPAM DETECTED — Skor: {result.confidence:.1f}%{Color.RESET}")
     elif result.confidence >= 30:
-        print(f"\n  {Color.WARN_C}⚠️  SUSPICIOUS — Skor: {result.confidence:.1f}%{Color.RESET}")
+        print(
+            f"\n  {Color.WARN_C}⚠️  SUSPICIOUS — Skor: {result.confidence:.1f}%{Color.RESET}")
     else:
-        print(f"\n  {Color.G}✅ CLEAN — Skor: {result.confidence:.1f}%{Color.RESET}")
+        print(
+            f"\n  {Color.G}✅ CLEAN — Skor: {result.confidence:.1f}%{Color.RESET}")
 
     report = f"SPAMGUARD PRO — TEXT SCAN REPORT\n{'='*50}\n"
     report += f"Time    : {get_timestamp()}\n"
@@ -922,6 +985,7 @@ def scan_text():
     ok(f"Laporan disimpan → {filename}")
 
     pause()
+
 
 def scan_batch():
     """Batch scan multiple texts."""
@@ -946,9 +1010,11 @@ def scan_batch():
 
     if not texts:
         fail("Tidak ada teks untuk dianalisis!")
-        pause(); return
+        pause()
+        return
 
-    print(f"\n  {Color.PURPLE}[*] Analyzing {len(texts)} text(s)...{Color.RESET}\n")
+    print(
+        f"\n  {Color.PURPLE}[*] Analyzing {len(texts)} text(s)...{Color.RESET}\n")
 
     results = []
     for i, text in enumerate(texts, 1):
@@ -963,8 +1029,10 @@ def scan_batch():
         results.append((i, text, result))
 
         verdict_icon = f"{Color.DANGER_C}SPAM{Color.RESET}" if result.is_spam else f"{Color.G}CLEAN{Color.RESET}"
-        preview = text[:60].replace("\n", " ") + ("..." if len(text) > 60 else "")
-        print(f"  {Color.PURPLE}[{i}]{Color.RESET} {verdict_icon} {Color.ACCENT}{result.confidence:.0f}%{Color.RESET} {Color.DIM}{preview}{Color.RESET}")
+        preview = text[:60].replace("\n", " ") + \
+            ("..." if len(text) > 60 else "")
+        print(
+            f"  {Color.PURPLE}[{i}]{Color.RESET} {verdict_icon} {Color.ACCENT}{result.confidence:.0f}%{Color.RESET} {Color.DIM}{preview}{Color.RESET}")
 
     # Summary
     spam_count = sum(1 for _, _, r in results if r.is_spam)
@@ -990,6 +1058,7 @@ def scan_batch():
 
     pause()
 
+
 def view_results():
     """View saved spam scan results."""
     cls()
@@ -999,7 +1068,8 @@ def view_results():
     result_dir = "hasil_antispam"
     if not os.path.isdir(result_dir):
         fail("Belum ada hasil scan!")
-        pause(); return
+        pause()
+        return
 
     files = sorted(
         [f for f in os.listdir(result_dir) if f.endswith(".txt")],
@@ -1009,7 +1079,8 @@ def view_results():
 
     if not files:
         fail("Belum ada hasil scan!")
-        pause(); return
+        pause()
+        return
 
     print(f"\n  {Color.PURPLE}┌{'─' * 60}┐{Color.RESET}")
     print(f"  {Color.PURPLE}│{Color.RESET} {Color.BOLD}{Color.ACCENT}  #  DATE       TIME     SCAN TYPE              SIZE{Color.RESET}       {Color.PURPLE}│{Color.RESET}")
@@ -1030,14 +1101,16 @@ def view_results():
         file_info.append((fname, fpath, size))
 
     print(f"  {Color.PURPLE}└{'─' * 60}┘{Color.RESET}")
-    print(f"\n  {Color.DIM}Pilih nomor untuk melihat, [d] hapus, [0] hapus semua, [Enter] kembali{Color.RESET}")
+    print(
+        f"\n  {Color.DIM}Pilih nomor untuk melihat, [d] hapus, [0] hapus semua, [Enter] kembali{Color.RESET}")
 
     choice = input(f"\n  {ARROW} {Color.W}Pilihan:{Color.RESET} ").strip()
     if not choice:
         return
 
     if choice == "0":
-        confirm = input(f"  {Color.DANGER_C}[!] Hapus SEMUA? Ketik 'DELETE ALL':{Color.RESET} ").strip()
+        confirm = input(
+            f"  {Color.DANGER_C}[!] Hapus SEMUA? Ketik 'DELETE ALL':{Color.RESET} ").strip()
         if confirm == "DELETE ALL":
             for fname, _, _ in file_info:
                 os.remove(os.path.join(result_dir, fname))
@@ -1046,16 +1119,19 @@ def view_results():
             except:
                 pass
             ok("Semua file dihapus!")
-        pause(); return
+        pause()
+        return
 
     if choice.lower() == "d":
-        num_str = input(f"  {ARROW} {Color.W}Nomor file:{Color.RESET} ").strip()
+        num_str = input(
+            f"  {ARROW} {Color.W}Nomor file:{Color.RESET} ").strip()
         if num_str.isdigit():
             idx = int(num_str) - 1
             if 0 <= idx < len(file_info):
                 os.remove(os.path.join(result_dir, file_info[idx][0]))
                 ok(f"'{file_info[idx][0]}' dihapus!")
-        pause(); return
+        pause()
+        return
 
     if choice.isdigit():
         idx = int(choice) - 1
@@ -1082,31 +1158,39 @@ def view_results():
 # 📋 MAIN MENU
 # ═══════════════════════════════════════════════════════════════════
 
+
 def show_menu():
     cls()
     banner()
 
     total_files = 0
     if os.path.isdir("hasil_antispam"):
-        total_files = len([f for f in os.listdir("hasil_antispam") if f.endswith(".txt")])
+        total_files = len([f for f in os.listdir(
+            "hasil_antispam") if f.endswith(".txt")])
 
     print(f"  {Color.PURPLE}┌{'─' * 60}┐{Color.RESET}")
     print(f"  {Color.PURPLE}│{Color.RESET}  {Color.DARK_FG}Reports : {Color.ACCENT}{total_files}{Color.RESET} {Color.DARK_FG}scan(s) saved{Color.RESET}")
     print(f"  {Color.PURPLE}│{Color.RESET}  {Color.DARK_FG}Time    : {get_timestamp()}{Color.RESET}")
     print(f"  {Color.PURPLE}├{'─' * 60}┤{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[1]{Color.RESET} 📧 {Color.W}Email Spam Scanner{Color.RESET}       {Color.DIM}7-layer full analysis{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[2]{Color.RESET} 📝 {Color.W}Text Spam Scanner{Color.RESET}        {Color.DIM}SMS, komentar, chat, form{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[3]{Color.RESET} 📋 {Color.W}Batch Spam Scanner{Color.RESET}       {Color.DIM}Multiple texts sekaligus{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[1]{Color.RESET} 📧 {Color.W}Email Spam Scanner{Color.RESET}       {Color.DIM}7-layer full analysis{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[2]{Color.RESET} 📝 {Color.W}Text Spam Scanner{Color.RESET}        {Color.DIM}SMS, komentar, chat, form{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[3]{Color.RESET} 📋 {Color.W}Batch Spam Scanner{Color.RESET}       {Color.DIM}Multiple texts sekaligus{Color.RESET}")
     print(f"  {Color.PURPLE}├{'─' * 60}┤{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[4]{Color.RESET} 📁 {Color.W}View Saved Results{Color.RESET}      {Color.DIM}Browse scan history{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.ACCENT}[4]{Color.RESET} 📁 {Color.W}View Saved Results{Color.RESET}      {Color.DIM}Browse scan history{Color.RESET}")
     print(f"  {Color.PURPLE}├{'─' * 60}┤{Color.RESET}")
-    print(f"  {Color.PURPLE}│{Color.RESET}  {Color.DANGER_C}[0]{Color.RESET} 🚪 {Color.DANGER_C}Exit{Color.RESET}")
+    print(
+        f"  {Color.PURPLE}│{Color.RESET}  {Color.DANGER_C}[0]{Color.RESET} 🚪 {Color.DANGER_C}Exit{Color.RESET}")
     print(f"  {Color.PURPLE}└{'─' * 60}┘{Color.RESET}")
     print()
 
 # ═══════════════════════════════════════════════════════════════════
 # 🏗️ ENTRY POINT
 # ═══════════════════════════════════════════════════════════════════
+
 
 TOOLS = {
     "1": scan_email,
@@ -1115,13 +1199,15 @@ TOOLS = {
     "4": view_results,
 }
 
+
 def main():
     check_deps()
 
     while True:
         try:
             show_menu()
-            choice = input(f"  {Color.ACCENT}❯{Color.RESET} {Color.W}Pilih [0-4]:{Color.RESET} ").strip()
+            choice = input(
+                f"  {Color.ACCENT}❯{Color.RESET} {Color.W}Pilih [0-4]:{Color.RESET} ").strip()
 
             if choice == "0":
                 cls()
@@ -1137,13 +1223,15 @@ def main():
                 time.sleep(1)
 
         except KeyboardInterrupt:
-            print(f"\n\n  {Color.WARN_C}[!] Program dihentikan.{Color.RESET}\n")
+            print(
+                f"\n\n  {Color.WARN_C}[!] Program dihentikan.{Color.RESET}\n")
             sys.exit(0)
         except Exception as e:
             print(f"\n  {Color.DANGER_C}[✘] Error: {e}{Color.RESET}")
             import traceback
             traceback.print_exc()
             pause()
+
 
 if __name__ == "__main__":
     main()

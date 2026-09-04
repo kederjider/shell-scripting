@@ -363,5 +363,4 @@ read PILIHAN
             sleep 1
             exit 1
             ;;
-done
-    esac
+esac

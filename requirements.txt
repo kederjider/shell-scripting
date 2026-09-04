@@ -1,0 +1,16 @@
+python-whois
+dnspython
+requests
+pyOpenSSL
+sslyze
+cryptography
+ipaddress
+urllib3
+python-dotenv
+phonenumbers
+beautifulsoup4
+colorama
+playwright
+rich
+aiohttp
+secure-smtplib

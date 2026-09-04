@@ -71,6 +71,283 @@ spammingpost() {
     esac
 }
 
+# ========== FUNGSI WHOIS DOMAIN (SUB-MENU) ==========
+plh_domain_about() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}          WHOIS DOMAIN MANAGER            ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} WHOIS TERMINAL  ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} WHOIS DOMAIN WEB""${y}[${u}•X${y}]${NC} EXIT (0)    ${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}2${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  clear; m-domain ;;
+        02|2)  clear; cek_whois_id ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
+    esac
+}
+
+# ========== FUNGSI INVESTIGASI DOMAIN (SUB-MENU) ==========
+investigasi_domain() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}        INVESTIGASI DOMAIN MANAGER        ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} INVESTIGASI DOMAIN  ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} LIHAT HASIL INVESTIGASI""${y}[${u}•X${y}]${NC} EXIT (0)    ${r}│"
+    echo -e "        ${r}│${y}[${u}•3${y}]${NC} HAPUS HASIL INVESTIGASI${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}3${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  
+            clear
+            echo -e "${CYAN}Masukkan domain yang ingin diinvestigasi:${NC}"
+            read -p "Domain: " domain
+            if [ -n "$domain" ]; then
+                echo -e "${YELLOW}Menjalankan investigasi domain...${NC}"
+                investigator_domain "$domain"
+                echo -e "${GREEN}Investigasi selesai. Tekan Enter untuk kembali ke menu.${NC}"
+                read
+            else
+                echo -e "${RED}Domain tidak boleh kosong!${NC}"
+                sleep 2
+            fi
+            clear; investigasi_domain ;;
+        02|2)  
+            clear
+            echo -e "${CYAN}Daftar hasil investigasi:${NC}"
+            LAPORAN_DIR="/hasil_investigasi_domain"
+            if [ -d "$LAPORAN_DIR" ]; then
+                files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
+                if [ -z "$files" ]; then
+                    echo -e "${YELLOW}Tidak ada file hasil investigasi.${NC}"
+                    sleep 2
+                else
+                    i=1
+                    echo -e "${CYAN}Pilih file untuk ditampilkan:${NC}"
+                    for file in $files; do
+                        filename=$(basename "$file")
+                        echo -e "${y}[${u}•$i${y}]${NC} $filename"
+                        i=$((i+1))
+                    done
+                    echo -e "${y}[${u}•0${y}]${NC} Kembali ke menu"
+                    echo ""
+                    echo -e "${CYAN}Masukkan pilihan:${NC}"
+                    read -p "> " choice
+                    if [ "$choice" != "0" ]; then
+                        file_count=$(echo "$files" | wc -l)
+                        if [ "$choice" -ge 1 ] && [ "$choice" -le "$file_count" ]; then
+                            selected_file=$(echo "$files" | sed -n "${choice}p")
+                            echo -e "${CYAN}Isi file $selected_file:${NC}"
+                            echo "========================================"
+                            cat "$selected_file"
+                            echo "========================================"
+                            echo -e "${GREEN}Tekan Enter untuk kembali ke menu.${NC}"
+                            read
+                        else
+                            echo -e "${RED}Pilihan tidak valid!${NC}"
+                            sleep 2
+                        fi
+                    fi
+                fi
+            else
+                echo -e "${YELLOW}Direktori hasil_investigasi_domain tidak ditemukan.${NC}"
+                sleep 2
+            fi
+            clear; investigasi_domain ;;
+        03|3)  
+            clear
+            echo -e "${CYAN}Daftar hasil investigasi:${NC}"
+            LAPORAN_DIR="/hasil_investigasi_domain"
+            if [ -d "$LAPORAN_DIR" ]; then
+                files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
+                if [ -z "$files" ]; then
+                    echo -e "${YELLOW}Tidak ada file hasil investigasi.${NC}"
+                    sleep 2
+                else
+                    i=1
+                    echo -e "${CYAN}Pilih file untuk dihapus:${NC}"
+                    for file in $files; do
+                        filename=$(basename "$file")
+                        echo -e "${y}[${u}•$i${y}]${NC} $filename"
+                        i=$((i+1))
+                    done
+                    echo -e "${y}[${u}•0${y}]${NC} Kembali ke menu"
+                    echo ""
+                    echo -e "${RED}Masukkan pilihan (atau 0 untuk kembali):${NC}"
+                    read -p "> " choice
+                    if [ "$choice" != "0" ]; then
+                        file_count=$(echo "$files" | wc -l)
+                        if [ "$choice" -ge 1 ] && [ "$choice" -le "$file_count" ]; then
+                            selected_file=$(echo "$files" | sed -n "${choice}p")
+                            echo -e "${RED}Anda yakin ingin menghapus file $selected_file? (y/n):${NC}"
+                            read -p "> " confirm
+                            if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+                                rm "$selected_file"
+                                echo -e "${GREEN}File $selected_file telah dihapus.${NC}"
+                            else
+                                echo -e "${YELLOW}Penghapusan dibatalkan.${NC}"
+                            fi
+                            sleep 2
+                        else
+                            echo -e "${RED}Pilihan tidak valid!${NC}"
+                            sleep 2
+                        fi
+                    fi
+                fi
+            else
+                echo -e "${YELLOW}Direktori hasil_investigasi_domain tidak ditemukan.${NC}"
+                sleep 2
+            fi
+            clear; investigasi_domain ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
+    esac
+}
+
+investigasi_file_html() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}          INVESTIGASI FILE HTML          ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} HTML AUTO SAVE      ""${y}[${u}•4${y}]${NC} HAPUS HASIL${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} HTML NAMA KUSTOM    ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}│${y}[${u}•3${y}]${NC} LIHAT HASIL         ""${y}[${u}•X${y}]${NC}  EXIT (0)   ${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}4${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  
+            # Ambil HTML -> analisis -> laporan otomatis masuk folder hasil_analisis_html/
+            clear ; ambil_html ; sleep 2 ; analisis_html -i hasil.html ; rm hasil.html ; exit 0 ;;
+
+        02|2)  
+            clear
+            ambil_html
+            sleep 2
+            echo -e "${CYAN}Masukkan nama file output contoh report.txt:${NC}"
+            read -p "output: " domain
+            if [ -n "$domain" ]; then
+                echo -e "${YELLOW}Menjalankan investigasi file html...${NC}"
+                analisis_html -i hasil.html -o "$domain"
+                rm hasil.html
+                exit 0
+            else
+                echo -e "${RED}nama file output tidak boleh kosong!${NC}"
+                sleep 2
+            fi
+            clear; exit 0 ;;
+        03|3)  
+            clear
+            LAPORAN_DIR="hasil_analisis_html"
+            echo -e "${CYAN}Laporan HTML tersimpan di folder: ${YELLOW}${LAPORAN_DIR}/${NC}"
+            if [ -d "$LAPORAN_DIR" ]; then
+                files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
+                if [ -z "$files" ]; then
+                    echo -e "${YELLOW}Tidak ada laporan HTML.${NC}"
+                    sleep 2
+                else
+                    i=1
+                    echo -e "${CYAN}Pilih laporan untuk ditampilkan:${NC}"
+                    for file in $files; do
+                        filename=$(basename "$file")
+                        echo -e "${y}[${u}•$i${y}]${NC} $filename"
+                        i=$((i+1))
+                    done
+                    echo -e "${y}[${u}•0${y}]${NC} Kembali ke menu"
+                    echo ""
+                    echo -e "${CYAN}Masukkan pilihan:${NC}"
+                    read -p "> " choice
+                    if [ "$choice" != "0" ]; then
+                        file_count=$(echo "$files" | wc -l)
+                        if [ "$choice" -ge 1 ] && [ "$choice" -le "$file_count" ]; then
+                            selected_file=$(echo "$files" | sed -n "${choice}p")
+                            echo -e "${CYAN}Isi laporan $selected_file:${NC}"
+                            echo "========================================"
+                            cat "$selected_file"
+                            echo "========================================"
+                            echo -e "${GREEN}Tekan Enter untuk kembali ke menu.${NC}"
+                            read
+                        else
+                            echo -e "${RED}Pilihan tidak valid!${NC}"
+                            sleep 2
+                        fi
+                    fi
+                fi
+            else
+                echo -e "${YELLOW}Folder hasil_analisis_html belum ada — jalankan investigasi (1/2) dulu.${NC}"
+                sleep 2
+            fi
+            clear; investigasi_file_html ;;
+        04|4)  
+            clear
+            LAPORAN_DIR="hasil_analisis_html"
+            echo -e "${CYAN}Laporan HTML tersimpan di folder: ${YELLOW}${LAPORAN_DIR}/${NC}"
+            if [ -d "$LAPORAN_DIR" ]; then
+                files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
+                if [ -z "$files" ]; then
+                    echo -e "${YELLOW}Tidak ada laporan HTML.${NC}"
+                    sleep 2
+                else
+                    i=1
+                    echo -e "${CYAN}Pilih laporan untuk dihapus:${NC}"
+                    for file in $files; do
+                        filename=$(basename "$file")
+                        echo -e "${y}[${u}•$i${y}]${NC} $filename"
+                        i=$((i+1))
+                    done
+                    echo -e "${y}[${u}•0${y}]${NC} Kembali ke menu"
+                    echo ""
+                    echo -e "${RED}Masukkan pilihan (atau 0 untuk kembali):${NC}"
+                    read -p "> " choice
+                    if [ "$choice" != "0" ]; then
+                        file_count=$(echo "$files" | wc -l)
+                        if [ "$choice" -ge 1 ] && [ "$choice" -le "$file_count" ]; then
+                            selected_file=$(echo "$files" | sed -n "${choice}p")
+                            echo -e "${RED}Anda yakin ingin menghapus $selected_file? (y/n):${NC}"
+                            read -p "> " confirm
+                            if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+                                rm "$selected_file"
+                                echo -e "${GREEN}Laporan $selected_file telah dihapus.${NC}"
+                            else
+                                echo -e "${YELLOW}Penghapusan dibatalkan.${NC}"
+                            fi
+                            sleep 2
+                        else
+                            echo -e "${RED}Pilihan tidak valid!${NC}"
+                            sleep 2
+                        fi
+                    fi
+                fi
+            else
+                echo -e "${YELLOW}Folder hasil_analisis_html belum ada — jalankan investigasi (1/2) dulu.${NC}"
+                sleep 2
+            fi
+            clear; investigasi_file_html ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
+    esac
+}
+
 clear
 echo -e "${L_GREEN}"
 cat << "EOF"
@@ -88,22 +365,24 @@ echo -e "${NC}"
 echo -e "${CYAN} ╔═════════════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN} ║${bgred}                 HACKING TOOLS MENU                  ${NC}${CYAN}║${NC}"
 echo -e "${CYAN} ╠═════════════════════════════════════════════════════╣${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•1${drakgry}]${pth} DNS LOOKUP${NC}           ${CYAN}║${drakgry}[${liggry}•9${drakgry}]${pth} KIRIM EMAIL${NC}          ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}10${drakgry}]${pth} SPAMING POST${NC}         ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•3${drakgry}]${pth} DNS RECORDS${NC}          ${CYAN}║${drakgry}[${liggry}11${drakgry}]${pth} IP TO HOST${NC}           ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•4${drakgry}]${pth} USER FINDER${NC}          ${CYAN}║${drakgry}[${liggry}12${drakgry}]${pth} HOST TO IP${NC}           ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•5${drakgry}]${pth} TRACKER${NC}              ${CYAN}║${drakgry}[${liggry}13${drakgry}]${pth} PING${NC}                 ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•6${drakgry}]${pth} SPAMING${NC}              ${CYAN}║${drakgry}[${liggry}14${drakgry}]${pth} ANTI SPAM${NC}            ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•7${drakgry}]${pth} DDOS${NC}                 ${CYAN}║${drakgry}[${liggry}15${drakgry}]${pth} SPAM DETECTOR${NC}        ${CYAN}║${NC}"
-echo -e "${CYAN} ║${drakgry}[${liggry}•8${drakgry}]${pth} SUB DOMAIN FINDER${NC}    ${CYAN}║${drakgry}[${RED}•0${drakgry}]${RED} Kembali Ke Menu${NC}      ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•1${drakgry}]${pth} DNS LOOKUP${NC}           ${CYAN}║${drakgry}[${liggry}11${drakgry}]${pth} IP TO HOST${NC}           ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•2${drakgry}]${pth} ABOUT DOMAIN${NC}         ${CYAN}║${drakgry}[${liggry}12${drakgry}]${pth} HOST TO IP${NC}           ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•3${drakgry}]${pth} DNS RECORDS${NC}          ${CYAN}║${drakgry}[${liggry}13${drakgry}]${pth} PING JARINGAN${NC}        ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•4${drakgry}]${pth} USER FINDER${NC}          ${CYAN}║${drakgry}[${liggry}14${drakgry}]${pth} ANTI SPAM${NC}            ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•5${drakgry}]${pth} TRACKER${NC}              ${CYAN}║${drakgry}[${liggry}15${drakgry}]${pth} SPAM DETECTOR${NC}        ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•6${drakgry}]${pth} SPAMING${NC}              ${CYAN}║${drakgry}[${liggry}16${drakgry}]${pth} CEK SUSPEND DOMAIN${NC}   ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•7${drakgry}]${pth} DDOS${NC}                 ${CYAN}║${drakgry}[${liggry}17${drakgry}]${pth} INVESTIGASI DOMAIN${NC}   ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•8${drakgry}]${pth} SUB DOMAIN FINDER${NC}    ${CYAN}║${drakgry}[${liggry}18${drakgry}]${pth} ANALISIS HTML WEBSITE${NC}${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}•9${drakgry}]${pth} KIRIM EMAIL${NC}          ${CYAN}║${drakgry}[${liggry}19${drakgry}]${pth} Kembali Ke Menu${NC}      ${CYAN}║${NC}"
+echo -e "${CYAN} ║${drakgry}[${liggry}10${drakgry}]${pth} SPAMING POST${NC}         ${CYAN}║${drakgry}[${RED}•0${drakgry}]${RED} Kembali Ke Menu${NC}      ${CYAN}║${NC}"
 echo -e "${CYAN} ╚═════════════════════════════════════════════════════╝${NC}"
-    echo -e "${CYAN} ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}15${CYAN}]───▶️${RST}"
+    echo -e "${CYAN} ┌───(${YELLOW}Masukkan${CYAN}─${YELLOW}Angka${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}18${CYAN}]───▶️${RST}"
     read -p " $(echo -e ${CYAN}└──▶️ ${NC}) " plh
 echo -e ""
 
 case $plh in
 1 | 01) lookup-dns ;;
-2 | 02) clear ; m-domain ;;
+2 | 02) clear ; plh_domain_about ;;
 3 | 03) clear ; dns-records ;;
 4 | 04) m-user-finder ;;
 5 | 05) m-tracker ;;
@@ -117,7 +396,9 @@ case $plh in
 13) pinghost ;;
 14) clear ; anti_spam ;;
 15) clear ; spam_detector ;;
-0 | 00) clear ; newmenu ;;
+16) clear ; idadx_scan ;;
+17) clear ; investigasi_domain ;;
+18) clear ; investigasi_file_html ;;
 x | X) clear ; exit 0 ;;
-*) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 15.\n" ; loading ; mode-hack ;;
+*) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 18.\n" ; loading ; mode-hack ;;
 esac

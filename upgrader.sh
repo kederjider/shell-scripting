@@ -125,35 +125,41 @@ cat << "EOF"
                  MAMAT SCRIPTING - 2026
 EOF
 echo -e "${NC}"
-
 echo -e "${GRAY}╔═══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${GRAY}║${L_CYAN}                 SYSTEM SCRIPT UPGRADER v2.0                   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_CYAN}                 SYSTEM SCRIPT UPGRADER v3.0                   ${GRAY}║${NC}"
 echo -e "${GRAY}╠═══════════════════════════════════════════════════════════════╣${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}01${L_GREEN}]${NC} ${YELLOW}update sc check service${NC} ${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}02${L_GREEN}]${NC} ${YELLOW}update sc servic manager${NC}${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}03${L_GREEN}]${NC} ${YELLOW}update sc config nginx${NC}  ${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}update sc edit file script${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}04${L_GREEN}]${NC} ${YELLOW}update sc check disk${NC}    ${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}update sc istl dmain finde${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}05${L_GREEN}]${NC} ${YELLOW}update sc tailscale${NC}     ${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}update sc install sherlock${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}06${L_GREEN}]${NC} ${YELLOW}update sc zeroTier${NC}      ${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}            ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}07${L_GREEN}]${NC} ${YELLOW}update sc monitoring${NC}    ${GRAY}║${L_GREEN} [${CYAN}32${L_GREEN}]${NC} ${YELLOW}update sc menu utama${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}08${L_GREEN}]${NC} ${YELLOW}update sc screen${NC}        ${GRAY}║${L_GREEN} [${CYAN}33${L_GREEN}]${NC} ${YELLOW}update sc upgreader${NC}       ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}09${L_GREEN}]${NC} ${YELLOW}update sc auto root${NC}     ${GRAY}║${L_GREEN} [${CYAN}34${L_GREEN}]${NC} ${YELLOW}update sc anti spam${NC}       ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}10${L_GREEN}]${NC} ${YELLOW}update sc auto reboot${NC}   ${GRAY}║${L_GREEN} [${CYAN}35${L_GREEN}]${NC} ${YELLOW}update sc spam detector${NC}   ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}11${L_GREEN}]${NC} ${YELLOW}update sc tools hack${NC}    ${GRAY}║${L_GREEN} [${CYAN}36${L_GREEN}]${NC} ${YELLOW}update sc pentesting${NC}      ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}12${L_GREEN}]${NC} ${YELLOW}update sc setting${NC}       ${GRAY}║${L_GREEN} [${CYAN}37${L_GREEN}]${NC} ${YELLOW}update sc menu spam post${NC}  ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}13${L_GREEN}]${NC} ${YELLOW}update sc dns lookup${NC}    ${GRAY}║${L_GREEN} [${CYAN}38${L_GREEN}]${NC} ${YELLOW}update sc ssh manager${NC}     ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}14${L_GREEN}]${NC} ${YELLOW}update sc about domain${NC}  ${GRAY}║${L_GREEN} [${CYAN}39${L_GREEN}]${NC} ${YELLOW}update sc encrypt & decryp${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}15${L_GREEN}]${NC} ${YELLOW}update sc dns records${NC}   ${GRAY}║${L_GREEN} [${GREEN}40${L_GREEN}]${NC} ${GREEN}Upgrade All Script${NC}        ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}16${L_GREEN}]${NC} ${YELLOW}update sc user finder${NC}   ${GRAY}║${L_GREEN} [${CYAN}41${L_GREEN}]${NC} ${YELLOW}update sc tmux${NC}            ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}17${L_GREEN}]${NC} ${YELLOW}update sc tracker${NC}       ${GRAY}║${L_GREEN} [${CYAN}42${L_GREEN}]${NC} ${YELLOW}update sc proxy squid${NC}     ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}18${L_GREEN}]${NC} ${YELLOW}update sc spaming${NC}       ${GRAY}║${L_GREEN} [${CYAN}43${L_GREEN}]${NC} ${YELLOW}update sc info detail vps${NC} ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}19${L_GREEN}]${NC} ${YELLOW}update sc ddos${NC}          ${GRAY}║${L_GREEN} [${CYAN}44${L_GREEN}]${NC} ${YELLOW}update scan security vps${NC}  ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}20${L_GREEN}]${NC} ${YELLOW}upte sc subdomain finder${NC}${GRAY}║${L_GREEN} [${CYAN}45${L_GREEN}]${NC} ${YELLOW}update menu spam diskfill ${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}21${L_GREEN}]${NC} ${YELLOW}update sc kirim email${NC}   ${GRAY}║${L_GREEN} [${CYAN}46${L_GREEN}]${NC} ${YELLOW}update sc spam diskfill${NC}   ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}22${L_GREEN}]${NC} ${YELLOW}update sc spam post${NC}     ${GRAY}║${L_GREEN} [${CYAN}47${L_GREEN}]${NC} ${YELLOW}update sc menu spam all${NC}   ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}23${L_GREEN}]${NC} ${YELLOW}update sc menu ip t host${NC}${GRAY}║${L_GREEN} [${CYAN}48${L_GREEN}]${NC} ${YELLOW}update sc spampost all${NC}    ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}24${L_GREEN}]${NC} ${YELLOW}update sc menu host t ip${NC}${GRAY}║${L_GREEN} [${CYAN}49${L_GREEN}]${NC} ${YELLOW}update sc menu host to ip${NC} ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}25${L_GREEN}]${NC} ${YELLOW}update sc ping${NC}          ${GRAY}║${L_GREEN} [${CYAN}00${L_GREEN}]${NC} ${YELLOW}kembali ke menu utama${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}01${L_GREEN}]${NC} ${YELLOW}update sc check service${NC} ${GRAY}║${L_GREEN} [${CYAN}33${L_GREEN}]${NC} ${YELLOW}update sc upgreader${NC}       ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}02${L_GREEN}]${NC} ${YELLOW}update sc servic manager${NC}${GRAY}║${L_GREEN} [${CYAN}34${L_GREEN}]${NC} ${YELLOW}update sc anti spam${NC}       ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}03${L_GREEN}]${NC} ${YELLOW}update sc config nginx${NC}  ${GRAY}║${L_GREEN} [${CYAN}35${L_GREEN}]${NC} ${YELLOW}update sc spam detector${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}04${L_GREEN}]${NC} ${YELLOW}update sc check disk${NC}    ${GRAY}║${L_GREEN} [${CYAN}36${L_GREEN}]${NC} ${YELLOW}update sc pentesting${NC}      ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}05${L_GREEN}]${NC} ${YELLOW}update sc tailscale${NC}     ${GRAY}║${L_GREEN} [${CYAN}37${L_GREEN}]${NC} ${YELLOW}update sc menu spam post${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}06${L_GREEN}]${NC} ${YELLOW}update sc zeroTier${NC}      ${GRAY}║${L_GREEN} [${CYAN}38${L_GREEN}]${NC} ${YELLOW}update sc ssh manager${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}07${L_GREEN}]${NC} ${YELLOW}update sc monitoring${NC}    ${GRAY}║${L_GREEN} [${CYAN}39${L_GREEN}]${NC} ${YELLOW}update sc encrypt & decryp${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}08${L_GREEN}]${NC} ${YELLOW}update sc screen${NC}        ${GRAY}║${L_GREEN} [${GREEN}40${L_GREEN}]${NC} ${GREEN}Upgrade All Script${NC}        ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}09${L_GREEN}]${NC} ${YELLOW}update sc auto root${NC}     ${GRAY}║${L_GREEN} [${CYAN}41${L_GREEN}]${NC} ${YELLOW}update sc tmux${NC}            ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}10${L_GREEN}]${NC} ${YELLOW}update sc auto reboot${NC}   ${GRAY}║${L_GREEN} [${CYAN}42${L_GREEN}]${NC} ${YELLOW}update sc proxy squid${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}11${L_GREEN}]${NC} ${YELLOW}update sc tools hack${NC}    ${GRAY}║${L_GREEN} [${CYAN}43${L_GREEN}]${NC} ${YELLOW}update sc info detail vps${NC} ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}12${L_GREEN}]${NC} ${YELLOW}update sc setting${NC}       ${GRAY}║${L_GREEN} [${CYAN}44${L_GREEN}]${NC} ${YELLOW}update scan security vps${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}13${L_GREEN}]${NC} ${YELLOW}update sc dns lookup${NC}    ${GRAY}║${L_GREEN} [${CYAN}45${L_GREEN}]${NC} ${YELLOW}update menu spam diskfill${NC} ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}14${L_GREEN}]${NC} ${YELLOW}update sc about domain${NC}  ${GRAY}║${L_GREEN} [${CYAN}46${L_GREEN}]${NC} ${YELLOW}update sc spam diskfill${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}15${L_GREEN}]${NC} ${YELLOW}update sc dns records${NC}   ${GRAY}║${L_GREEN} [${CYAN}47${L_GREEN}]${NC} ${YELLOW}update sc menu spam all${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}16${L_GREEN}]${NC} ${YELLOW}update sc user finder${NC}   ${GRAY}║${L_GREEN} [${CYAN}48${L_GREEN}]${NC} ${YELLOW}update sc spampost all${NC}    ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}17${L_GREEN}]${NC} ${YELLOW}update sc tracker${NC}       ${GRAY}║${L_GREEN} [${CYAN}49${L_GREEN}]${NC} ${YELLOW}update sc menu wireguard${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}18${L_GREEN}]${NC} ${YELLOW}update sc spaming${NC}       ${GRAY}║${L_GREEN} [${CYAN}50${L_GREEN}]${NC} ${YELLOW}update sc instal wireguard${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}19${L_GREEN}]${NC} ${YELLOW}update sc ddos${NC}          ${GRAY}║${L_GREEN} [${CYAN}51${L_GREEN}]${NC} ${YELLOW}update sc cek whois web${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}20${L_GREEN}]${NC} ${YELLOW}upte sc subdomain finder${NC}${GRAY}║${L_GREEN} [${CYAN}52${L_GREEN}]${NC} ${YELLOW}update sc domain suspend${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}21${L_GREEN}]${NC} ${YELLOW}update sc kirim email${NC}   ${GRAY}║${L_GREEN} [${CYAN}53${L_GREEN}]${NC} ${YELLOW}udte sc investigasi domain${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}22${L_GREEN}]${NC} ${YELLOW}update sc spam post${NC}     ${GRAY}║${L_GREEN} [${CYAN}54${L_GREEN}]${NC} ${YELLOW}update sc neofetch-id${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}23${L_GREEN}]${NC} ${YELLOW}update sc menu ip t host${NC}${GRAY}║${L_GREEN} [${CYAN}55${L_GREEN}]${NC} ${YELLOW}update sc setup-env-python${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}24${L_GREEN}]${NC} ${YELLOW}update sc menu host t ip${NC}${GRAY}║${L_GREEN} [${CYAN}56${L_GREEN}]${NC} ${YELLOW}update sc set timezone${NC}    ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}25${L_GREEN}]${NC} ${YELLOW}update sc ping${NC}          ${GRAY}║${L_GREEN} [${CYAN}57${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxxxxx${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}    ${GRAY}║${L_GREEN} [${CYAN}58${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxx${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}    ${GRAY}║${L_GREEN} [${CYAN}59${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxxxxx${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}upte sc edit file script${NC}${GRAY}║${L_GREEN} [${CYAN}60${L_GREEN}]${NC} ${YELLOW}kembali ke menu utamaxx${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}upte sc istl dmain finde${NC}${GRAY}║${L_GREEN} [${CYAN}61${L_GREEN}]${NC} ${YELLOW}udte sc investigasi domain${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}updte sc instal sherlock${NC}${GRAY}║${L_GREEN} [${CYAN}62${L_GREEN}]${NC} ${YELLOW}update sc neofetch-id${NC}     ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}          ${GRAY}║${L_GREEN} [${CYAN}63${L_GREEN}]${NC} ${YELLOW}update sc setup-env-python${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}32${L_GREEN}]${NC} ${YELLOW}update sc menu utama    ${NC}${GRAY}║${L_GREEN} [${RED}00${L_GREEN}]${NC} ${RED}kembali ke menu utama${NC}     ${GRAY}║${NC}"
 echo -e "${GRAY}╚═══════════════════════════════════════════════════════════════╝${NC}"
 
 echo -e "${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}upgrader${L_CYAN}]${NC}"
@@ -249,6 +255,15 @@ case $plh in
     upgrade "$DIRECTORY/diskfill_data1" "$REPO/diskfill_data1.py"
     upgrade "$DIRECTORY/m-post-all" "$REPO/m-post-all.sh"
     upgrade "$DIRECTORY/spampost_all" "$REPO/spampost_all.py"
+    upgrade "$DIRECTORY/setup-python" "$REPO/setup-python.sh"
+    upgrade "$DIRECTORY/install-wireguard" "$REPO/install-wireguard.sh"
+    upgrade "$DIRECTORY/wireguard-manager" "$REPO/wireguard-manager.sh"
+    upgrade "$DIRECTORY/cek_whois_id" "$REPO/cek_whois_id.py"
+    upgrade "$DIRECTORY/idadx_scan" "$REPO/idadx_scan.py"
+    upgrade "$DIRECTORY/investigator_domain" "$REPO/investigator_domain.py"
+    upgrade "$DIRECTORY/neofetch-id" "$REPO/neofetch-id.sh"
+    upgrade "$DIRECTORY/setup-env-python" "$REPO/setup-env-python.sh"
+    upgrade "$DIRECTORY/set-timezone" "$REPO/set-timezone.sh"
     printf "\n${GREEN}${BOLD}✓ SEMUA SCRIPT SELESAI DIPROSES! 🎉${NC}\n"
     exit 0
     ;;
@@ -260,6 +275,14 @@ case $plh in
 46) upgrade "$DIRECTORY/diskfill_data1" "$REPO/diskfill_data1.py" ; exit 0 ;;
 47) upgrade "$DIRECTORY/m-post-all" "$REPO/m-post-all.sh" ; exit 0 ;;
 48) upgrade "$DIRECTORY/spampost_all" "$REPO/spampost_all.py" ; exit 0 ;;
+49) upgrade "$DIRECTORY/wireguard-manager" "$REPO/wireguard-manager.sh" ; exit 0 ;;
+50) upgrade "$DIRECTORY/install-wireguard" "$REPO/install-wireguard.sh" ; exit 0 ;;
+51) upgrade "$DIRECTORY/cek_whois_id" "$REPO/cek_whois_id.py" ; exit 0 ;;
+52) upgrade "$DIRECTORY/idadx_scan" "$REPO/idadx_scan.py" ; exit 0 ;;
+53) upgrade "$DIRECTORY/investigator_domain" "$REPO/investigator_domain.py" ; exit 0 ;;
+54) upgrade "$DIRECTORY/neofetch-id" "$REPO/neofetch-id.sh" ; exit 0 ;;
+55) upgrade "$DIRECTORY/setup-env-python" "$REPO/setup-env-python.sh" ; exit 0 ;;
+56) upgrade "$DIRECTORY/set-timezone" "$REPO/set-timezone.sh" ; exit 0 ;;
 0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED} TERIMA KASIH TELAH MENGGUNAKAN PROGRAM INI...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; exec "$0" ;;

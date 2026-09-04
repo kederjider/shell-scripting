@@ -200,6 +200,23 @@ main() {
   install_file diskfill_data1 diskfill_data1.py
   install_file m-post-all m-post-all.sh
   install_file spampost_all spampost_all.py
+  install_file setup-python setup-python.sh
+  install_file install-wireguard install-wireguard.sh
+  install_file wireguard-manager wireguard-manager.sh
+  install_file cek_whois_id cek_whois_id.py
+  install_file idadx_scan idadx_scan.py
+  install_file investigator_domain investigator_domain.py
+  install_file requirements.txt requirements.txt 644
+  install_file setup-env-python setup-env-python.sh
+  install_file set-timezone set-timezone.sh
+  install_file neofetch-id neofetch-id.sh
+
+  log "Menjalankan setup-python.sh untuk mengkonfigurasi environment Python..."
+  if [ -f "/usr/local/bin/setup-python" ]; then
+    bash /usr/local/bin/setup-python
+  else
+    warn "setup-python.sh tidak ditemukan di /usr/local/bin/"
+  fi
 
   if ! grep -q "Auto run newmenu saat login" /root/.bashrc 2>/dev/null; then
     cat >> /root/.bashrc << 'EOF'

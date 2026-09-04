@@ -112,6 +112,31 @@ session() {
     esac
 }
 
+
+# ========== FUNGSI PROXY DAN VPN (SUB-MENU) ==========
+proxy_vpn() {
+    clear
+    echo -e "${g}${NC}"
+    echo -e "       ╭──────────────────────────────────────────╮"
+    echo -e "       │${GB}           PROXY & VPN MANAGER            ${NC}│"
+    echo -e "       ╰──────────────────────────────────────────╯"
+    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} VPN WIREGUARD   ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} PROXY SQUID     ""${y}[${u}•X${y}]${NC} EXIT (0)    ${r}│"
+    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo ""
+    echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}2${CYAN}]───▶️${RST}"
+    read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
+    echo ""
+    case $sess_opt in
+        01|1)  clear; bash wireguard-manager ;;
+        02|2)  clear; bash setup_proxy_squid ;;
+        0|00)  clear; exec "$0" ;;
+        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
+    esac
+}
+
 # ========== START ==========
 gather_all_data
 
@@ -133,7 +158,7 @@ echo -e "        ${r}┌──────────────────�
 echo -e "        ${r}│${y}[${u}•1${y}]${NC} CHECK SERVICE  ""${y}[${u}•7${y}]${NC} MONITORING   ${r}│"
 echo -e "        ${r}│${y}[${u}•2${y}]${NC} SERVICE MANAGER""${y}[${u}•8${y}]${NC} SESSION      ${r}│"
 echo -e "        ${r}│${y}[${u}•3${y}]${NC} CONFIG NGINX   ""${y}[${u}•9${y}]${NC} PENTESTING   ${r}│"
-echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} PROXY SQUID  ${r}│"
+echo -e "        ${r}│${y}[${u}•4${y}]${NC} CHECK DISK     ""${y}[${u}10${y}]${NC} PROXY & VPN  ${r}│"
 echo -e "        ${r}│${y}[${u}•5${y}]${NC} TAILSCALE      ""${y}[${u}11${y}]${NC} TOOLS HACK   ${r}│"
 echo -e "        ${r}│${y}[${u}•6${y}]${NC} ZEROTIER       ""${y}[${u}12${y}]${NC} SETTING      ${r}│"
 echo -e "        ${r}└──────────────────────────────────────┘${NC}"
@@ -153,7 +178,7 @@ case $opt in
     7)  clear; m-monitor ;;
     8)  clear; session ;;
     9)  clear; pentester_tools ;;
-    10) clear; setup_proxy_squid ;;
+    10) clear; proxy_vpn ;;
     11) clear; mode-hack ;;
     12) clear; m-setting ;; 
     0|x|X) exit 0 ;;

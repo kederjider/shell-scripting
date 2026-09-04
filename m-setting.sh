@@ -35,7 +35,36 @@ ORANGE='\033[0;33m'
 LIGHT='\033[0;37m'
 grenbo="\e[92;1m"
 dkblu="\033[34m"
+# ============================================================
+# COLORS
+# ============================================================
+
+RESET='\033[0m'
+BOLD='\033[1m'
+DIM='\033[2m'
+
+CYAN='\033[96m'
+MAGENTA='\033[95m'
+GREEN='\033[92m'
+YELLOW='\033[93m'
+RED='\033[91m'
+WHITE='\033[97m'
+
+# ============================================================
+# ICONS
+# ============================================================
+
+ICON_SYSTEM="◆"
+ICON_PYTHON="◆"
+ICON_NODE="◆"
+ICON_BACK="↩"
+ICON_EXIT="×"
+ICON_ARROW="➜"
+ICON_OK="✓"
+ICON_ERROR="✗"
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
+
+SCRIPT_DIR="/usr/local/bin"
 # Getting
 
 # ==================== FUNGSI UTAMA ====================
@@ -550,6 +579,172 @@ info_port() {
     echo ""
 }
 
+# ============================================================
+# TERMINAL
+# ============================================================
+
+hide_cursor() {
+    printf '\033[?25l'
+}
+
+show_cursor() {
+    printf '\033[?25h'
+}
+
+trap show_cursor EXIT
+
+# ============================================================
+# HEADER
+# ============================================================
+
+show_header() {
+    clear
+
+    printf "\n"
+
+    printf "${MAGENTA}${BOLD}"
+    printf '%s\n' "╔══════════════════════════════════════════════════════════════╗"
+    printf '%s\n' "║                                                              ║"
+    printf '%s\n' "║                 CYBERPUNK SETUP CONSOLE                      ║"
+    printf '%s\n' "║                                                              ║"
+    printf '%s\n' "╚══════════════════════════════════════════════════════════════╝"
+    printf "${RESET}"
+
+    printf "\n"
+
+    printf " ${CYAN}${ICON_SYSTEM}${RESET}"
+    printf " ${BOLD}SYSTEM SETUP CONSOLE${RESET}"
+    printf " ${DIM}//${RESET} "
+    printf "${GREEN}ONLINE${RESET}\n"
+
+    printf " ${DIM}────────────────────────────────────────────────────────────${RESET}\n"
+}
+
+# ============================================================
+# PYTHON SETUP
+# ============================================================
+
+run_python_setup() {
+    printf "\n"
+    printf " ${CYAN}${ICON_ARROW}${RESET} Launching "
+    printf "${BOLD}Spek VPS${RESET}...\n"
+
+    sleep 1
+
+    if [[ -f "$SCRIPT_DIR/identitas_vps" ]]; then
+        bash "$SCRIPT_DIR/identitas_vps"
+    else
+        printf " ${RED}${ICON_ERROR}${RESET} "
+        printf "identitas_vps tidak ditemukan.\n"
+        sleep 2
+    fi
+
+    exec "$0"
+}
+
+# ============================================================
+# NODE.JS SETUP
+# ============================================================
+
+run_nodejs_setup() {
+    printf "\n"
+    printf " ${CYAN}${ICON_ARROW}${RESET} Launching "
+    printf "${BOLD}Spek VPS${RESET}...\n"
+
+    sleep 1
+
+    if [[ -f "$SCRIPT_DIR/neofetch-id" ]]; then
+        bash "$SCRIPT_DIR/neofetch-id"
+    else
+        printf " ${RED}${ICON_ERROR}${RESET} "
+        printf "neofetch-id tidak ditemukan.\n"
+        sleep 2
+    fi
+
+    exec "$0"
+}
+
+# ============================================================
+# SETUP MENU
+# ============================================================
+
+setup_menu() {
+    show_header
+
+    printf "\n"
+
+    printf " ${CYAN}${BOLD}┌─[ SPEKSIFIKASI VPS ]${RESET}\n"
+    printf " ${CYAN}│${RESET}\n"
+
+    printf " ${CYAN}│${RESET}  ${MAGENTA}${BOLD}[ 1 ]${RESET}  "
+    printf "${ICON_PYTHON}  ${WHITE}Specifications VPS Complete${RESET}\n"
+
+    printf " ${CYAN}│${RESET}       ${DIM}check spek vps dengan Python${RESET}\n"
+    printf " ${CYAN}│${RESET}\n"
+
+    printf " ${CYAN}│${RESET}  ${MAGENTA}${BOLD}[ 2 ]${RESET}  "
+    printf "${ICON_NODE}  ${WHITE}Specifications VPS Simple${RESET}\n"
+
+    printf " ${CYAN}│${RESET}       ${DIM}check spek vps dengan Neofetch${RESET}\n"
+    printf " ${CYAN}│${RESET}\n"
+
+    printf " ${CYAN}│${RESET}  ${YELLOW}${BOLD}[ 0 ]${RESET}  "
+    printf "${ICON_BACK}  ${WHITE}Back${RESET}\n"
+
+    printf " ${CYAN}│${RESET}       ${DIM}Return to main menu${RESET}\n"
+    printf " ${CYAN}│${RESET}\n"
+
+    printf " ${CYAN}│${RESET}  ${RED}${BOLD}[ X ]${RESET}  "
+    printf "${ICON_EXIT}  ${WHITE}Exit${RESET}\n"
+
+    printf " ${CYAN}│${RESET}       ${DIM}Terminate setup console${RESET}\n"
+
+    printf " ${CYAN}│${RESET}\n"
+    printf " ${CYAN}└────────────────────────────────────────────────────────────${RESET}\n"
+
+    printf "\n"
+
+    printf " ${MAGENTA}${ICON_ARROW}${RESET} "
+    printf "${BOLD}Select module${RESET} "
+    printf "${DIM}[1-2/0/X]${RESET}: "
+
+    read -r pilihan
+
+    case "$pilihan" in
+
+        1)
+            run_python_setup
+            ;;
+
+        2)
+            run_nodejs_setup
+            ;;
+
+        0)
+            exec "$0"
+            ;;
+
+        x|X)
+            printf "\n"
+            printf " ${MAGENTA}${ICON_EXIT}${RESET} "
+            printf "${BOLD}Disconnecting...${RESET}\n"
+            sleep 1
+            exit 0
+            ;;
+
+        *)
+            printf "\n"
+            printf " ${RED}${ICON_ERROR}${RESET} "
+            printf "Invalid selection: ${YELLOW}%s${RESET}\n" "$pilihan"
+
+            sleep 1
+            exec "$0"
+            ;;
+
+    esac
+}
+
+
 echo -e " ${y} ┌─────────────────────────────────┐$NC"
 echo -e " ${y} │${NC}${g}.::. ${NC}MENU PENGATURAN LAINNYA ${g}.::.${y}│$NC"
 echo -e " ${y} └─────────────────────────────────┘$NC"
@@ -568,13 +763,13 @@ echo -e "  ${y}│${NC}${dkblu}[${g}11${dkblu}]${NC}\033[0;36m AUTO REBOOT      
 echo -e "  ${y}│${NC}${dkblu}[${g}12${dkblu}]${NC}\033[0;36m INFO PORT                   ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m INFO DETAIL VPS             ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m SCAN SECURITY VPS           ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}15${dkblu}]${NC}\033[0;36m CHECK BW                    ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}16${dkblu}]${NC}\033[0;36m CEK PENYIMPANAN             ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}15${dkblu}]${NC}\033[0;36m SET TIMEZONE                ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}16${dkblu}]${NC}\033[0;36m CREATE ENVIROMENT PYTHON    ${y}│${NC}"
 #echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m KIRIM PESAN KEDEVELOPER     ${y}│${NC}"
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 14 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 16 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
@@ -627,20 +822,21 @@ case $plh in
     ;;
 13)
     clear
-    identitas_vps
+    hide_cursor
+    setup_menu
     ;;
 14)
     clear
     check_ssh_login
     ;;
-#15)
-#    clear
-#    cek_bw
-#    read -n 1 -s -r -p "Press any key to back on menu"
-#    loading ; menu ;;
-#16)
-#    cek-penyimpanan
-#    ;;
+15)
+    clear
+    set-timezone
+    ;;
+16)
+    clear
+    setup-env-python
+    ;;
 #17)
 #    clear
 #    kirim_pesan
@@ -652,5 +848,5 @@ x | X)
     clear
     exit 0
     ;;
-*) echo "Silakan Masukkan Angka [1 - 14]." ; loading ; exec "$0" ;;
+*) echo "Silakan Masukkan Angka [1 - 16]." ; loading ; exec "$0" ;;
 esac

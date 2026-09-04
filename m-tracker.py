@@ -1,3 +1,4 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 # IMPORT MODULE
 
@@ -50,14 +51,16 @@ def is_option(func):
         run_banner()
         func(*args, **kwargs)
 
-
     return wrapper
 
 # ================== AUTO INSTALL LIBRARY ==================
+
+
 def install_package(package):
     try:
-        __import__(package.replace("-", "_"))  # secure-smtplib → secure_smtplib
-        #print(f"✅ {package} sudah terinstall")
+        # secure-smtplib → secure_smtplib
+        __import__(package.replace("-", "_"))
+        # print(f"✅ {package} sudah terinstall")
         pass
         return
     except ImportError:
@@ -65,23 +68,26 @@ def install_package(package):
 
     try:
         # Tambahkan opsi untuk menghindari warning root
-        cmd = [sys.executable, "-m", "pip", "install", package, "--root-user-action=ignore"]
-        
+        cmd = [sys.executable, "-m", "pip", "install",
+               package, "--root-user-action=ignore"]
+
         result = subprocess.run(cmd, capture_output=True, text=True)
-        
+
         if result.returncode == 0:
             print(f"✅ {package} berhasil diinstall")
         else:
             print(f"❌ Gagal menginstall {package}")
             print(result.stderr)
             sys.exit(1)
-            
+
     except Exception as e:
         print(f"❌ Error saat menginstall: {e}")
         sys.exit(1)
     print(f"✅ {package} berhasil diinstall")
 
 # FUNCTIONS FOR MENU
+
+
 @is_option
 def IP_Track():
     ip = input(f"{Wh}\n Masukan IP Target : {Gr}")
@@ -116,7 +122,8 @@ def IP_Track():
     print_info_row("Negara IPify", ipify_location.get("country", "-"))
     print_info_row("ISP IPify", ipify_data.get("isp", "-"))
     print_info_row("ASN IPify", ipify_as.get("asn", "-"))
-    print_info_row("Proxy", "Ya" if ipify_proxy.get("proxy", False) else "Tidak")
+    print_info_row("Proxy", "Ya" if ipify_proxy.get(
+        "proxy", False) else "Tidak")
     print_info_row("VPN", "Ya" if ipify_proxy.get("vpn", False) else "Tidak")
     print_info_row("Tor", "Ya" if ipify_proxy.get("tor", False) else "Tidak")
 
@@ -171,7 +178,8 @@ def phoneGW():
     location = geocoder.description_for_number(parsed_number, "id")
     is_valid_number = phonenumbers.is_valid_number(parsed_number)
     is_possible_number = phonenumbers.is_possible_number(parsed_number)
-    formatted_number = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+    formatted_number = phonenumbers.format_number(
+        parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
     formatted_number_for_mobile = phonenumbers.format_number_for_mobile_dialing(parsed_number, default_region,
                                                                                 with_formatting=True)
     number_type = phonenumbers.number_type(parsed_number)
@@ -187,7 +195,9 @@ def phoneGW():
     print_info_row("Possible Number", is_possible_number)
     print_info_row("International", formatted_number)
     print_info_row("Mobile Format", formatted_number_for_mobile)
-    print_info_row("Type", "Mobile" if number_type == phonenumbers.PhoneNumberType.MOBILE else "Fixed-line" if number_type == phonenumbers.PhoneNumberType.FIXED_LINE else "Other")
+    print_info_row("Type", "Mobile" if number_type == phonenumbers.PhoneNumberType.MOBILE else "Fixed-line" if number_type ==
+                   phonenumbers.PhoneNumberType.FIXED_LINE else "Other")
+
 
 @is_option
 def TrackLu():
@@ -238,7 +248,8 @@ def TrackLu():
     for site, url in results.items():
         status = "✓" if "not found" not in str(url).lower() else "✗"
         color = Gr if status == "✓" else Re
-        print(f"{colorize(status, color)} {colorize(site, Cy)} {colorize('•', Ye)} {colorize(url, Wh)}")
+        print(
+            f"{colorize(status, color)} {colorize(site, Cy)} {colorize('•', Ye)} {colorize(url, Wh)}")
 
 
 @is_option
@@ -330,7 +341,8 @@ def option_text():
         f"{Cy}├─────┼──────────────────────────────┤",
     ]
     for opt in options:
-        lines.append(f"{Cy}│ {Wh}{opt['num']:<2}{Cy}  │ {Wh}{opt['text']:<28}{Cy} │")
+        lines.append(
+            f"{Cy}│ {Wh}{opt['num']:<2}{Cy}  │ {Wh}{opt['text']:<28}{Cy} │")
     lines.append(f"{Cy}└─────┴──────────────────────────────┘")
     return "\n".join(lines)
 
@@ -350,7 +362,6 @@ def option():
     print(colorize("╚══════════════════════════════════════╝", Mage))
     print()
     print(option_text())
-
 
 
 def run_banner():

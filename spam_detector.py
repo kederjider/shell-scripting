@@ -1,3 +1,4 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -9,7 +10,16 @@
    Email • SMS • Chat • Komentar • Form • Postingan • Batch
 """
 
-import subprocess, sys, os, re, json, time, math, hashlib, textwrap, string
+import subprocess
+import sys
+import os
+import re
+import json
+import time
+import math
+import hashlib
+import textwrap
+import string
 from datetime import datetime, timedelta
 from pathlib import Path
 from collections import Counter, defaultdict
@@ -19,14 +29,29 @@ from functools import lru_cache
 # ═══════════════════════════════════════════════════════════════════
 # 🎨 PROFESSIONAL DARK COLOR SYSTEM
 # ═══════════════════════════════════════════════════════════════════
+
+
 class Clr:
-    RST = "\033[0m";    BLD = "\033[1m";    DIM = "\033[2m"
-    ITL = "\033[3m";    UND = "\033[4m";    BLK = "\033[5m"
-    R = "\033[0;31m";   G = "\033[0;32m";   Y = "\033[1;33m"
-    B = "\033[0;34m";   M = "\033[0;35m";   C = "\033[0;36m"
-    W = "\033[1;37m";   GR = "\033[2;37m"
-    BR = "\033[1;31m";  BG = "\033[1;32m";  BY = "\033[1;93m"
-    BB = "\033[1;34m";  BM = "\033[1;35m";  BC = "\033[1;36m"
+    RST = "\033[0m"
+    BLD = "\033[1m"
+    DIM = "\033[2m"
+    ITL = "\033[3m"
+    UND = "\033[4m"
+    BLK = "\033[5m"
+    R = "\033[0;31m"
+    G = "\033[0;32m"
+    Y = "\033[1;33m"
+    B = "\033[0;34m"
+    M = "\033[0;35m"
+    C = "\033[0;36m"
+    W = "\033[1;37m"
+    GR = "\033[2;37m"
+    BR = "\033[1;31m"
+    BG = "\033[1;32m"
+    BY = "\033[1;93m"
+    BB = "\033[1;34m"
+    BM = "\033[1;35m"
+    BC = "\033[1;36m"
     ACC = "\033[38;2;0;255;136m"
     WRN = "\033[38;2;255;165;0m"
     DNG = "\033[38;2;255;55;55m"
@@ -36,27 +61,36 @@ class Clr:
     SLV = "\033[38;2;192;192;192m"
     FNT = "\033[38;2;180;180;210m"
 
-OK = f"{Clr.G}✔{Clr.RST}";   FL = f"{Clr.R}✘{Clr.RST}"
-WR = f"{Clr.WRN}⚠{Clr.RST}";  IN = f"{Clr.INF}ℹ{Clr.RST}"
-AR = f"{Clr.ACC}▸{Clr.RST}";  BT = f"{Clr.PRP}◆{Clr.RST}"
+
+OK = f"{Clr.G}✔{Clr.RST}"
+FL = f"{Clr.R}✘{Clr.RST}"
+WR = f"{Clr.WRN}⚠{Clr.RST}"
+IN = f"{Clr.INF}ℹ{Clr.RST}"
+AR = f"{Clr.ACC}▸{Clr.RST}"
+BT = f"{Clr.PRP}◆{Clr.RST}"
 ST = f"{Clr.GLD}★{Clr.RST}"
 
 # ═══════════════════════════════════════════════════════════════════
 # 🧩 UTILITIES
 # ═══════════════════════════════════════════════════════════════════
 
+
 def cls(): os.system("cls" if os.name == "nt" else "clear")
-def hr():  print(f"  {Clr.DIM}{'─' * 64}{Clr.RST}")
-def ts():  return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def hr(): print(f"  {Clr.DIM}{'─' * 64}{Clr.RST}")
+def ts(): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 def pause():
-    input(f"\n  {Clr.ACC}[⏎]{Clr.RST} {Clr.DIM}Tekan Enter untuk kembali...{Clr.RST}")
+    input(
+        f"\n  {Clr.ACC}[⏎]{Clr.RST} {Clr.DIM}Tekan Enter untuk kembali...{Clr.RST}")
 
-def ok(m):   print(f"  {OK}  {Clr.G}{m}{Clr.RST}")
-def fl(m):   print(f"  {FL}  {Clr.DNG}{m}{Clr.RST}")
-def wr(m):   print(f"  {WR}  {Clr.WRN}{m}{Clr.RST}")
-def inf(m):  print(f"  {IN}  {Clr.INF}{m}{Clr.RST}")
-def det(m):  print(f"     {Clr.DIM}{m}{Clr.RST}")
+
+def ok(m): print(f"  {OK}  {Clr.G}{m}{Clr.RST}")
+def fl(m): print(f"  {FL}  {Clr.DNG}{m}{Clr.RST}")
+def wr(m): print(f"  {WR}  {Clr.WRN}{m}{Clr.RST}")
+def inf(m): print(f"  {IN}  {Clr.INF}{m}{Clr.RST}")
+def det(m): print(f"     {Clr.DIM}{m}{Clr.RST}")
+
 
 def bx(color: str, title: str, body: str):
     print(f"  {color}┌{'─' * 60}┐{Clr.RST}")
@@ -66,6 +100,7 @@ def bx(color: str, title: str, body: str):
         for line in body.split("\n"):
             print(f"  {color}│{Clr.RST}  {Clr.W}{line}{Clr.RST}")
     print(f"  {color}└{'─' * 60}┘{Clr.RST}")
+
 
 def banner():
     print(f"""
@@ -77,11 +112,14 @@ def banner():
   ║{Clr.RST}  {Clr.PRP}▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀{Clr.ACC}║
   {Clr.ACC}╚{'═' * 62}╝{Clr.RST}""")
 
+
 def hdr(title: str, sub: str = ""):
     print(f"\n  {Clr.PRP}┌{'─' * 62}┐{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST}  {Clr.BLD}{Clr.ACC}{title}{Clr.RST}")
-    if sub: print(f"  {Clr.PRP}│{Clr.RST}  {Clr.DIM}{sub}{Clr.RST}")
+    if sub:
+        print(f"  {Clr.PRP}│{Clr.RST}  {Clr.DIM}{sub}{Clr.RST}")
     print(f"  {Clr.PRP}└{'─' * 62}┘{Clr.RST}")
+
 
 def save(tool: str, data: str) -> str:
     dn = "hasil_spamdetector"
@@ -91,12 +129,15 @@ def save(tool: str, data: str) -> str:
         f.write(data)
     return fn
 
+
 def bar(pct: float, w: int = 36) -> str:
     f = int(w * pct / 100)
     return f"{Clr.ACC}{'█' * f}{Clr.DIM}{'░' * (w - f)}{Clr.RST}"
 
+
 def gbar(score: int, max_s: int, w: int = 30) -> str:
-    if max_s <= 0: return f"{Clr.DIM}{'░' * w}{Clr.RST}"
+    if max_s <= 0:
+        return f"{Clr.DIM}{'░' * w}{Clr.RST}"
     pct = score / max_s
     f = int(w * pct)
     c = Clr.G if pct < 0.3 else (Clr.WRN if pct < 0.6 else Clr.DNG)
@@ -106,22 +147,29 @@ def gbar(score: int, max_s: int, w: int = 30) -> str:
 # 📦 AUTO DEPENDENCY
 # ═══════════════════════════════════════════════════════════════════
 
+
 def check_deps():
     import importlib
     need = []
     for lib in ["requests"]:
-        try: importlib.import_module(lib)
-        except ImportError: need.append(lib)
-    if not need: return
+        try:
+            importlib.import_module(lib)
+        except ImportError:
+            need.append(lib)
+    if not need:
+        return
     print(f"\n  {Clr.WRN}[!] Installing {len(need)} package...{Clr.RST}")
     for lib in need:
         print(f"  {Clr.DIM}⏳ {lib}...{Clr.RST}", end=" ", flush=True)
-        r = subprocess.run([sys.executable, "-m", "pip", "install", lib, "--quiet"], capture_output=True, timeout=60)
-        print(f"{Clr.G}✔{Clr.RST}" if r.returncode == 0 else f"{Clr.R}✘{Clr.RST}")
+        r = subprocess.run([sys.executable, "-m", "pip", "install",
+                           lib, "--quiet"], capture_output=True, timeout=60)
+        print(f"{Clr.G}✔{Clr.RST}" if r.returncode ==
+              0 else f"{Clr.R}✘{Clr.RST}")
 
 # ═══════════════════════════════════════════════════════════════════
 # 🧠 SPAM INTELLIGENCE DATABASE
 # ═══════════════════════════════════════════════════════════════════
+
 
 # ── Weighted Keywords (score 1-10) ──
 SPAM_KW = {
@@ -315,6 +363,7 @@ SPAM_PHRASES = [
 # 🔬 ANALYSIS RESULT CONTAINER
 # ═══════════════════════════════════════════════════════════════════
 
+
 class ScanResult:
     def __init__(self):
         self.score = 0
@@ -328,7 +377,8 @@ class ScanResult:
         self.color = ""
 
     def add(self, name: str, pts: int, mx: int, detail: str, extra: Any = None):
-        self.layers.append({"name": name, "pts": pts, "mx": mx, "detail": detail, "extra": extra})
+        self.layers.append(
+            {"name": name, "pts": pts, "mx": mx, "detail": detail, "extra": extra})
         self.score += pts
         self.max_score += mx
 
@@ -338,17 +388,34 @@ class ScanResult:
         if self.max_score > 0:
             self.pct = min(100.0, round(self.score / effective_max * 100, 1))
         self.spam = self.pct >= 50
-        if self.pct >= 90:    self.grade = "CRITICAL SPAM"; self.emoji = "🔴"; self.color = Clr.DNG
-        elif self.pct >= 75:  self.grade = "HIGH SPAM";     self.emoji = "🟠"; self.color = Clr.WRN
-        elif self.pct >= 50:  self.grade = "SUSPICIOUS";    self.emoji = "🟡"; self.color = Clr.BY
-        elif self.pct >= 25:  self.grade = "LOW RISK";      self.emoji = "🟢"; self.color = Clr.G
-        else:                 self.grade = "CLEAN";         self.emoji = "✅"; self.color = Clr.G
+        if self.pct >= 90:
+            self.grade = "CRITICAL SPAM"
+            self.emoji = "🔴"
+            self.color = Clr.DNG
+        elif self.pct >= 75:
+            self.grade = "HIGH SPAM"
+            self.emoji = "🟠"
+            self.color = Clr.WRN
+        elif self.pct >= 50:
+            self.grade = "SUSPICIOUS"
+            self.emoji = "🟡"
+            self.color = Clr.BY
+        elif self.pct >= 25:
+            self.grade = "LOW RISK"
+            self.emoji = "🟢"
+            self.color = Clr.G
+        else:
+            self.grade = "CLEAN"
+            self.emoji = "✅"
+            self.color = Clr.G
 
 # ═══════════════════════════════════════════════════════════════════
 # 🧠 10-LAYER SPAM DETECTION ENGINE
 # ═══════════════════════════════════════════════════════════════════
 
 # ── LAYER 1: Keyword Density ──
+
+
 def L1_keywords(text: str, r: ScanResult):
     t = text.lower()
     hits = []
@@ -359,14 +426,22 @@ def L1_keywords(text: str, r: ScanResult):
             hits.append((kw, c, w, c * w))
             total += c * w
     hits.sort(key=lambda x: -x[3])
-    if total > 60:    pts, detail = 25, f"CRITICAL: {total} keyword pts, {len(hits)} matched"
-    elif total > 35:  pts, detail = 20, f"HIGH: {total} keyword pts, {len(hits)} matched"
-    elif total > 15:  pts, detail = 12, f"MEDIUM: {total} keyword pts, {len(hits)} matched"
-    elif total > 5:   pts, detail = 6, f"LOW: {total} keyword pts, {len(hits)} matched"
-    else:             pts, detail = 0, f"Clean: {total} keyword pts"
-    r.add("1. Keyword Density", pts, 25, detail, {"hits": hits[:8], "total": total})
+    if total > 60:
+        pts, detail = 25, f"CRITICAL: {total} keyword pts, {len(hits)} matched"
+    elif total > 35:
+        pts, detail = 20, f"HIGH: {total} keyword pts, {len(hits)} matched"
+    elif total > 15:
+        pts, detail = 12, f"MEDIUM: {total} keyword pts, {len(hits)} matched"
+    elif total > 5:
+        pts, detail = 6, f"LOW: {total} keyword pts, {len(hits)} matched"
+    else:
+        pts, detail = 0, f"Clean: {total} keyword pts"
+    r.add("1. Keyword Density", pts, 25, detail,
+          {"hits": hits[:8], "total": total})
 
 # ── LAYER 2: URL & Link Intelligence ──
+
+
 def L2_urls(text: str, r: ScanResult):
     urls = re.findall(r'https?://[^\s<>"{}|\\^`\[\]]+', text, re.I)
     score = 0
@@ -375,192 +450,317 @@ def L2_urls(text: str, r: ScanResult):
         u = url.lower()
         for s in SHORTENERS:
             if s in u:
-                score += 8; details.append(f"Shortener: {s}"); break
+                score += 8
+                details.append(f"Shortener: {s}")
+                break
         for tld, w in SPAM_TLDS.items():
             if u.endswith(tld) or f"{tld}/" in u and w > 0:
-                score += w; details.append(f"Spam TLD: {tld} (+{w})")
+                score += w
+                details.append(f"Spam TLD: {tld} (+{w})")
         if re.search(r'https?://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', u):
-            score += 7; details.append("Raw IP URL")
+            score += 7
+            details.append("Raw IP URL")
         if len(url) > 150:
-            score += 4; details.append(f"Long URL ({len(url)} chars)")
+            score += 4
+            details.append(f"Long URL ({len(url)} chars)")
     if len(urls) > 5:
-        score += 5; details.append(f"Excessive: {len(urls)} URLs")
-    if score > 20:    pts, detail = 20, f"CRITICAL: {score} URL risk pts, {len(urls)} URLs"
-    elif score > 10:  pts, detail = 12, f"HIGH: {score} URL risk pts, {len(urls)} URLs"
-    elif score > 3:   pts, detail = 6, f"MEDIUM: {score} URL risk pts, {len(urls)} URLs"
-    else:             pts, detail = max(0, score), f"Clean: {score} URL risk pts, {len(urls)} URLs"
-    r.add("2. URL Intelligence", pts, 20, detail, {"urls": len(urls), "issues": details[:5]})
+        score += 5
+        details.append(f"Excessive: {len(urls)} URLs")
+    if score > 20:
+        pts, detail = 20, f"CRITICAL: {score} URL risk pts, {len(urls)} URLs"
+    elif score > 10:
+        pts, detail = 12, f"HIGH: {score} URL risk pts, {len(urls)} URLs"
+    elif score > 3:
+        pts, detail = 6, f"MEDIUM: {score} URL risk pts, {len(urls)} URLs"
+    else:
+        pts, detail = max(
+            0, score), f"Clean: {score} URL risk pts, {len(urls)} URLs"
+    r.add("2. URL Intelligence", pts, 20, detail, {
+          "urls": len(urls), "issues": details[:5]})
 
 # ── LAYER 3: Email Address Forensics ──
+
+
 def L3_emails(text: str, r: ScanResult):
-    emails = re.findall(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', text)
+    emails = re.findall(
+        r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', text)
     score = 0
     details = []
     for em in emails:
         dom = em.split("@")[1].lower() if "@" in em else ""
         for sd, w in SPAM_DOMAINS.items():
             if dom == sd and w > 0:
-                score += w; details.append(f"Disposable: {dom} (+{w})")
+                score += w
+                details.append(f"Disposable: {dom} (+{w})")
         for tld, w in SPAM_TLDS.items():
             if dom.endswith(tld) and w > 0:
-                score += w; details.append(f"Spam TLD: {tld} (+{w})")
+                score += w
+                details.append(f"Spam TLD: {tld} (+{w})")
         if sum(c.isdigit() for c in em.split("@")[0]) > 5:
-            score += 3; details.append("Numeric-heavy email")
-    if score > 10:    pts, detail = 15, f"CRITICAL: {score} email risk pts, {len(emails)} emails"
-    elif score > 5:   pts, detail = 8, f"HIGH: {score} email risk pts, {len(emails)} emails"
-    elif score > 0:   pts, detail = 3, f"LOW: {score} email risk pts, {len(emails)} emails"
-    else:             pts, detail = 0, f"Clean: {len(emails)} emails found"
-    r.add("3. Email Forensics", pts, 15, detail, {"emails": len(emails), "issues": details[:5]})
+            score += 3
+            details.append("Numeric-heavy email")
+    if score > 10:
+        pts, detail = 15, f"CRITICAL: {score} email risk pts, {len(emails)} emails"
+    elif score > 5:
+        pts, detail = 8, f"HIGH: {score} email risk pts, {len(emails)} emails"
+    elif score > 0:
+        pts, detail = 3, f"LOW: {score} email risk pts, {len(emails)} emails"
+    else:
+        pts, detail = 0, f"Clean: {len(emails)} emails found"
+    r.add("3. Email Forensics", pts, 15, detail, {
+          "emails": len(emails), "issues": details[:5]})
 
 # ── LAYER 4: Text Structure Analysis ──
+
+
 def L4_structure(text: str, r: ScanResult):
-    score = 0; dets = []
+    score = 0
+    dets = []
     if len(text) > 0:
         up = sum(1 for c in text if c.isupper())
         alpha = sum(1 for c in text if c.isalpha())
         if alpha > 0:
             rto = up / alpha
-            if rto > 0.5:    score += 8; dets.append(f"Excessive CAPS: {int(rto*100)}%")
-            elif rto > 0.3:  score += 4; dets.append(f"High CAPS: {int(rto*100)}%")
+            if rto > 0.5:
+                score += 8
+                dets.append(f"Excessive CAPS: {int(rto*100)}%")
+            elif rto > 0.3:
+                score += 4
+                dets.append(f"High CAPS: {int(rto*100)}%")
     ex = text.count("!")
-    if ex > 10:    score += 6; dets.append(f"Excessive !!!: {ex}")
-    elif ex > 5:   score += 3; dets.append(f"Many !!!: {ex}")
+    if ex > 10:
+        score += 6
+        dets.append(f"Excessive !!!: {ex}")
+    elif ex > 5:
+        score += 3
+        dets.append(f"Many !!!: {ex}")
     qs = text.count("?")
-    if qs > 10: score += 3; dets.append(f"Excessive ???: {qs}")
+    if qs > 10:
+        score += 3
+        dets.append(f"Excessive ???: {qs}")
     lines = text.split("\n")
     short = [l for l in lines if 0 < len(l.strip()) < 30]
-    if len(short) > 20: score += 4; dets.append(f"Many short lines: {len(short)}")
-    if re.findall(r'(.)\1{5,}', text): score += 3; dets.append("Stretched characters")
+    if len(short) > 20:
+        score += 4
+        dets.append(f"Many short lines: {len(short)}")
+    if re.findall(r'(.)\1{5,}', text):
+        score += 3
+        dets.append("Stretched characters")
     empty = sum(1 for l in lines if l.strip() == "")
-    if empty > 20: score += 3; dets.append(f"Excessive empty lines: {empty}")
-    if score > 10:    pts, detail = 15, f"CRITICAL: {score} structure risk pts"
-    elif score > 5:   pts, detail = 8, f"HIGH: {score} structure risk pts"
-    elif score > 0:   pts, detail = 3, f"LOW: {score} structure risk pts"
-    else:             pts, detail = 0, "Clean: Normal text structure"
+    if empty > 20:
+        score += 3
+        dets.append(f"Excessive empty lines: {empty}")
+    if score > 10:
+        pts, detail = 15, f"CRITICAL: {score} structure risk pts"
+    elif score > 5:
+        pts, detail = 8, f"HIGH: {score} structure risk pts"
+    elif score > 0:
+        pts, detail = 3, f"LOW: {score} structure risk pts"
+    else:
+        pts, detail = 0, "Clean: Normal text structure"
     r.add("4. Text Structure", pts, 15, detail, {"issues": dets[:5]})
 
 # ── LAYER 5: Pattern & Regex Matching ──
+
+
 def L5_patterns(text: str, r: ScanResult):
-    score = 0; dets = []
+    score = 0
+    dets = []
     for pat, w, desc in RGX_PATTERNS:
         m = re.findall(pat, text, re.I)
         if m:
-            score += w; dets.append(f"{desc}: {len(m)} match (+{w})")
-    if score > 15:    pts, detail = 15, f"CRITICAL: {score} pattern risk pts"
-    elif score > 8:   pts, detail = 10, f"HIGH: {score} pattern risk pts"
-    elif score > 0:   pts, detail = 5, f"LOW: {score} pattern risk pts"
-    else:             pts, detail = 0, "Clean: No suspicious patterns"
+            score += w
+            dets.append(f"{desc}: {len(m)} match (+{w})")
+    if score > 15:
+        pts, detail = 15, f"CRITICAL: {score} pattern risk pts"
+    elif score > 8:
+        pts, detail = 10, f"HIGH: {score} pattern risk pts"
+    elif score > 0:
+        pts, detail = 5, f"LOW: {score} pattern risk pts"
+    else:
+        pts, detail = 0, "Clean: No suspicious patterns"
     r.add("5. Pattern Matching", pts, 15, detail, {"issues": dets[:5]})
 
 # ── LAYER 6: Heuristic/NLP Analysis ──
+
+
 def L6_heuristic(text: str, r: ScanResult):
-    score = 0; dets = []
+    score = 0
+    dets = []
     if len(text) > 0:
         freq = Counter(text.lower())
         ent = 0
         for cnt in freq.values():
-            p = cnt / len(text); ent -= p * math.log2(p)
-        if ent > 5.0:    score += 5; dets.append(f"High entropy: {ent:.2f}")
-        elif ent > 4.5:  score += 2; dets.append(f"Moderate entropy: {ent:.2f}")
+            p = cnt / len(text)
+            ent -= p * math.log2(p)
+        if ent > 5.0:
+            score += 5
+            dets.append(f"High entropy: {ent:.2f}")
+        elif ent > 4.5:
+            score += 2
+            dets.append(f"Moderate entropy: {ent:.2f}")
     words = re.findall(r'\b\w+\b', text.lower())
     if words:
         uniq = len(set(words)) / len(words)
-        if uniq < 0.3:   score += 5; dets.append(f"Very repetitive: {uniq:.1%}")
-        elif uniq < 0.5: score += 2; dets.append(f"Somewhat repetitive: {uniq:.1%}")
+        if uniq < 0.3:
+            score += 5
+            dets.append(f"Very repetitive: {uniq:.1%}")
+        elif uniq < 0.5:
+            score += 2
+            dets.append(f"Somewhat repetitive: {uniq:.1%}")
         avg_wl = sum(len(w) for w in words) / len(words)
-        if avg_wl > 8: score += 2; dets.append(f"Long words avg: {avg_wl:.1f}")
+        if avg_wl > 8:
+            score += 2
+            dets.append(f"Long words avg: {avg_wl:.1f}")
         avg_wl2 = sum(len(w) for w in words) / len(words)
     if len(text) > 0:
         dig_ratio = sum(c.isdigit() for c in text) / len(text)
-        if dig_ratio > 0.2: score += 4; dets.append(f"High digit density: {dig_ratio:.1%}")
-    if score > 8:    pts, detail = 10, f"CRITICAL: {score} heuristic risk pts"
-    elif score > 3:  pts, detail = 5, f"HIGH: {score} heuristic risk pts"
-    elif score > 0:  pts, detail = 2, f"LOW: {score} heuristic risk pts"
-    else:            pts, detail = 0, "Clean: Normal NLP profile"
+        if dig_ratio > 0.2:
+            score += 4
+            dets.append(f"High digit density: {dig_ratio:.1%}")
+    if score > 8:
+        pts, detail = 10, f"CRITICAL: {score} heuristic risk pts"
+    elif score > 3:
+        pts, detail = 5, f"HIGH: {score} heuristic risk pts"
+    elif score > 0:
+        pts, detail = 2, f"LOW: {score} heuristic risk pts"
+    else:
+        pts, detail = 0, "Clean: Normal NLP profile"
     r.add("6. NLP Heuristics", pts, 10, detail, {"issues": dets[:5]})
 
 # ── LAYER 7: Phishing Detection ──
+
+
 def L7_phishing(text: str, r: ScanResult):
     t = text.lower()
-    score = 0; dets = []
+    score = 0
+    dets = []
     for kw in PHISHING_KW:
         if kw in t:
-            score += 5; dets.append(kw)
-            if len(dets) >= 5: break
-    if score > 20:    pts, detail = 15, f"CRITICAL: {score} phishing pts, {len(dets)} patterns"
-    elif score > 10:  pts, detail = 10, f"HIGH: {score} phishing pts, {len(dets)} patterns"
-    elif score > 5:   pts, detail = 5, f"MEDIUM: {score} phishing pts, {len(dets)} patterns"
-    elif score > 0:   pts, detail = 2, f"LOW: {score} phishing pts, {len(dets)} patterns"
-    else:             pts, detail = 0, "Clean: No phishing patterns"
+            score += 5
+            dets.append(kw)
+            if len(dets) >= 5:
+                break
+    if score > 20:
+        pts, detail = 15, f"CRITICAL: {score} phishing pts, {len(dets)} patterns"
+    elif score > 10:
+        pts, detail = 10, f"HIGH: {score} phishing pts, {len(dets)} patterns"
+    elif score > 5:
+        pts, detail = 5, f"MEDIUM: {score} phishing pts, {len(dets)} patterns"
+    elif score > 0:
+        pts, detail = 2, f"LOW: {score} phishing pts, {len(dets)} patterns"
+    else:
+        pts, detail = 0, "Clean: No phishing patterns"
     r.add("7. Phishing Detection", pts, 15, detail, {"patterns": dets[:5]})
 
 # ── LAYER 8: Spam Phrase Analysis ──
+
+
 def L8_phrases(text: str, r: ScanResult):
     t = text.lower()
-    score = 0; dets = []
+    score = 0
+    dets = []
     for ph in SPAM_PHRASES:
         if ph in t:
-            score += 3; dets.append(ph)
-            if len(dets) >= 5: break
-    if score > 10:    pts, detail = 10, f"CRITICAL: {score} phrase pts, {len(dets)} detected"
-    elif score > 5:   pts, detail = 6, f"HIGH: {score} phrase pts, {len(dets)} detected"
-    elif score > 0:   pts, detail = 2, f"LOW: {score} phrase pts, {len(dets)} detected"
-    else:             pts, detail = 0, "Clean: No spam phrases"
+            score += 3
+            dets.append(ph)
+            if len(dets) >= 5:
+                break
+    if score > 10:
+        pts, detail = 10, f"CRITICAL: {score} phrase pts, {len(dets)} detected"
+    elif score > 5:
+        pts, detail = 6, f"HIGH: {score} phrase pts, {len(dets)} detected"
+    elif score > 0:
+        pts, detail = 2, f"LOW: {score} phrase pts, {len(dets)} detected"
+    else:
+        pts, detail = 0, "Clean: No spam phrases"
     r.add("8. Phrase Analysis", pts, 10, detail, {"phrases": dets[:5]})
 
 # ── LAYER 9: Sender Reputation ──
+
+
 def L9_sender(sender: str, subject: str, r: ScanResult):
-    score = 0; dets = []
+    score = 0
+    dets = []
     sl = sender.lower() if sender else ""
     if "@" in sl:
         dom = sl.split("@")[1]
         for sd, w in SPAM_DOMAINS.items():
             if dom == sd and w > 0:
-                score += w; dets.append(f"Spam domain: {dom} (+{w})")
+                score += w
+                dets.append(f"Spam domain: {dom} (+{w})")
         for tld, w in SPAM_TLDS.items():
             if dom.endswith(tld) and w > 0:
-                score += w; dets.append(f"Spam TLD: {tld} (+{w})")
+                score += w
+                dets.append(f"Spam TLD: {tld} (+{w})")
         if sum(c.isdigit() for c in sl.split("@")[0]) > 5:
-            score += 3; dets.append("Numeric-heavy sender")
+            score += 3
+            dets.append("Numeric-heavy sender")
     if subject:
-        if subject.isupper(): score += 4; dets.append("ALL CAPS subject")
+        if subject.isupper():
+            score += 4
+            dets.append("ALL CAPS subject")
         subj_score = 0
         for kw, w in SPAM_KW.items():
-            if kw in subject.lower(): subj_score += w
-        if subj_score > 10: score += 6; dets.append(f"Spam keywords in subject: {subj_score}pts")
-        elif subj_score > 5: score += 3; dets.append(f"Some spam keywords in subject")
-        if len(subject) < 3: score += 2; dets.append("Very short subject")
-        elif len(subject) > 200: score += 3; dets.append("Very long subject")
-    if score > 10:    pts, detail = 10, f"CRITICAL: {score} reputation risk pts"
-    elif score > 5:   pts, detail = 6, f"HIGH: {score} reputation risk pts"
-    elif score > 0:   pts, detail = 2, f"LOW: {score} reputation risk pts"
-    else:             pts, detail = 0, "Clean: Good reputation"
+            if kw in subject.lower():
+                subj_score += w
+        if subj_score > 10:
+            score += 6
+            dets.append(f"Spam keywords in subject: {subj_score}pts")
+        elif subj_score > 5:
+            score += 3
+            dets.append(f"Some spam keywords in subject")
+        if len(subject) < 3:
+            score += 2
+            dets.append("Very short subject")
+        elif len(subject) > 200:
+            score += 3
+            dets.append("Very long subject")
+    if score > 10:
+        pts, detail = 10, f"CRITICAL: {score} reputation risk pts"
+    elif score > 5:
+        pts, detail = 6, f"HIGH: {score} reputation risk pts"
+    elif score > 0:
+        pts, detail = 2, f"LOW: {score} reputation risk pts"
+    else:
+        pts, detail = 0, "Clean: Good reputation"
     r.add("9. Sender Reputation", pts, 10, detail, {"issues": dets[:5]})
 
 # ── LAYER 10: Bayesian-Style Statistical Analysis ──
+
+
 def L10_bayesian(text: str, r: ScanResult):
     """Statistical spam probability estimation."""
     t = text.lower()
     words = re.findall(r'\b\w+\b', t)
-    if not words: r.add("10. Statistical Model", 0, 5, "No text to analyze"); return
+    if not words:
+        r.add("10. Statistical Model", 0, 5, "No text to analyze")
+        return
 
     # Count spam vs non-spam word indicators
     spam_count = 0
     total_words = len(words)
     for w in words:
-        if w in SPAM_KW: spam_count += 1
+        if w in SPAM_KW:
+            spam_count += 1
     spam_ratio = spam_count / total_words if total_words > 0 else 0
 
     # Bayesian-inspired smoothing
-    if spam_ratio > 0.15:    pts, detail = 5, f"CRITICAL: {spam_ratio:.1%} words are spam-indicators"
-    elif spam_ratio > 0.08:  pts, detail = 3, f"HIGH: {spam_ratio:.1%} words are spam-indicators"
-    elif spam_ratio > 0.03:  pts, detail = 1, f"LOW: {spam_ratio:.1%} words are spam-indicators"
-    else:                    pts, detail = 0, f"Clean: {spam_ratio:.1%} spam-indicator ratio"
-    r.add("10. Statistical Model", pts, 5, detail, {"ratio": spam_ratio, "words": total_words})
+    if spam_ratio > 0.15:
+        pts, detail = 5, f"CRITICAL: {spam_ratio:.1%} words are spam-indicators"
+    elif spam_ratio > 0.08:
+        pts, detail = 3, f"HIGH: {spam_ratio:.1%} words are spam-indicators"
+    elif spam_ratio > 0.03:
+        pts, detail = 1, f"LOW: {spam_ratio:.1%} words are spam-indicators"
+    else:
+        pts, detail = 0, f"Clean: {spam_ratio:.1%} spam-indicator ratio"
+    r.add("10. Statistical Model", pts, 5, detail, {
+          "ratio": spam_ratio, "words": total_words})
 
 # ═══════════════════════════════════════════════════════════════════
 # 🔍 FULL ANALYSIS ENGINE
 # ═══════════════════════════════════════════════════════════════════
+
 
 def full_scan(text: str, sender: str = "", subject: str = "") -> ScanResult:
     """Run all 10 layers of spam detection."""
@@ -578,6 +778,7 @@ def full_scan(text: str, sender: str = "", subject: str = "") -> ScanResult:
     r.finalize()
     return r
 
+
 def display_results(r: ScanResult, sender: str = "", subject: str = ""):
     """Display formatted scan results."""
     print(f"\n  {Clr.PRP}╔{'═' * 60}╗{Clr.RST}")
@@ -586,7 +787,8 @@ def display_results(r: ScanResult, sender: str = "", subject: str = ""):
 
     for lyr in r.layers:
         bar_str = gbar(lyr["pts"], lyr["mx"])
-        print(f"  {Clr.PRP}║{Clr.RST} {Clr.W}{lyr['name']:<22}{Clr.RST} {bar_str}  {Clr.PRP}║{Clr.RST}")
+        print(
+            f"  {Clr.PRP}║{Clr.RST} {Clr.W}{lyr['name']:<22}{Clr.RST} {bar_str}  {Clr.PRP}║{Clr.RST}")
 
     print(f"  {Clr.PRP}╠{'═' * 60}╣{Clr.RST}")
     print(f"  {Clr.PRP}║{Clr.RST} {Clr.BLD}Score: {r.color}{r.pct:.1f}%{Clr.RST}  →  {r.color}{r.emoji} {r.grade}{Clr.RST}{' ' * (28 - len(r.grade))}{Clr.PRP}║{Clr.RST}")
@@ -603,9 +805,11 @@ def display_results(r: ScanResult, sender: str = "", subject: str = ""):
                         if isinstance(v, list) and v and k != "total":
                             for item in v[:3]:
                                 if isinstance(item, tuple):
-                                    print(f"  {Clr.PRP}║{Clr.RST}   {Clr.DIM}• {item[0]} ({item[1]}x, +{item[2]}){Clr.RST}")
+                                    print(
+                                        f"  {Clr.PRP}║{Clr.RST}   {Clr.DIM}• {item[0]} ({item[1]}x, +{item[2]}){Clr.RST}")
                                 else:
-                                    print(f"  {Clr.PRP}║{Clr.RST}   {Clr.DIM}• {item}{Clr.RST}")
+                                    print(
+                                        f"  {Clr.PRP}║{Clr.RST}   {Clr.DIM}• {item}{Clr.RST}")
             print(f"  {Clr.PRP}║{Clr.RST}")
 
     print(f"  {Clr.PRP}╚{'═' * 60}╝{Clr.RST}")
@@ -632,6 +836,7 @@ def display_results(r: ScanResult, sender: str = "", subject: str = ""):
 # 📱 USER INTERFACE SCREENS
 # ═══════════════════════════════════════════════════════════════════
 
+
 def scan_email():
     cls()
     hdr("📧 EMAIL SPAM DETECTOR", "Full 10-layer email analysis")
@@ -647,13 +852,16 @@ def scan_email():
     lines = []
     while True:
         line = input()
-        if line == "": break
+        if line == "":
+            break
         lines.append(line)
     body = "\n".join(lines)
     full = f"{subject}\n\n{body}"
 
     if not full.strip():
-        fl("Isi email kosong!"); pause(); return
+        fl("Isi email kosong!")
+        pause()
+        return
 
     print(f"\n  {Clr.PRP}[*] Running 10-layer analysis...{Clr.RST}\n")
     for i in range(1, 11):
@@ -676,6 +884,7 @@ def scan_email():
     ok(f"Laporan disimpan → {fn}")
     pause()
 
+
 def scan_text():
     cls()
     hdr("📝 TEXT SPAM DETECTOR", "Analyze any text: SMS, chat, comment, post")
@@ -688,12 +897,15 @@ def scan_text():
     lines = []
     while True:
         line = input()
-        if line == "": break
+        if line == "":
+            break
         lines.append(line)
     text = "\n".join(lines)
 
     if not text.strip():
-        fl("Teks kosong!"); pause(); return
+        fl("Teks kosong!")
+        pause()
+        return
 
     print(f"\n  {Clr.PRP}[*] Running 10-layer analysis...{Clr.RST}\n")
     for i in range(1, 11):
@@ -714,6 +926,7 @@ def scan_text():
     ok(f"Laporan disimpan → {fn}")
     pause()
 
+
 def scan_batch():
     cls()
     hdr("📋 BATCH SPAM DETECTOR", "Scan multiple texts at once")
@@ -726,13 +939,16 @@ def scan_batch():
     lines = []
     while True:
         line = input()
-        if line == "": break
+        if line == "":
+            break
         lines.append(line)
     full = "\n".join(lines)
     texts = [t.strip() for t in full.split("---") if t.strip()]
 
     if not texts:
-        fl("Tidak ada teks!"); pause(); return
+        fl("Tidak ada teks!")
+        pause()
+        return
 
     print(f"\n  {Clr.PRP}[*] Analyzing {len(texts)} texts...{Clr.RST}\n")
 
@@ -741,8 +957,10 @@ def scan_batch():
         r = full_scan(text)
         results.append((i, text, r))
         icon = f"{Clr.DNG}SPAM{Clr.RST}" if r.spam else f"{Clr.G}CLEAN{Clr.RST}"
-        preview = text[:60].replace("\n", " ") + ("..." if len(text) > 60 else "")
-        print(f"  {Clr.PRP}[{i:2d}]{Clr.RST} {icon} {Clr.ACC}{r.pct:5.1f}%{Clr.RST} {Clr.DIM}{preview}{Clr.RST}")
+        preview = text[:60].replace("\n", " ") + \
+            ("..." if len(text) > 60 else "")
+        print(
+            f"  {Clr.PRP}[{i:2d}]{Clr.RST} {icon} {Clr.ACC}{r.pct:5.1f}%{Clr.RST} {Clr.DIM}{preview}{Clr.RST}")
 
     spam_n = sum(1 for _, _, r in results if r.spam)
     clean_n = len(results) - spam_n
@@ -763,6 +981,7 @@ def scan_batch():
     ok(f"Laporan disimpan → {fn}")
     pause()
 
+
 def scan_quick():
     """Quick one-line spam check."""
     cls()
@@ -772,7 +991,9 @@ def scan_quick():
 
     text = input(f"  {AR} {Clr.W}Teks (1 baris):{Clr.RST} ").strip()
     if not text:
-        fl("Teks kosong!"); pause(); return
+        fl("Teks kosong!")
+        pause()
+        return
 
     print(f"\n  {Clr.PRP}[*] Quick analysis...{Clr.RST}\n")
     r = full_scan(text)
@@ -782,7 +1003,8 @@ def scan_quick():
     for lyr in r.layers:
         if lyr["pts"] > 0:
             bar_str = gbar(lyr["pts"], lyr["mx"], 20)
-            print(f"  {Clr.PRP}│{Clr.RST} {Clr.W}{lyr['name']:<22}{Clr.RST} {bar_str}  {Clr.PRP}│{Clr.RST}")
+            print(
+                f"  {Clr.PRP}│{Clr.RST} {Clr.W}{lyr['name']:<22}{Clr.RST} {bar_str}  {Clr.PRP}│{Clr.RST}")
     print(f"  {Clr.PRP}├{'─' * 60}┤{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST} {Clr.BLD}Result: {r.color}{r.emoji} {r.grade} — {r.pct:.1f}%{Clr.RST}{' ' * (25 - len(r.grade))}{Clr.PRP}│{Clr.RST}")
     print(f"  {Clr.PRP}└{'─' * 60}┘{Clr.RST}")
@@ -796,6 +1018,7 @@ def scan_quick():
 
     pause()
 
+
 def view_results():
     cls()
     hdr("📁 SAVED SCAN REPORTS", "Browse & view detection history")
@@ -803,7 +1026,9 @@ def view_results():
 
     dn = "hasil_spamdetector"
     if not os.path.isdir(dn):
-        fl("Belum ada laporan!"); pause(); return
+        fl("Belum ada laporan!")
+        pause()
+        return
 
     files = sorted(
         [f for f in os.listdir(dn) if f.endswith(".txt")],
@@ -811,7 +1036,9 @@ def view_results():
     )
 
     if not files:
-        fl("Belum ada laporan!"); pause(); return
+        fl("Belum ada laporan!")
+        pause()
+        return
 
     print(f"\n  {Clr.PRP}┌{'─' * 60}┐{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST} {Clr.ACC}  #  DATE       TIME     SCAN TYPE              SIZE{Clr.RST}   {Clr.PRP}│{Clr.RST}")
@@ -822,9 +1049,11 @@ def view_results():
         fp = os.path.join(dn, fname)
         sz = os.path.getsize(fp)
         mt = datetime.fromtimestamp(os.path.getmtime(fp))
-        ds = mt.strftime("%Y-%m-%d"); ts = mt.strftime("%H:%M:%S")
+        ds = mt.strftime("%Y-%m-%d")
+        ts = mt.strftime("%H:%M:%S")
         tn = fname.replace("_", " ").replace(".txt", "")
-        if len(tn) > 22: tn = tn[:19] + "..."
+        if len(tn) > 22:
+            tn = tn[:19] + "..."
         szs = f"{sz}B" if sz < 1024 else f"{sz/1024:.1f}KB"
         print(f"  {Clr.PRP}│{Clr.RST} {Clr.ACC}{i:2d}{Clr.RST}  {Clr.DIM}{ds} {ts}{Clr.RST}  {Clr.W}{tn:<22}{Clr.RST} {Clr.DIM}{szs:>6}{Clr.RST}  {Clr.PRP}│{Clr.RST}")
         fi.append((fname, fp, sz))
@@ -832,26 +1061,34 @@ def view_results():
     print(f"  {Clr.PRP}├{'─' * 60}┤{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST}  {Clr.W}Total: {len(files)} file(s){Clr.RST}{' ' * 42}{Clr.PRP}│{Clr.RST}")
     print(f"  {Clr.PRP}└{'─' * 60}┘{Clr.RST}")
-    print(f"\n  {Clr.DIM}Pilih nomor [view], [d] delete, [0] delete all, [Enter] back{Clr.RST}")
+    print(
+        f"\n  {Clr.DIM}Pilih nomor [view], [d] delete, [0] delete all, [Enter] back{Clr.RST}")
 
     ch = input(f"\n  {AR} {Clr.W}Pilihan:{Clr.RST} ").strip()
-    if not ch: return
+    if not ch:
+        return
 
     if ch == "0":
-        cf = input(f"  {Clr.DNG}[!] Hapus SEMUA? Ketik 'DELETE ALL':{Clr.RST} ").strip()
+        cf = input(
+            f"  {Clr.DNG}[!] Hapus SEMUA? Ketik 'DELETE ALL':{Clr.RST} ").strip()
         if cf == "DELETE ALL":
-            for fn, _, _ in fi: os.remove(os.path.join(dn, fn))
-            try: os.rmdir(dn)
-            except: pass
+            for fn, _, _ in fi:
+                os.remove(os.path.join(dn, fn))
+            try:
+                os.rmdir(dn)
+            except:
+                pass
             ok("Semua file dihapus!")
-        pause(); return
+        pause()
+        return
 
     if ch.lower() == "d":
         ns = input(f"  {AR} {Clr.W}Nomor file:{Clr.RST} ").strip()
         if ns.isdigit() and 0 <= int(ns) - 1 < len(fi):
             os.remove(os.path.join(dn, fi[int(ns) - 1][0]))
             ok(f"'{fi[int(ns) - 1][0]}' dihapus!")
-        pause(); return
+        pause()
+        return
 
     if ch.isdigit() and 0 <= int(ch) - 1 < len(fi):
         cls()
@@ -878,47 +1115,67 @@ def view_results():
 # 📋 MAIN MENU
 # ═══════════════════════════════════════════════════════════════════
 
+
 def menu():
     cls()
     banner()
     nf = 0
     if os.path.isdir("hasil_spamdetector"):
-        nf = len([f for f in os.listdir("hasil_spamdetector") if f.endswith(".txt")])
+        nf = len([f for f in os.listdir(
+            "hasil_spamdetector") if f.endswith(".txt")])
 
     print(f"  {Clr.PRP}┌{'─' * 60}┐{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST}  {Clr.FNT}Reports : {Clr.ACC}{nf}{Clr.RST} {Clr.FNT}scan(s) saved{Clr.RST}")
     print(f"  {Clr.PRP}│{Clr.RST}  {Clr.FNT}Time    : {ts()}{Clr.RST}")
     print(f"  {Clr.PRP}├{'─' * 60}┤{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[1]{Clr.RST} 📧 {Clr.W}Email Spam Detector{Clr.RST}      {Clr.DIM}Full 10-layer analysis{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[2]{Clr.RST} 📝 {Clr.W}Text Spam Detector{Clr.RST}       {Clr.DIM}SMS/Chat/Comment/Post{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[3]{Clr.RST} ⚡ {Clr.W}Quick Spam Check{Clr.RST}         {Clr.DIM}Instant 1-line detection{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[4]{Clr.RST} 📋 {Clr.W}Batch Spam Detector{Clr.RST}      {Clr.DIM}Multiple texts at once{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[1]{Clr.RST} 📧 {Clr.W}Email Spam Detector{Clr.RST}      {Clr.DIM}Full 10-layer analysis{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[2]{Clr.RST} 📝 {Clr.W}Text Spam Detector{Clr.RST}       {Clr.DIM}SMS/Chat/Comment/Post{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[3]{Clr.RST} ⚡ {Clr.W}Quick Spam Check{Clr.RST}         {Clr.DIM}Instant 1-line detection{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[4]{Clr.RST} 📋 {Clr.W}Batch Spam Detector{Clr.RST}      {Clr.DIM}Multiple texts at once{Clr.RST}")
     print(f"  {Clr.PRP}├{'─' * 60}┤{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[5]{Clr.RST} 📁 {Clr.W}View Saved Reports{Clr.RST}      {Clr.DIM}Browse scan history{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.ACC}[5]{Clr.RST} 📁 {Clr.W}View Saved Reports{Clr.RST}      {Clr.DIM}Browse scan history{Clr.RST}")
     print(f"  {Clr.PRP}├{'─' * 60}┤{Clr.RST}")
-    print(f"  {Clr.PRP}│{Clr.RST}  {Clr.DNG}[0]{Clr.RST} 🚪 {Clr.DNG}Exit{Clr.RST}")
+    print(
+        f"  {Clr.PRP}│{Clr.RST}  {Clr.DNG}[0]{Clr.RST} 🚪 {Clr.DNG}Exit{Clr.RST}")
     print(f"  {Clr.PRP}└{'─' * 60}┘{Clr.RST}")
     print()
 
-TOOLS = {"1": scan_email, "2": scan_text, "3": scan_quick, "4": scan_batch, "5": view_results}
+
+TOOLS = {"1": scan_email, "2": scan_text,
+         "3": scan_quick, "4": scan_batch, "5": view_results}
+
 
 def main():
     check_deps()
     while True:
         try:
             menu()
-            ch = input(f"  {Clr.ACC}❯{Clr.RST} {Clr.W}Pilih [0-5]:{Clr.RST} ").strip()
+            ch = input(
+                f"  {Clr.ACC}❯{Clr.RST} {Clr.W}Pilih [0-5]:{Clr.RST} ").strip()
             if ch == "0":
                 cls()
                 bx(Clr.PRP, "👋 SpamGuard Elite v2.0 — Stay Protected.", "")
-                print(); sys.exit(0)
-            if ch in TOOLS: TOOLS[ch]()
-            else: fl("Pilihan tidak valid! Gunakan 0-5."); time.sleep(1)
+                print()
+                sys.exit(0)
+            if ch in TOOLS:
+                TOOLS[ch]()
+            else:
+                fl("Pilihan tidak valid! Gunakan 0-5.")
+                time.sleep(1)
         except KeyboardInterrupt:
-            print(f"\n\n  {Clr.WRN}[!] Dihentikan.{Clr.RST}\n"); sys.exit(0)
+            print(f"\n\n  {Clr.WRN}[!] Dihentikan.{Clr.RST}\n")
+            sys.exit(0)
         except Exception as e:
             print(f"\n  {Clr.DNG}[✘] Error: {e}{Clr.RST}")
-            import traceback; traceback.print_exc(); pause()
+            import traceback
+            traceback.print_exc()
+            pause()
+
 
 if __name__ == "__main__":
     main()

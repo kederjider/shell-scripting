@@ -1,9 +1,11 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 """
 Disk exhaustion tester via large POST payloads.
 Gunakan hanya terhadap target yang sudah diotorisasi.
 """
 
+import urllib3
 import argparse
 import itertools
 import os
@@ -17,8 +19,7 @@ from requests.exceptions import RequestException
 load_dotenv()
 
 # Matikan warning SSL jika target pakai cert self-signed
-# import urllib3
-# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")

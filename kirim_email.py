@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/local/bin/.venv/bin/python
+# #!/usr/bin/env python3
 
 import subprocess
 import sys
@@ -9,9 +10,12 @@ from email.mime.text import MIMEText
 import getpass
 
 # ================== AUTO INSTALL LIBRARY ==================
+
+
 def install_package(package):
     try:
-        __import__(package.replace("-", "_"))  # secure-smtplib → secure_smtplib
+        # secure-smtplib → secure_smtplib
+        __import__(package.replace("-", "_"))
         print(f"✅ {package} sudah terinstall")
         return
     except ImportError:
@@ -19,40 +23,44 @@ def install_package(package):
 
     try:
         # Tambahkan opsi untuk menghindari warning root
-        cmd = [sys.executable, "-m", "pip", "install", package, "--root-user-action=ignore"]
-        
+        cmd = [sys.executable, "-m", "pip", "install",
+               package, "--root-user-action=ignore"]
+
         result = subprocess.run(cmd, capture_output=True, text=True)
-        
+
         if result.returncode == 0:
             print(f"✅ {package} berhasil diinstall")
         else:
             print(f"❌ Gagal menginstall {package}")
             print(result.stderr)
             sys.exit(1)
-            
+
     except Exception as e:
         print(f"❌ Error saat menginstall: {e}")
         sys.exit(1)
+
 
 # Install library
 install_package("secure-smtplib")
 
 # ================== PROGRAM UTAMA ==================
+
+
 def kirim_email():
     print("=== Program Pengirim Email HTML Cantik ===\n")
-    
+
     # Login Gmail
-    #sender_email = input("Masukkan email pengirim (Gmail): ").strip()
-    #password = getpass.getpass("Masukkan App Password Gmail: ")
+    # sender_email = input("Masukkan email pengirim (Gmail): ").strip()
+    # password = getpass.getpass("Masukkan App Password Gmail: ")
     sender_email = "berkelana.dimys@gmail.com"
     password = "vsyg wwyp hcon hfsr"
-    
+
     # Input penerima
     receiver_email = input("\nMasukkan email penerima: ").strip()
-    
+
     # Input subject
     subject = input("Masukkan subject email: ").strip()
-    
+
     # Input isi pesan HTML
     print("\nMasukkan isi pesan HTML (bisa multi-line). Ketik 'SELESAI' di baris baru untuk selesai:")
     lines = []
@@ -61,7 +69,7 @@ def kirim_email():
         if line.strip().upper() == "SELESAI":
             break
         lines.append(line)
-    
+
     body_text = "\n".join(lines)
 
     # ================== TEMPLATE HTML CANTIK ==================
@@ -118,10 +126,11 @@ def kirim_email():
         server.sendmail(sender_email, receiver_email, msg.as_string())
         server.quit()
         print("\n✅ Email berhasil dikirim dengan sukses!")
-        
+
     except Exception as e:
         print(f"\n❌ Gagal mengirim email: {e}")
         print("Tips: Pastikan Anda menggunakan App Password Gmail.")
+
 
 if __name__ == "__main__":
     kirim_email()
