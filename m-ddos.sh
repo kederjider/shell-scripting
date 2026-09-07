@@ -114,7 +114,13 @@ case $plh in
 2 | 02) fn_ddos_thread_duration ;;
 #3 | 03) fn_scan_site_no_txt ;;
 #4 | 04) fn_scan_simpan ;;
-0 | 00) clear ; newmenu ;;
+0 | 00) clear ; exec newmenu ;;
 x | X) clear ; echo -e "${L_RED}[!] DISCONNECTING FROM MATRIX...${NC}" ; exit 0 ;;
-*) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; m-ddos ;;
+*) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; clear ; exec "$0" ;;
 esac
+
+echo -e ""
+echo -e "${L_CYAN}⏎ Tekan Enter untuk kembali ke menu...${NC}"
+read -p "" _
+clear
+exec "$0"

@@ -19,6 +19,25 @@ WHITE='\033[97m'
 NGINX_AVAILABLE="/etc/nginx/sites-available"
 NGINX_ENABLED="/etc/nginx/sites-enabled"
 
+
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 # ==============================
 # UTIL
 # ==============================
@@ -52,7 +71,7 @@ show_menu(){
     echo -e "${CYAN}│${RST} 9   ${CYAN}│${RST} Reverse Proxy                  ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} 10  ${CYAN}│${RST} Block Attack                   ${CYAN}│${RST}"
     echo -e "${CYAN}│${RST} 11  ${CYAN}│${RST} Cloudflare DDNS                ${CYAN}│${RST}"
-    echo -e "${CYAN}│${RST} 0   ${CYAN}│${RST} Exit                           ${CYAN}│${RST}"
+    echo -e "${CYAN}│${RST} 0   ${CYAN}│${RST} Kembali ke Menu Utama                           ${CYAN}│${RST}"
     echo -e "${CYAN}└─────┴────────────────────────────────┘${RST}"
     echo ""
 }
@@ -257,8 +276,10 @@ case $opt in
 9) reverse_proxy ;;
 10) block_attack ;;
 11) cloudflare_ddns ;;
-0) clear; newmenu ;;
+0) clear; exec newmenu ;;
+X|x) clear; goodbye ;;
 *) err "Pilihan salah" ;;
 esac
 
 pause
+exec "$0"

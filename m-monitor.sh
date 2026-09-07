@@ -26,6 +26,25 @@ check_cmd() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# cek apakah paket punya kandidat (tersedia) di repo apt
+apt_candidate() {
+    local cand
+    cand=$(apt-cache policy "$1" 2>/dev/null | awk -F': ' '/Candidate:/{print $2; exit}')
+    [[ -n "$cand" && "$cand" != "(none)" ]]
+}
+
+install_via_snap() {
+    local pkg="$1"
+    if command -v snap >/dev/null 2>&1; then
+        info "$pkg tidak ada di repo apt — mencoba install via snap..."
+        sudo snap install "$pkg"
+    else
+        err "$pkg tidak ada di repo apt dan snap tidak terpasang."
+        err "Install snapd dulu: sudo apt-get install -y snapd"
+        return 1
+    fi
+}
+
 install_package() {
     local pkg="$1"
     if check_cmd "$pkg"; then
@@ -34,7 +53,11 @@ install_package() {
         info "Menginstall $pkg..."
         if command -v apt-get >/dev/null 2>&1; then
             sudo apt-get update
-            sudo apt-get install -y "$pkg"
+            if apt_candidate "$pkg"; then
+                sudo apt-get install -y "$pkg"
+            else
+                install_via_snap "$pkg"
+            fi
         elif command -v pacman >/dev/null 2>&1; then
             sudo pacman -Syu --noconfirm "$pkg"
         elif command -v dnf >/dev/null 2>&1; then
@@ -120,14 +143,15 @@ main() {
                 ;;
             0)
                 clear
-                newmenu
+                exec newmenu
                 ;;
             *)
                 err "Pilihan salah"
                 ;;
         esac
         echo
-        exit 1
+        read -rp "$(echo -e "${CYAN}⏎ Tekan Enter untuk kembali ke menu...${RESET}")"
+        exec "$0"
 }
 
 main "$@"

@@ -47,6 +47,24 @@ red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 bgred="\033[41m"
 L_GREEN='\e[92m'
 
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 spammingpost() {
     clear
     echo -e "${g}${NC}"
@@ -66,7 +84,7 @@ spammingpost() {
         02|2)  clear; bash m-diskfill ;;
         03|3)  clear; bash m-post-all ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -90,7 +108,7 @@ plh_domain_about() {
         01|1)  clear; m-domain ;;
         02|2)  clear; cek_whois_id ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -102,11 +120,11 @@ investigasi_domain() {
     echo -e "       ╭──────────────────────────────────────────╮"
     echo -e "       │${GB}        INVESTIGASI DOMAIN MANAGER        ${NC}│"
     echo -e "       ╰──────────────────────────────────────────╯"
-    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
-    echo -e "        ${r}│${y}[${u}•1${y}]${NC} INVESTIGASI DOMAIN  ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
-    echo -e "        ${r}│${y}[${u}•2${y}]${NC} LIHAT HASIL INVESTIGASI""${y}[${u}•X${y}]${NC} EXIT (0)    ${r}│"
-    echo -e "        ${r}│${y}[${u}•3${y}]${NC} HAPUS HASIL INVESTIGASI${r}│"
-    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo -e "       ${r}┌─────────────────────────────────────────┐${NC}"
+    echo -e "       ${r}│${y}[${u}1${y}]${NC} INVESTIGASI DOMAIN${r}│""${y}[${u}0${y}]${NC} BACK TO MENU  ${r}│"
+    echo -e "       ${r}│${y}[${u}2${y}]${NC} LIHAT HASIL INVEST${r}│""${y}[${u}X${y}]${NC} EXIT (0)      ${r}│"
+    echo -e "       ${r}│${y}[${u}3${y}]${NC} HAPUS HASIL INVEST${r}│""                  ${r}│"
+    echo -e "       ${r}└─────────────────────────────────────────┘${NC}"
     echo ""
     echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}3${CYAN}]───▶️${RST}"
     read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
@@ -129,7 +147,7 @@ investigasi_domain() {
         02|2)  
             clear
             echo -e "${CYAN}Daftar hasil investigasi:${NC}"
-            LAPORAN_DIR="/hasil_investigasi_domain"
+            LAPORAN_DIR="/usr/local/bin/hasil_investigasi_domain"
             if [ -d "$LAPORAN_DIR" ]; then
                 files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
                 if [ -z "$files" ]; then
@@ -171,7 +189,7 @@ investigasi_domain() {
         03|3)  
             clear
             echo -e "${CYAN}Daftar hasil investigasi:${NC}"
-            LAPORAN_DIR="/hasil_investigasi_domain"
+            LAPORAN_DIR="/usr/local/bin/hasil_investigasi_domain"
             if [ -d "$LAPORAN_DIR" ]; then
                 files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
                 if [ -z "$files" ]; then
@@ -214,7 +232,7 @@ investigasi_domain() {
             fi
             clear; investigasi_domain ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -223,13 +241,13 @@ investigasi_file_html() {
     clear
     echo -e "${g}${NC}"
     echo -e "       ╭──────────────────────────────────────────╮"
-    echo -e "       │${GB}          INVESTIGASI FILE HTML          ${NC}│"
+    echo -e "       │${GB}          INVESTIGASI FILE HTML           ${NC}│"
     echo -e "       ╰──────────────────────────────────────────╯"
-    echo -e "        ${r}┌──────────────────────────────────────┐${NC}"
-    echo -e "        ${r}│${y}[${u}•1${y}]${NC} HTML AUTO SAVE      ""${y}[${u}•4${y}]${NC} HAPUS HASIL${r}│"
-    echo -e "        ${r}│${y}[${u}•2${y}]${NC} HTML NAMA KUSTOM    ""${y}[${u}•0${y}]${NC} BACK TO MENU${r}│"
-    echo -e "        ${r}│${y}[${u}•3${y}]${NC} LIHAT HASIL         ""${y}[${u}•X${y}]${NC}  EXIT (0)   ${r}│"
-    echo -e "        ${r}└──────────────────────────────────────┘${NC}"
+    echo -e "        ${r}┌─────────────────────────────────────────┐${NC}"
+    echo -e "        ${r}│${y}[${u}•1${y}]${NC} HTML AUTO SAVE  ${r}│""${y}[${u}•4${y}]${NC} HAPUS HASIL   ${r}│"
+    echo -e "        ${r}│${y}[${u}•2${y}]${NC} HTML NAMA KUSTOM${r}│""${y}[${u}•0${y}]${NC} BACK TO MENU  ${r}│"
+    echo -e "        ${r}│${y}[${u}•3${y}]${NC} LIHAT HASIL     ${r}│""${y}[${u}•X${y}]${NC}  EXIT (0)     ${r}│"
+    echo -e "        ${r}└─────────────────────────────────────────┘${NC}"
     echo ""
     echo -e "${CYAN}        ┌───(${YELLOW}Pilih${CYAN}─${YELLOW}Menu${RST}${CYAN})──[${YELLOW}1${CYAN}-${YELLOW}4${CYAN}]───▶️${RST}"
     read -p "        $(echo -e ${CYAN}└──▶️ ${NC}) " sess_opt
@@ -257,7 +275,7 @@ investigasi_file_html() {
             clear; exit 0 ;;
         03|3)  
             clear
-            LAPORAN_DIR="hasil_analisis_html"
+            LAPORAN_DIR="/usr/local/bin/hasil_analisis_html"
             echo -e "${CYAN}Laporan HTML tersimpan di folder: ${YELLOW}${LAPORAN_DIR}/${NC}"
             if [ -d "$LAPORAN_DIR" ]; then
                 files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
@@ -299,7 +317,7 @@ investigasi_file_html() {
             clear; investigasi_file_html ;;
         04|4)  
             clear
-            LAPORAN_DIR="hasil_analisis_html"
+            LAPORAN_DIR="/usr/local/bin/hasil_analisis_html"
             echo -e "${CYAN}Laporan HTML tersimpan di folder: ${YELLOW}${LAPORAN_DIR}/${NC}"
             if [ -d "$LAPORAN_DIR" ]; then
                 files=$(ls "$LAPORAN_DIR"/*.txt 2>/dev/null)
@@ -343,7 +361,7 @@ investigasi_file_html() {
             fi
             clear; investigasi_file_html ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -399,6 +417,6 @@ case $plh in
 16) clear ; idadx_scan ;;
 17) clear ; investigasi_domain ;;
 18) clear ; investigasi_file_html ;;
-x | X) clear ; exit 0 ;;
+x | X) clear ; goodbye ;;
 *) echo "Pilihan tidak valid. Silakan masukkan angka dari 1 sampai 18.\n" ; loading ; mode-hack ;;
 esac

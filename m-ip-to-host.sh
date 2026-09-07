@@ -124,8 +124,8 @@ run_ip_to_host() {
     msg info "Memulai pencarian hostname dari alamat IP..."
     echo
 
-    if [[ -f "ip_to_host" ]]; then
-        python3 ip_to_host
+    if [[ -f "/usr/local/bin/ip_to_host" ]]; then
+        ip_to_host
     else
         msg fail "File 'ip_to_host' tidak ditemukan!"
         msg warn "Pastikan file berada di direktori yang sama."
@@ -341,6 +341,8 @@ main() {
                 pause
                 ;;
         esac
+
+    exec "$0"
 }
 
 main

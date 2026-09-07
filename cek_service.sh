@@ -42,6 +42,25 @@ BG_MAGENTA='\033[45m'
 BG_CYAN='\033[46m'
 BG_WHITE='\033[47m'
 
+
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 # ──────────────────────────────────────────────
 # Fungsi: Header utama
 # ──────────────────────────────────────────────
@@ -79,7 +98,7 @@ tampil_menu() {
     echo -e "  ${BWHITE}║${RESET}  ${BG_YELLOW}${BWHITE} 5 ${RESET}  ${BYELLOW}Cari proses berjalan (ps aux)${RESET}                   ${BWHITE}║${RESET}"
     echo -e "  ${BWHITE}║${RESET}  ${BG_MAGENTA}${BWHITE} 6 ${RESET}  ${BMAGENTA}Jalankan SEMUA pencarian sekaligus${RESET}              ${BWHITE}║${RESET}"
     echo -e "  ${BWHITE}║${RESET}  ${BG_BLUE}${BWHITE} 7 ${RESET}  ${BBLUE}Cek status service (input nama manual)${RESET}          ${BWHITE}║${RESET}"
-    echo -e "  ${BWHITE}║${RESET}  ${BG_RED}${BWHITE} 0 ${RESET}  ${BRED}Keluar${RESET}                                          ${BWHITE}║${RESET}"
+    echo -e "  ${BWHITE}║${RESET}  ${BG_GRAY}${BWHITE} 0 ${RESET}  ${BRED}Kembali ke menu utama${RESET}                                          ${BWHITE}║${RESET}"
     echo -e "  ${BWHITE}╚═══════════════════════════════════════════════════════╝${RESET}"
     echo ""
     echo -ne "  ${BYELLOW}❯❯❯ ${BWHITE}Masukkan pilihan ${BCYAN}[0-7]${BWHITE}: ${RESET}"
@@ -354,8 +373,12 @@ read PILIHAN
         7) menu_7 ;;
         0)
             clear
-            echo ""
-            newmenu
+            loding
+            exec newmenu
+            ;;
+        X|x)
+            clear
+            goodbye
             ;;
         *)
             echo ""

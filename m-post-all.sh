@@ -36,9 +36,17 @@ INFO="${CYAN}ℹ${RESET}"
 # ─────────────────────────────────────────────
 # 📁 KONFIGURASI FILE
 # ─────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="/usr/local/bin"  # Ganti dengan direktori yang sesuai jika perlu    
 HISTORY_FILE="${SCRIPT_DIR}/history_spampost_all.txt"
 PYTHON_SCRIPT="${SCRIPT_DIR}/spampost_all"
+
+# Python interpreter: semua dependency dipasang ke /usr/local/bin/.venv (setup-python.sh)
+if [[ -x /usr/local/bin/.venv/bin/python ]]; then
+    PY_BIN="/usr/local/bin/.venv/bin/python"
+else
+    echo -e "${WARN}  .venv tidak ditemukan — fallback ke python3. Jalankan 'setup-python' jika muncul error modul." >&2
+    PY_BIN="$(command -v python3 || echo python3)"
+fi
 
 # ─────────────────────────────────────────────
 # 🧩 FUNGSI UTILITAS
@@ -155,7 +163,7 @@ run_spam_manual() {
     echo
 
     # Jalankan Python script dengan parameter
-    python3 "$PYTHON_SCRIPT" -u "$target_url" --cookie "$cookie" -s "$size_mb" -c "$count"
+    "$PY_BIN" "$PYTHON_SCRIPT" -u "$target_url" --cookie "$cookie" -s "$size_mb" -c "$count"
 
     # Simpan ke history
     save_to_history "$target_url" "$cookie"
@@ -247,7 +255,7 @@ run_spam_from_history() {
         msg info "Menjalankan spampost_all.py dari history..."
         echo
 
-        python3 "$PYTHON_SCRIPT" -u "$sel_url" --cookie "$sel_cookie" -s "$size_mb" -c "$count"
+        "$PY_BIN" "$PYTHON_SCRIPT" -u "$sel_url" --cookie "$sel_cookie" -s "$size_mb" -c "$count"
     else
         msg fail "Nomor tidak valid!"
     fi

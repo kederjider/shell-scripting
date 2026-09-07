@@ -58,6 +58,24 @@ styled_input() {
     read -r "$2"
 }
 
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 # ── Header utama ──────────────────────────────────────────────────
 print_header() {
     clear
@@ -581,7 +599,9 @@ main_menu() {
             8)  menu_stop_start ;;
             9)  menu_cat_edit_service ;;
             0)
-                echo ""; clear; newmenu ;;
+                clear; loding ; newmenu ;;
+            X|x)
+                clear; goodbye ;;
             *)
                 msg_err "Pilihan tidak valid! Masukkan angka 1–9."
                 sleep 1 ;;

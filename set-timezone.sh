@@ -142,7 +142,7 @@ show_menu() {
     echo ""
 
     # Header row
-    printf "  ${BLK}${DIM}%-4s${RST}  ${BLK}${DIM}%-8s${RST}  ${BLK}${DIM}%-24s${RST}  ${BLK}${DIM}%-18s${RST}\n" "KEY" "OFFSET" "TIMEZONE" "REGION"
+    printf "  ${BLK}${DIM}%-2s${RST} ${BLK}${DIM}%-4s${RST} ${BLK}${DIM}%-18s${RST} ${BLK}${DIM}%-18s${RST}\n" "KEY" "OFFSET" "TIMEZONE" "REGION"
     SEPA="  ${DIM}├${RST}${DIM}$(printf '─%.0s' {1..4})${RST}  ${DIM}├${RST}${DIM}$(printf '─%.0s' {1..8})${RST}  ${DIM}├${RST}${DIM}$(printf '─%.0s' {1..24})${RST}  ${DIM}├${RST}${DIM}$(printf '─%.0s' {1..18})${RST}"
     echo -e "$SEPA"
     echo ""

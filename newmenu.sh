@@ -17,6 +17,24 @@ runto() {
     timeout $t "$@" 2>/dev/null || echo "N/A"
 }
 
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 gather_all_data() {
     echo -n "Loading data..." >&2
 
@@ -78,8 +96,34 @@ gather_all_data() {
 
     # --- vnstat (deteksi interface otomatis) ---
     local iface=$(runto 1 ip route | awk '/default/ {print $5; exit}')
+    # Cek vnstat terinstall atau belum; kalau belum, install otomatis (sekali aja)
+    if ! command -v vnstat &>/dev/null; then
+        echo -e "\r\033[KInstalling vnstat..." >&2
+        if [[ $EUID -eq 0 ]]; then
+            if command -v apt-get &>/dev/null; then
+                runto 180 env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq vnstat >/dev/null 2>&1
+            elif command -v dnf &>/dev/null; then
+                runto 180 dnf install -y -q vnstat >/dev/null 2>&1
+            elif command -v yum &>/dev/null; then
+                runto 180 yum install -y -q vnstat >/dev/null 2>&1
+            elif command -v apk &>/dev/null; then
+                runto 180 apk add --quiet vnstat >/dev/null 2>&1
+            fi
+        else
+            echo -e "\r\033[K[!] Bukan root, auto-install vnstat di-skip" >&2
+        fi
+        if command -v vnstat &>/dev/null; then
+            echo -e "\r\033[Kvnstat installed ✓" >&2
+        fi
+    fi
+
     if command -v vnstat &>/dev/null && [[ -n "$iface" && "$iface" != "N/A" ]]; then
-        read total giga tahun <<< $(vnstat -i "$iface" -m 2>/dev/null | tail -n1 | awk '{print $8,$9,$1}')
+        # Pastikan daemon jalan & database interface ada (baru install biasanya belum ada DB)
+        [[ -d /run/systemd/system ]] && systemctl enable --now vnstat >/dev/null 2>&1
+        vnstat -i "$iface" --create >/dev/null 2>&1
+        # Ambil bulan terakhir yang ada datanya; kalau kosong, pakai bulan ini
+        read total giga tahun <<< $(vnstat -i "$iface" -m 2>/dev/null | awk '$1 ~ /^[0-9]{4}-[0-9]{2}$/ {t=$8; u=$9; y=$1} END {print t+0, u, y}')
+        total=${total:-0}; giga=${giga:-GiB}; tahun=${tahun:-$(date +%Y-%m)}
     else
         total="0"; giga="GiB"; tahun="N/A"
     fi
@@ -107,7 +151,7 @@ session() {
         01|1)  clear; bash m-tmux ;;
         02|2)  clear; bash m-screen ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -132,7 +176,7 @@ proxy_vpn() {
         01|1)  clear; bash wireguard-manager ;;
         02|2)  clear; bash setup_proxy_squid ;;
         0|00)  clear; exec "$0" ;;
-        X|x)  clear; echo -e "${GREEN}Dadah! 👋${NC}"; exit 0 ;;
+        X|x)  clear; goodbye ;;
         *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1; exit 0 ;;
     esac
 }
@@ -181,6 +225,6 @@ case $opt in
     10) clear; proxy_vpn ;;
     11) clear; mode-hack ;;
     12) clear; m-setting ;; 
-    0|x|X) exit 0 ;;
+    0|x|X) goodbye ;;
     *)  echo -e "${RED}Pilihan salah. Ulangi.${NC}"; sleep 1 ; exec "$0" ;;
 esac

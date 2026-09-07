@@ -124,8 +124,8 @@ run_host_to_ip() {
     msg info "Memulai pencarian IP dari domain..."
     echo
 
-    if [[ -f "host_to_ip" ]]; then
-        python3 host_to_ip
+    if [[ -f "/usr/local/bin/host_to_ip" ]]; then
+        host_to_ip
     else
         msg fail "File 'host_to_ip' tidak ditemukan!"
         msg warn "Pastikan file berada di direktori yang sama."
@@ -319,6 +319,8 @@ main() {
                 pause
                 ;;
         esac
+
+    exec "$0"
 }
 
 main

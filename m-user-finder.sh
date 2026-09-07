@@ -304,7 +304,13 @@ case $plh in
 7 | 07) fn_scan_site ;;
 8 | 08) fn_scan_site_all ;;
 9 | 09) fn_hasil_scan ;;
-0 | 00) clear ; newmenu ;;
+0 | 00) clear ; exec newmenu ;;
 x | X) clear ; echo -e "${L_RED}[!] DISCONNECTING FROM MATRIX...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 1 ; clear ; exec "$0" ;;
 esac
+
+echo -e ""
+echo -e "${L_CYAN}⏎ Tekan Enter untuk kembali ke menu...${NC}"
+read -p "" _
+clear
+exec "$0"

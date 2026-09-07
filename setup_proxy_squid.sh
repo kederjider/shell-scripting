@@ -528,7 +528,7 @@ show_client_guide() {
     echo ""
 
     info_box "🤖 ANDROID" \
-             "${BOLD}Cara 1 — Aplikasi Drony (termudah, support password):${NC}" \
+             "${BOLD}Cara 1 — Aplikasi Drony atau super proxy (termudah, support password):${NC}" \
              "  1. Install ${G5}Drony${NC} dari Play Store" \
              "  2. Buka Drony → tab ${BOLD}Settings${NC} → ${BOLD}WiFi${NC}" \
              "  3. Pilih jaringan WiFi-mu → ${BOLD}Edit${NC}" \
@@ -632,11 +632,11 @@ monitor_snapshot() {
         msg_info "Tidak ada klien yang terhubung saat ini."
     else
         printf "  ${DIM}┌──────────────────────┬────────────┐${NC}\n"
-        printf "  ${DIM}│ ${BOLD}${G5}IP Klien${NC}            │ ${BOLD}${G5}Koneksi${NC}  ${DIM}│${NC}\n"
+        printf "  ${DIM}│ ${BOLD}${G5}IP Klien${NC}             │ ${BOLD}${G5}Koneksi${NC}    ${DIM}│${NC}\n"
         printf "  ${DIM}├──────────────────────┼────────────┤${NC}\n"
         local total_conn=0
         while read -r cnt ip; do
-            printf "  ${DIM}│${NC} ${CYAN}%-20s${NC} ${DIM}│${NC} %s koneksi   ${DIM}│${NC}\n" "$ip" "$cnt"
+            printf "  ${DIM}│${NC} ${CYAN}%-20s${NC} ${DIM}│${NC} %s koneksi ${DIM}│${NC}\n" "$ip" "$cnt"
             total_conn=$((total_conn + cnt))
         done <<< "$active_ips"
         printf "  ${DIM}└──────────────────────┴────────────┘${NC}\n"
@@ -691,7 +691,7 @@ monitor_snapshot() {
     echo ""
     info_box "🏆 Top Klien per Bandwidth"
     printf "  ${DIM}┌──────────────────────┬─────────────┬───────────┐${NC}\n"
-    printf "  ${DIM}│ ${BOLD}${G5}IP Klien${NC}            │ ${BOLD}${G5}Bandwidth${NC}   │ ${BOLD}${G5}Request${NC}  ${DIM}│${NC}\n"
+    printf "  ${DIM}│ ${BOLD}${G5}IP Klien${NC}             │ ${BOLD}${G5}Bandwidth${NC}   │ ${BOLD}${G5}Request${NC}  ${DIM}│${NC}\n"
     printf "  ${DIM}├──────────────────────┼─────────────┼───────────┤${NC}\n"
     echo "$totals" | grep "^IP " | sort -k3 -rn | head -10 | while read -r _ ip bytes req; do
         printf "  ${DIM}│${NC} ${CYAN}%-20s${NC} ${DIM}│${NC} %-11s ${DIM}│${NC} %-9s ${DIM}│${NC}\n" "$ip" "$(human_bytes "$bytes")" "$req"

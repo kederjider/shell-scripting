@@ -210,6 +210,7 @@ main() {
   install_file setup-env-python setup-env-python.sh
   install_file set-timezone set-timezone.sh
   install_file neofetch-id neofetch-id.sh
+  install_file disable_ipv6 disable_ipv6.sh
 
   log "Menjalankan setup-python.sh untuk mengkonfigurasi environment Python..."
   if [ -f "/usr/local/bin/setup-python" ]; then

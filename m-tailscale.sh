@@ -261,7 +261,7 @@ header
             ;;
         0)
             clear
-            newmenu
+            exec newmenu
             ;;
         *)
             err "Pilihan tidak valid"
@@ -273,3 +273,4 @@ header
     echo ""
     echo -e "${CYAN}[i]${RST} Tekan Enter untuk melanjutkan..."
     read
+    exec "$0"

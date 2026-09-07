@@ -646,7 +646,6 @@ summary() {
     echo ""
     echo -e "  ${BOLD}KESIMPULAN:${NC}"
     if [[ $ISSUES_FOUND -gt 0 ]]; then
-        echo -e "  ${RED}${BOLD}$ISSUES_FOUND MASALAH KRITIS! SEGERA TANGANIorg.ppsspp.PPSSPP${NC}"
         echo ""
         echo "  REKOMENDASI:"
         echo "  1. Hapus user tidak dikenal"

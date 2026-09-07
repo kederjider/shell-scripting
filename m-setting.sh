@@ -64,6 +64,24 @@ ICON_OK="✓"
 ICON_ERROR="✗"
 red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 
+# Efek ketik huruf demi huruf
+typewriter() {
+    local text="$1" delay="${2:-0.015}"
+    local ch
+    while IFS= read -r ch; do
+        printf '%s' "$ch"
+        sleep "$delay"
+    done < <(printf '%s' "$text" | grep -o .)
+    printf '\n'
+}
+
+goodbye() {
+    echo ""
+    typewriter "  🦑 terima kasih 🙏🏻. Telah menggunakan Script Kami, Semoga Membantu 👋" 0.015
+    echo ""
+    exit 0
+}
+
 SCRIPT_DIR="/usr/local/bin"
 # Getting
 
@@ -633,12 +651,12 @@ run_python_setup() {
 
     if [[ -f "$SCRIPT_DIR/identitas_vps" ]]; then
         bash "$SCRIPT_DIR/identitas_vps"
+        exit 0
     else
         printf " ${RED}${ICON_ERROR}${RESET} "
         printf "identitas_vps tidak ditemukan.\n"
-        sleep 2
+        exit 1
     fi
-
     exec "$0"
 }
 
@@ -655,10 +673,11 @@ run_nodejs_setup() {
 
     if [[ -f "$SCRIPT_DIR/neofetch-id" ]]; then
         bash "$SCRIPT_DIR/neofetch-id"
+        exit 0
     else
         printf " ${RED}${ICON_ERROR}${RESET} "
         printf "neofetch-id tidak ditemukan.\n"
-        sleep 2
+        exit 1
     fi
 
     exec "$0"
@@ -765,11 +784,11 @@ echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m INFO DETAIL VPS  
 echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m SCAN SECURITY VPS           ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}15${dkblu}]${NC}\033[0;36m SET TIMEZONE                ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}16${dkblu}]${NC}\033[0;36m CREATE ENVIROMENT PYTHON    ${y}│${NC}"
-#echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m KIRIM PESAN KEDEVELOPER     ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m AUTO DISABLE IPV6                ${y}│${NC}"
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 16 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 17 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
@@ -837,16 +856,17 @@ case $plh in
     clear
     setup-env-python
     ;;
-#17)
-#    clear
-#    kirim_pesan
-#    ;;
+17)
+    clear
+    disable_ipv6
+    ;;
 0)
     clear
+    loding
     newmenu ;;
 x | X)
     clear
-    exit 0
+    good_bye
     ;;
 *) echo "Silakan Masukkan Angka [1 - 16]." ; loading ; exec "$0" ;;
 esac
