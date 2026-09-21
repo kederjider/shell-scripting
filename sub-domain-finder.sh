@@ -44,7 +44,11 @@ function check_go() {
 run_recon() {
     
     echo -e "\n\033[1;33mMasukkan Domain:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ "  DOMAIN
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$DOMAIN" ]; then
         echo -e "\033[1;31m Domain tidak boleh kosong! \033[0m"
@@ -107,7 +111,11 @@ function fn_lihat_hasil_scan() {
     if [ -z "$(ls -A $OUTPUT_DIR/*.txt 2>/dev/null)" ]; then
         echo -e "\033[1;33mBelum ada hasil scan.\033[0m"
         echo -e "Silakan lakukan scan domain terlebih dahulu."
+        # Matikan bracketed paste
+        printf '\e[?2004l'
         read -n 1 -s -r -p "Tekan tombol apa saja untuk kembali..."
+        # Aktifkan kembali bracketed paste
+        printf '\e[?2004h'
         return 1
     fi
 
@@ -121,7 +129,11 @@ function fn_lihat_hasil_scan() {
     echo ""
 
     # Pilih file
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -rp "Masukkan nomor hasil yang ingin dilihat: " nomor
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     file=$(ls -1 "$OUTPUT_DIR"/*.txt 2>/dev/null | sed -n "${nomor}p")
 
@@ -161,7 +173,11 @@ echo -e " ${GRAY}╚════════════════════
 echo -e ""
 echo -e " ${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}domain-finder${L_CYAN}]${NC}"
 echo -e -n " ${L_CYAN}└──▶️ ${NC}"
+# Matikan bracketed paste
+printf '\e[?2004l'
 read -p "" plh
+# Aktifkan kembali bracketed paste
+printf '\e[?2004h'
 echo -e ""
 
 case $plh in

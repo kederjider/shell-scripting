@@ -153,12 +153,12 @@ echo -e "${GRAY}║${L_GREEN} [${CYAN}22${L_GREEN}]${NC} ${YELLOW}update sc spam
 echo -e "${GRAY}║${L_GREEN} [${CYAN}23${L_GREEN}]${NC} ${YELLOW}update sc menu ip t host${NC}${GRAY}║${L_GREEN} [${CYAN}55${L_GREEN}]${NC} ${YELLOW}update sc setup-env-python${NC}${GRAY}║${NC}"
 echo -e "${GRAY}║${L_GREEN} [${CYAN}24${L_GREEN}]${NC} ${YELLOW}update sc menu host t ip${NC}${GRAY}║${L_GREEN} [${CYAN}56${L_GREEN}]${NC} ${YELLOW}update sc set timezone${NC}    ${GRAY}║${NC}"
 echo -e "${GRAY}║${L_GREEN} [${CYAN}25${L_GREEN}]${NC} ${YELLOW}update sc ping${NC}          ${GRAY}║${L_GREEN} [${CYAN}57${L_GREEN}]${NC} ${YELLOW}update sc disable ipv6${NC}    ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}    ${GRAY}║${L_GREEN} [${CYAN}58${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxx${NC}     ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}    ${GRAY}║${L_GREEN} [${CYAN}59${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxxxxx${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}upte sc edit file script${NC}${GRAY}║${L_GREEN} [${CYAN}60${L_GREEN}]${NC} ${YELLOW}kembali ke menu utamaxx${NC}   ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}upte sc istl dmain finde${NC}${GRAY}║${L_GREEN} [${CYAN}61${L_GREEN}]${NC} ${YELLOW}udte sc investigasi domain${NC}${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}updte sc instal sherlock${NC}${GRAY}║${L_GREEN} [${CYAN}62${L_GREEN}]${NC} ${YELLOW}update sc neofetch-id${NC}     ${GRAY}║${NC}"
-echo -e "${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}          ${GRAY}║${L_GREEN} [${CYAN}63${L_GREEN}]${NC} ${YELLOW}update sc setup-env-python${NC}${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}26${L_GREEN}]${NC} ${YELLOW}update sc ip to host${NC}    ${GRAY}║${L_GREEN} [${CYAN}58${L_GREEN}]${NC} ${YELLOW}update sc install vsftpd${NC}  ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}27${L_GREEN}]${NC} ${YELLOW}update sc host to ip${NC}    ${GRAY}║${L_GREEN} [${CYAN}59${L_GREEN}]${NC} ${YELLOW}update sc menu ftp${NC}        ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}28${L_GREEN}]${NC} ${YELLOW}upte sc edit file script${NC}${GRAY}║${L_GREEN} [${CYAN}60${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxx${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}29${L_GREEN}]${NC} ${YELLOW}upte sc istl dmain finde${NC}${GRAY}║${L_GREEN} [${CYAN}61${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxx${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}30${L_GREEN}]${NC} ${YELLOW}updte sc instal sherlock${NC}${GRAY}║${L_GREEN} [${CYAN}62${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxx${NC}   ${GRAY}║${NC}"
+echo -e "${GRAY}║${L_GREEN} [${CYAN}31${L_GREEN}]${NC} ${YELLOW}update sc ddns${NC}          ${GRAY}║${L_GREEN} [${CYAN}63${L_GREEN}]${NC} ${YELLOW}xxxxxxxxxxxxxxxxxxxxxxx${NC}   ${GRAY}║${NC}"
 echo -e "${GRAY}║${L_GREEN} [${CYAN}32${L_GREEN}]${NC} ${YELLOW}update sc menu utama    ${NC}${GRAY}║${L_GREEN} [${RED}00${L_GREEN}]${NC} ${RED}kembali ke menu utama${NC}     ${GRAY}║${NC}"
 echo -e "${GRAY}╚═══════════════════════════════════════════════════════════════╝${NC}"
 
@@ -265,6 +265,8 @@ case $plh in
     upgrade "$DIRECTORY/setup-env-python" "$REPO/setup-env-python.sh"
     upgrade "$DIRECTORY/set-timezone" "$REPO/set-timezone.sh"
     upgrade "$DIRECTORY/disable_ipv6" "$REPO/disable_ipv6.sh"
+    upgrade "$DIRECTORY/install-vsftpd" "$REPO/install-vsftpd.sh"
+    upgrade "$DIRECTORY/ftp-manager" "$REPO/ftp-manager.sh"
     printf "\n${GREEN}${BOLD}✓ SEMUA SCRIPT SELESAI DIPROSES! 🎉${NC}\n"
     exit 0
     ;;
@@ -285,6 +287,8 @@ case $plh in
 55) upgrade "$DIRECTORY/setup-env-python" "$REPO/setup-env-python.sh" ; exit 0 ;;
 56) upgrade "$DIRECTORY/set-timezone" "$REPO/set-timezone.sh" ; exit 0 ;;
 57) upgrade "$DIRECTORY/disable_ipv6" "$REPO/disable_ipv6.sh" ; exit 0 ;;
+58) upgrade "$DIRECTORY/install-vsftpd" "$REPO/install-vsftpd.sh" ; exit 0 ;;
+59) upgrade "$DIRECTORY/ftp-manager" "$REPO/ftp-manager.sh" ; exit 0 ;;
 0 | 00) clear ; newmenu ;;
 x | X) clear ; echo -e "${L_RED} TERIMA KASIH TELAH MENGGUNAKAN PROGRAM INI...${NC}" ; exit 0 ;;
 *) echo -e "${L_RED}[ERROR] Pilihan tidak valid.${NC}" ; sleep 2 ; exec "$0" ;;

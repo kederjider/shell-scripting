@@ -57,8 +57,8 @@ print_banner() {
     clear
     echo
     printf "${CYAN}  ╔══════════════════════════════════════════════════════════╗${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📤  S P A M   P O S T  A L L   -   M E N U           ${RESET}${CYAN}║${RESET}\n"
-    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}      🚀  Kirim payload POST ALL besar dengan URL & Cookie        ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_CYAN}${WHITE}      📤  S P A M   P O S T  A L L   -   M E N U          ${RESET}${CYAN}║${RESET}\n"
+    printf "${CYAN}  ║${RESET}${BG_BLUE}${BOLD}   🚀 Kirim payload POST ALL besar dengan URL & Cookie    ${RESET}${CYAN}║${RESET}\n"
     printf "${CYAN}  ╚══════════════════════════════════════════════════════════╝${RESET}\n"
     echo
 }
