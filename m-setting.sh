@@ -784,11 +784,12 @@ echo -e "  ${y}│${NC}${dkblu}[${g}13${dkblu}]${NC}\033[0;36m INFO DETAIL VPS  
 echo -e "  ${y}│${NC}${dkblu}[${g}14${dkblu}]${NC}\033[0;36m SCAN SECURITY VPS           ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}15${dkblu}]${NC}\033[0;36m SET TIMEZONE                ${y}│${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${g}16${dkblu}]${NC}\033[0;36m CREATE ENVIROMENT PYTHON    ${y}│${NC}"
-echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m AUTO DISABLE IPV6                ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}17${dkblu}]${NC}\033[0;36m AUTO DISABLE IPV6           ${y}│${NC}"
+echo -e "  ${y}│${NC}${dkblu}[${g}18${dkblu}]${NC}\033[0;36m FTP MANAGER                 ${y}│${NC}"
 echo -e "  ${y}│                                 │${NC}"
 echo -e "  ${y}│${NC}${dkblu}[${red}•0${dkblu}]${NC}${red} BACK TO MENU                ${y}│${NC}"
 echo -e "\033[1;33m  └─────────────────────────────────┘\033[0m"
-read -p "Silakan Masukkan Angka [ 1 - 17 ] : " plh
+read -p "Silakan Masukkan Angka [ 1 - 18 ] : " plh
 echo -e ""
 case $plh in
 1 | 01)
@@ -860,6 +861,10 @@ case $plh in
     clear
     disable_ipv6
     ;;
+18)
+    clear
+    ftp_manager
+    ;;
 0)
     clear
     loding
@@ -868,5 +873,5 @@ x | X)
     clear
     good_bye
     ;;
-*) echo "Silakan Masukkan Angka [1 - 16]." ; loading ; exec "$0" ;;
+*) echo "Silakan Masukkan Angka [1 - 18]." ; loading ; exec "$0" ;;
 esac

@@ -55,9 +55,20 @@ EOF
  qrencode -t ansiutf8 <"$CLIENT_DIR/$name.conf" >"$CLIENT_DIR/$name.qr.txt"
 }
 make_client HP "$NET.2"; make_client Laptop "$NET.3"; make_client PC "$NET.4"
-install -m 755 "$(dirname "$0")/WireGuard_manager.sh" /usr/local/sbin/WireGuard_manager.sh
 systemctl enable --now wg-quick@wg0
-ufw allow "$PORT/udp" >/dev/null; ufw allow OpenSSH >/dev/null 2>&1 || true; ufw --force enable >/dev/null
-ok 'WireGuard aktif melalui systemd dan UFW.'
+# --- Firewall UFW aman: pakai port SSH asli, bukan profil "OpenSSH" ---
+SSH_PORT=$(sshd -T 2>/dev/null | awk '/^port /{print $2; exit}')
+SSH_PORT=${SSH_PORT:-22}
+info "Port SSH terdeteksi: $SSH_PORT/tcp"
+ufw allow "$PORT/udp" >/dev/null
+ufw allow "$SSH_PORT/tcp" >/dev/null
+if ufw status | grep -Eq "^${SSH_PORT}/tcp"; then
+  ufw --force enable >/dev/null
+  ok "UFW aktif: UDP $PORT (WireGuard) + TCP $SSH_PORT (SSH) diizinkan."
+else
+  echo -e "${YELLOW}⚠️  Aturan SSH $SSH_PORT/tcp tidak terverifikasi — UFW TIDAK diaktifkan agar SSH tidak terkunci.${NC}"
+  echo -e "${YELLOW}   Aktifkan manual: ufw --force enable${NC}"
+fi
+ok 'WireGuard aktif melalui systemd.'
 wg show wg0
 printf '\n📁 Client dan QR tersimpan di %s\n🛠️ Manager: /usr/local/sbin/WireGuard_manager.sh\n' "$CLIENT_DIR"

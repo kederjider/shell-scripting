@@ -37,7 +37,11 @@ function fn_scan_cepat() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
@@ -57,7 +61,11 @@ function fn_hasil_scan() {
     if ! command -v sherlock &> /dev/null; then
         echo -e "\033[1;31m[ERROR] Sherlock belum terinstall!\033[0m"
         echo -e "Install dulu dengan: pipx install sherlock-project"
+        # Matikan bracketed paste
+        printf '\e[?2004l'
         read -n 1 -s -r -p "Tekan tombol apa saja untuk keluar..."
+        # Aktifkan kembali bracketed paste
+        printf '\e[?2004h'
         return 1
     fi
 
@@ -76,7 +84,11 @@ function fn_hasil_scan() {
     if [ -z "$(ls -A $FOLDER/*.txt 2>/dev/null)" ]; then
         echo -e "\033[1;33mBelum ada hasil scan.\033[0m"
         echo -e "Silakan lakukan scan username terlebih dahulu."
+        # Matikan bracketed paste
+        printf '\e[?2004l'
         read -n 1 -s -r -p "Tekan tombol apa saja untuk kembali..."
+        # Aktifkan kembali bracketed paste
+        printf '\e[?2004h'
         return 1
     fi
 
@@ -90,7 +102,11 @@ function fn_hasil_scan() {
     echo ""
 
     # Pilih file
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -rp "Masukkan nomor hasil yang ingin dilihat: " nomor
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     file=$(ls -1 "$FOLDER"/*.txt 2>/dev/null | sed -n "${nomor}p")
 
@@ -120,7 +136,11 @@ function fn_scan_simpan() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
@@ -156,7 +176,11 @@ function fn_scan_proxy() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
@@ -181,14 +205,22 @@ function fn_scan_param() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
         exit 1
     fi
     echo -e "\033[1;33mMasukkan parameter tambahan (contoh: --timeout 10 -o hasil.txt):\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " param
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
     sherlock "$username" $param
 }
 
@@ -207,14 +239,22 @@ function fn_scan_site() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
         exit 1
     fi
     echo -e "\033[1;33mMasukkan situs yang ingin dicari (contoh: github, dll):\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " param
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
     sherlock "$username" --site $param
 }
 
@@ -233,7 +273,11 @@ function fn_scan_site_all() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
@@ -257,7 +301,11 @@ function fn_scan_site_no_txt() {
     fi
 
     echo -e "\n\033[1;33mMasukkan username yang ingin dicari:\033[0m"
+    # Matikan bracketed paste
+    printf '\e[?2004l'
     read -p "➤ " username
+    # Aktifkan kembali bracketed paste
+    printf '\e[?2004h'
 
     if [ -z "$username" ]; then
         echo -e "\033[1;31mUsername tidak boleh kosong!\033[0m"
@@ -291,7 +339,11 @@ echo -e "${GRAY}╚════════════════════�
 echo -e ""
 echo -e "${L_CYAN}┌──(${L_RED}root${L_CYAN}@${YELLOW}mamat${L_CYAN})─[${L_GREEN}user-finder${L_CYAN}]${NC}"
 echo -e -n "${L_CYAN}└──▶️ ${NC}"
+# Matikan bracketed paste
+printf '\e[?2004l'
 read -p "" plh
+# Aktifkan kembali bracketed paste
+printf '\e[?2004h'
 echo -e ""
 
 case $plh in
@@ -311,6 +363,10 @@ esac
 
 echo -e ""
 echo -e "${L_CYAN}⏎ Tekan Enter untuk kembali ke menu...${NC}"
+# Matikan bracketed paste
+printf '\e[?2004l'
 read -p "" _
+# Aktifkan kembali bracketed paste
+printf '\e[?2004h'
 clear
 exec "$0"

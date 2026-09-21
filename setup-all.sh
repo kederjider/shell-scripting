@@ -211,6 +211,8 @@ main() {
   install_file set-timezone set-timezone.sh
   install_file neofetch-id neofetch-id.sh
   install_file disable_ipv6 disable_ipv6.sh
+  install_file install-vsftpd install-vsftpd.sh
+  install_file ftp-manager ftp-manager.sh
 
   log "Menjalankan setup-python.sh untuk mengkonfigurasi environment Python..."
   if [ -f "/usr/local/bin/setup-python" ]; then
